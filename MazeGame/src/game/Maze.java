@@ -4,6 +4,7 @@ public class Maze {
 	private Hero hero;
 	private Dragon dragon;
 	private Sword sword;
+	private boolean can;
 
 	private char maze[][]={{'X','X','X','X','X','X','X','X','X','X'},
 			{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'},
@@ -40,49 +41,77 @@ public class Maze {
 	}
 
 	public void moveHero(Game.Direction direction){
-		unsetChar(hero.getX(), hero.getY());
-		hero.move(direction);
-		setChar(hero.getX(), hero.getY(), hero.getChar());
+
+		canMove(hero.getX(),hero.getY(),direction);
+		if (can==true){
+			unsetChar(hero.getX(), hero.getY());
+			hero.move(direction);
+			setChar(hero.getX(), hero.getY(), hero.getChar());
+		}
+		System.out.println("you cannot move in this direction");
 	}	
 
+	public void moveDragon(Game.Direction direction){
+		canMove(dragon.getX(),dragon.getY(),direction);
+		if (can==true){
+			unsetChar(dragon.getX(), dragon.getY());
+			dragon.move(direction);
+			setChar(dragon.getX(), dragon.getY(), dragon.getChar());
+		}
+		System.out.println("you cannot move in this direction");
+	}
+
+
 	public boolean canMove(int x, int y, Game.Direction direction){
-		//TODO check for 'S'
+		//TODO check for 'S','D','E'
+
+
 		switch(direction){
 		case UP:
-			if (getChar(x,y-1)=='X'){
-				return false;
+			switch (getChar(x,y-1)){	//TODO fazer isto para todos os cases das direçoes
+			case 'X':
+				return can=false;
+				break;
+			case 'S':
+
+				break;
+
+			case 'D':
+
+				break;
+
+			case 'E':
+
+				break;
 			}
-			break;
+
+
 		case DOWN:
 			if (getChar(x,y+1)=='X'){
-				return false;
+				return can=false;
 			}
 			break;
 		case RIGHT:
 			if (getChar(x+1,y)=='X'){
-				return false;
+				return can=false;
 			}
 			break;	
 		case LEFT:
 			if (getChar(x-1,y)=='X'){
-				return false;
+				return can=false;
 			}
 			break;
 		case STAY:
-			return true;
+			return can=true;
 			//break;	
 		}
-		return true;
+		can=true;
+		return can;	//PARA QUE SERVE ISTO????
 
 
 
 	}
 
-	public void moveDragon(Game.Direction direction){
-		unsetChar(dragon.getX(), dragon.getY());
-		dragon.move(direction);
-		setChar(dragon.getX(), dragon.getY(), dragon.getChar());
-	}
 
 	public void pickUpSword(){
 		hero.equipSword();

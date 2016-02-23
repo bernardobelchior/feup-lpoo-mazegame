@@ -1,10 +1,10 @@
-package game;
+package game;		//O QUE É ISTO??
 
 public class Hero extends Entity{
 	boolean swordEquipped;
 	
 	public Hero(int x, int y){
-		super(x, y);
+		super(x, y);		//O QUE É ISTO??
 		swordEquipped = false;
 	}
 	

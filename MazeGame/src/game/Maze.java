@@ -73,7 +73,7 @@ public class Maze {
 				return can=false;
 				break;
 			case 'S':
-
+				
 				break;
 
 			case 'D':
@@ -103,7 +103,7 @@ public class Maze {
 			break;
 		case STAY:
 			return can=true;
-			//break;	
+			break;	
 		}
 		can=true;
 		return can;	//PARA QUE SERVE ISTO????

@@ -67,19 +67,24 @@ public class Maze {
 
 
 		switch(direction){
+
 		case UP:
 			switch (getChar(x,y-1)){	//TODO fazer isto para todos os cases das direçoes
 			case 'X':
 				return can=false;
 				break;
 			case 'S':
+				if (dragon.getLife()==false && hero.getChar()=='A'){
+					System.out.println("you won the game!!!");
+					return can=true;
+				}
+				return can=false;
+				break;
+			case 'D':
+				if 
+				
 				
 				break;
-
-			case 'D':
-
-				break;
-
 			case 'E':
 
 				break;
@@ -91,16 +96,22 @@ public class Maze {
 				return can=false;
 			}
 			break;
+
+
 		case RIGHT:
 			if (getChar(x+1,y)=='X'){
 				return can=false;
 			}
 			break;	
+
+
 		case LEFT:
 			if (getChar(x-1,y)=='X'){
 				return can=false;
 			}
 			break;
+
+
 		case STAY:
 			return can=true;
 			break;	

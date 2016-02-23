@@ -15,4 +15,27 @@ public class Entity {
 	public int getY(){
 		return y;
 	}
+	
+	public void move(Game.Direction direction){
+		switch(direction){
+		case UP:
+			if(y > 0)
+				y--;
+			break;
+		case DOWN:
+			//if(y < )
+			y++;
+			break;
+		case LEFT:
+			if(x > 0)
+				x--;
+			break;
+		case RIGHT:
+			//if(x < )
+			x++;
+			break;
+		case STAY:
+			break;
+		}
+	}
 }

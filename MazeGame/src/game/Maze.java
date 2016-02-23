@@ -36,7 +36,20 @@ public class Maze {
 	}
 	
 	public void moveHero(Game.Direction direction){
-		
+		unsetChar(hero.getX(), hero.getY());
+		hero.move(direction);
+		setChar(hero.getX(), hero.getY(), hero.getChar());
+	}	
+	
+	public void moveDragon(Game.Direction direction){
+		unsetChar(dragon.getX(), dragon.getY());
+		dragon.move(direction);
+		setChar(dragon.getX(), dragon.getY(), dragon.getChar());
+	}
+	
+	public void pickUpSword(){
+		hero.equipSword();
+		unsetChar(sword.getX(), sword.getY());
 	}
 	
 	public void print(){

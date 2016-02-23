@@ -9,6 +9,6 @@ public class Game {
 		maze.print();
 		
 	}
-
+		//TODO explicar a margarida todas as duvidas que estão em comentario espalhadas pelo código
 }
 	

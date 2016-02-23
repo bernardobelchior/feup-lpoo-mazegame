@@ -16,7 +16,7 @@ public class Hero extends Entity{
 		return swordEquipped;
 	}
 	
-	public char getHeroChar(){
+	public char getChar(){
 		return swordEquipped ? 'A' : 'H';
 	}
 	

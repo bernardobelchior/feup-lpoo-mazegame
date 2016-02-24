@@ -6,22 +6,18 @@ public class Maze {
 	private Sword sword;
 	private Exit exit;
 
-	private char maze[][]={{'X','X','X','X','X','X','X','X','X','X'},
-			{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'},
-			{'X',' ','X','X',' ','X',' ','X',' ','X'},
-			{'X',' ','X','X',' ','X',' ','X',' ','X'},
-			{'X',' ','X','X',' ','X',' ','X',' ','X'},
-			{'X',' ',' ',' ',' ',' ',' ','X',' ',' '},
-			{'X',' ','X','X',' ','X',' ','X',' ','X'},
-			{'X',' ','X','X',' ','X',' ','X',' ','X'},
-			{'X',' ','X','X',' ',' ',' ',' ',' ','X'},
-			{'X','X','X','X','X','X','X','X','X','X'}};
+	private char maze[][] = { { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
+			{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' }, { 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
+			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ' }, { 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
+			{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' }, { 'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' } };
 
-	public Maze(){
-		hero = new Hero(1,1);
-		setChar(hero.getX(), hero.getY(), hero.getChar());	
+	public Maze() {
+		hero = new Hero(1, 1);
+		setChar(hero.getX(), hero.getY(), hero.getChar());
 
-		dragon = new Dragon(1,3);
+		dragon = new Dragon(1, 3);
 		setChar(dragon.getX(), dragon.getY(), dragon.getChar());
 
 		sword = new Sword(1, 8);
@@ -31,34 +27,33 @@ public class Maze {
 		setChar(exit.getX(), exit.getY(), exit.getChar());
 	}
 
-	public void setChar(int x, int y, char c){
+	private void setChar(int x, int y, char c) {
 		maze[y][x] = c;
 	}
 
-	public void unsetChar(int x, int y){
+	private void unsetChar(int x, int y) {
 		maze[y][x] = ' ';
 	}
 
-	public char getChar(int x, int y){
+	private char getChar(int x, int y) {
 		return maze[y][x];
 	}
 
-	public void moveHero(Game.Direction direction){
-		if (canMove(hero.getX(),hero.getY(),direction)){
+	public void moveHero(Game.Direction direction) {
+		if (canMove(hero.getX(), hero.getY(), direction)) {
 			unsetChar(hero.getX(), hero.getY());
 			hero.move(direction);
-			if(!sword.getPickedUp() && sword.getX() == hero.getX() && sword.getY() == hero.getY()){
+			if (!sword.getPickedUp() && sword.getX() == hero.getX() && sword.getY() == hero.getY()) {
 				pickUpSword();
 			}
 			setChar(hero.getX(), hero.getY(), hero.getChar());
-		}
-		else 
+		} else
 			System.out.println("You cannot move in this direction");
-	}	
+	}
 
-	public void moveDragon(Game.Direction direction){
+	public void moveDragon(Game.Direction direction) {
 
-		if (canMove(dragon.getX(),dragon.getY(),direction)){
+		if (canMove(dragon.getX(), dragon.getY(), direction)) {
 			unsetChar(dragon.getX(), dragon.getY());
 			dragon.move(direction);
 			setChar(dragon.getX(), dragon.getY(), dragon.getChar());
@@ -67,87 +62,84 @@ public class Maze {
 		}
 	}
 
+	private boolean canMove(int x, int y, Game.Direction direction) {
 
-	public boolean canMove(int x, int y, Game.Direction direction){
-
-		switch(direction){
+		switch (direction) {
 
 		case UP:
-			if(getChar(x, y-1) == 'X' || (getChar(x, y-1) == 'S' && dragon.isAlive()))
+			if (getChar(x, y - 1) == 'X' || (getChar(x, y - 1) == 'S' && dragon.isAlive()))
 				return false;
 			break;
 		case DOWN:
-			if(getChar(x, y+1) == 'X' || (getChar(x, y+1) == 'S' && dragon.isAlive()))
+			if (getChar(x, y + 1) == 'X' || (getChar(x, y + 1) == 'S' && dragon.isAlive()))
 				return false;
-			break;	
+			break;
 		case RIGHT:
-			if(getChar(x+1, y) == 'X' || (getChar(x+1, y) == 'S' && dragon.isAlive()))
+			if (getChar(x + 1, y) == 'X' || (getChar(x + 1, y) == 'S' && dragon.isAlive()))
 				return false;
-			break;	
+			break;
 		case LEFT:
-			if(getChar(x-1, y) == 'X' || (getChar(x-1, y) == 'S' && dragon.isAlive()))
+			if (getChar(x - 1, y) == 'X' || (getChar(x - 1, y) == 'S' && dragon.isAlive()))
 				return false;
 			break;
 		case STAY:
 			return true;
 		}
-		return true;	//PARA QUE SERVE ISTO???? O que? o return?
+		return true; // PARA QUE SERVE ISTO???? O que? o return?
 	}
 
-	public void update(){
-		if(isHeroNextToDragon() && hero.getSwordEquipped()){
+	public void update() {
+		if (isHeroNextToDragon() && hero.getSwordEquipped()) {
 			dragon.kill();
 			unsetChar(dragon.getX(), dragon.getY());
 		}
 	}
-	
-	public void pickUpSword(){
+
+	private void pickUpSword() {
 		hero.equipSword();
 		sword.pickUp();
 		unsetChar(sword.getX(), sword.getY());
 	}
 
-	public boolean isHeroNextToDragon(){
-		//Checks if the hero is in an adjacent square to the dragon
-		if((Math.abs(hero.getX() - dragon.getX()) == 1 && Math.abs(hero.getY() - dragon.getY()) == 0) ||
-				(Math.abs(hero.getX() - dragon.getX()) == 0 && Math.abs(hero.getY() - dragon.getY()) == 1)){
+	private boolean isHeroNextToDragon() {
+		if(dragon.isAlive()){
+			// Checks if the hero is in an adjacent square to the dragon
+			if ((Math.abs(hero.getX() - dragon.getX()) == 1 && Math.abs(hero.getY() - dragon.getY()) == 0)
+					|| (Math.abs(hero.getX() - dragon.getX()) == 0 && Math.abs(hero.getY() - dragon.getY()) == 1)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isHeroOnExit() {
+		if (hero.getX() == exit.getX() && hero.getY() == exit.getY()) {
 			return true;
 		}
 		return false;
 	}
 
-	public boolean isHeroOnExit(){
-		if(hero.getX() == exit.getX() && hero.getY() == exit.getY()){
-			return true;
-		}
-		return false;
-	}
-
-	public Entity checkGameState(){
-		if(isHeroOnExit() && !dragon.isAlive()){
+	public Entity checkGameState() {
+		if (isHeroOnExit() && !dragon.isAlive()) {
 			return hero;
 		}
-		
-		if(isHeroNextToDragon() && !hero.getSwordEquipped()){
+
+		if (isHeroNextToDragon() && !hero.getSwordEquipped()) {
 			return dragon;
 		}
-		
+
 		return null;
 	}
 
-	public void print(){
-		System.out.println(toString());
-	}
-
-	public String toString(){
+	public String toString() {
 		String result = "";
-		for(int i=0; i<maze.length ;i++){
-			for (int j=0;j<maze[i].length;j++){
+		for (int i = 0; i < maze.length; i++) {
+			for (int j = 0; j < maze[i].length; j++) {
 				result += maze[i][j];
 			}
 			result += '\n';
 		}
-		
+
 		return result;
 	}
 

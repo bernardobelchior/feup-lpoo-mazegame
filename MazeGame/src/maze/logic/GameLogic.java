@@ -1,50 +1,29 @@
 package maze.logic;
 
-import java.util.Scanner;
+import maze.cli.CommandLineInterface;
 
 public class GameLogic {
 	private Maze maze;
-
+	private CommandLineInterface cli;
 
 	public GameLogic(){
 		maze = new Maze();
-	}
-
-	private Game.Direction getDirection(String direction){
-		switch(direction){
-		case "W":
-			return Game.Direction.UP;
-		case "S":
-			return Game.Direction.DOWN;
-		case "A":
-			return Game.Direction.LEFT;
-		case "D":
-			return Game.Direction.RIGHT;
-		default:
-			return Game.Direction.STAY;
-		}
+		cli = new CommandLineInterface();
 	}
 
 	public void play(){
-		String input;
-		Scanner scanner = new Scanner(System.in);
 		Entity gameState;
 		
 		while((gameState = maze.checkGameState()) == null){
-			maze.print();
-			System.out.println();
-			System.out.println("Where would you like to move?");
-			input = scanner.nextLine();
-			maze.moveHero(getDirection(input));
+			cli.print(maze.toString());
+			maze.moveHero(cli.getHeroDirection());
 			maze.update();
 		}
-		
-		scanner.close();
 	
 		if(gameState instanceof Dragon){
-			System.out.println("The dragon has won!");
+			cli.print("The dragon has won!");
 		} else {
-			System.out.println("You have won!");
+			cli.print("You have won!");
 		}
 	}
 }

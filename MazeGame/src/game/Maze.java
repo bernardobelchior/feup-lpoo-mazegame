@@ -47,10 +47,8 @@ public class Maze {
 			unsetChar(hero.getX(), hero.getY());
 			hero.move(direction);
 			setChar(hero.getX(), hero.getY(), hero.getChar());
-			hero.
-			
-			
-			hero.NextToDragon();	//sei porque é que está mal mas estava demasiado cansada para mudar o metodo de classe
+			hero.FindSword();
+			hero.NextToDragon();	
 			if (hero.getnexttodragon()==true){
 				if (hero.getSwordEquipped()==true){
 					dragon.dead();
@@ -80,10 +78,10 @@ public class Maze {
 		switch(direction){
 
 		case UP:
-			switch (getChar(x,y-1)){	//TODO fazer isto para todos os cases das direçoes
+			switch (getChar(x,y-1)){	
 			case 'X':
 				return can=false;
-				break;
+				
 			case 'S':
 				if (dragon.getLife()==false && hero.getChar()=='A'){
 					System.out.println("you won the game!!!");
@@ -91,40 +89,65 @@ public class Maze {
 				}
 				else 
 					return can=false;
-				break;
+				
 			}
 
 
 		case DOWN:
-			if (getChar(x,y+1)=='X'){
+			switch (getChar(x,y+1)){	
+			case 'X':
 				return can=false;
+				
+			case 'S':
+				if (dragon.getLife()==false && hero.getChar()=='A'){
+					System.out.println("you won the game!!!");
+					return can=true;
+				}
+				else 
+					return can=false;
+				
 			}
-			break;
-
+			break;	
 
 		case RIGHT:
-			if (getChar(x+1,y)=='X'){
+			switch (getChar(x+1,y)){	
+			case 'X':
 				return can=false;
+				
+			case 'S':
+				if (dragon.getLife()==false && hero.getChar()=='A'){
+					System.out.println("you won the game!!!");
+					return can=true;
+				}
+				else 
+					return can=false;
+				
 			}
 			break;	
 
 
 		case LEFT:
-			if (getChar(x-1,y)=='X'){
+			switch (getChar(x-1,y)){	
+			case 'X':
 				return can=false;
+				
+			case 'S':
+				if (dragon.getLife()==false && hero.getChar()=='A'){
+					System.out.println("you won the game!!!");
+					return can=true;
+				}
+				else 
+					return can=false;
+				
 			}
 			break;
 
 
 		case STAY:
 			return can=true;
-			break;	
 		}
 		can=true;
 		return can;	//PARA QUE SERVE ISTO????
-
-
-
 	}
 
 

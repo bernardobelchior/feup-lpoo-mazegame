@@ -7,15 +7,15 @@ public class Maze {
 	private boolean can;
 
 	private char maze[][]={{'X','X','X','X','X','X','X','X','X','X'},
-			{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'},
-			{'X',' ','X','X',' ','X',' ','X',' ','X'},
-			{'X',' ','X','X',' ','X',' ','X',' ','X'},
-			{'X',' ','X','X',' ','X',' ','X',' ','X'},
-			{'X',' ',' ',' ',' ',' ',' ','X',' ','S'},
-			{'X',' ','X','X',' ','X',' ','X',' ','X'},
-			{'X',' ','X','X',' ','X',' ','X',' ','X'},
-			{'X',' ','X','X',' ',' ',' ',' ',' ','X'},
-			{'X','X','X','X','X','X','X','X','X','X'}};
+						   {'X',' ',' ',' ',' ',' ',' ',' ',' ','X'},
+						   {'X',' ','X','X',' ','X',' ','X',' ','X'},
+						   {'X',' ','X','X',' ','X',' ','X',' ','X'},
+						   {'X',' ','X','X',' ','X',' ','X',' ','X'},
+						   {'X',' ',' ',' ',' ',' ',' ','X',' ','S'},
+						   {'X',' ','X','X',' ','X',' ','X',' ','X'},
+						   {'X',' ','X','X',' ','X',' ','X',' ','X'},
+						   {'X',' ','X','X',' ',' ',' ',' ',' ','X'},
+						   {'X','X','X','X','X','X','X','X','X','X'}};
 
 	public Maze(){
 		hero = new Hero(1,1);
@@ -47,6 +47,13 @@ public class Maze {
 			unsetChar(hero.getX(), hero.getY());
 			hero.move(direction);
 			setChar(hero.getX(), hero.getY(), hero.getChar());
+			hero.NextToDragon();
+			if (hero.nexttodragon==true){
+				if (hero.swordEquipped==true){
+					dragon.dead();
+				}
+				
+			}
 		}
 		System.out.println("you cannot move in this direction");
 	}	

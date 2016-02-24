@@ -1,14 +1,16 @@
 package game;		//O QUE É ISTO??
 
 public class Hero extends Entity{
-	boolean swordEquipped;
-	boolean nexttodragon;
+	private boolean swordEquipped;
+	private boolean nexttodragon;
+	private boolean life;
 	private Dragon dragon;
 	
 	public Hero(int x, int y){
 		super(x, y);		//O QUE É ISTO??
 		swordEquipped = false;
 		nexttodragon=false;
+		life=true;
 	}
 	
 		
@@ -19,6 +21,15 @@ public class Hero extends Entity{
 	public boolean getSwordEquipped(){
 		return swordEquipped;
 	}
+	
+	public boolean getnexttodragon(){
+		return nexttodragon;
+	}
+	
+	public boolean getlife(){
+		return life;
+	}
+	
 	
 	public char getChar(){
 		return swordEquipped ? 'A' : 'H';	//O QUE É ISTO??
@@ -32,5 +43,8 @@ public class Hero extends Entity{
 		return nexttodragon;
 	}
 	
+	public boolean Dead(){
+		return life=false;
+	}
 	
 }

@@ -1,57 +1,33 @@
-package game;		//O QUE É ISTO??
+package game;		//O QUE ï¿½ ISTO?? Not sure
 
 public class Hero extends Entity{
 	private boolean swordEquipped;
-	private boolean nexttodragon;
-	private boolean life;
-	private Dragon dragon;
-	private Sword sword;
 	
 	public Hero(int x, int y){
-		super(x, y);		//O QUE É ISTO??
+		super(x, y);		//O QUE ï¿½ ISTO?? Construtor da classe mae
 		swordEquipped = false;
-		nexttodragon=false;
-		life=true;
-	}
-	
-	public void FindSword(){
-		if (x==sword.getX() && y==sword.getY()){
-			equipSword();
-		}
 	}
 		
 	public void equipSword(){
 		swordEquipped = true;
-		//é preciso mudar letra para 'A' mas nao criaste esse atributo em nenhuma das classes e tens um getchar ali em baixo...nao percebo...
+		//ï¿½ preciso mudar letra para 'A' mas nao criaste esse atributo em nenhuma das classes e tens um getchar ali em baixo...nao percebo...
+		// Ve a funcao getChar
 	}
 	
 	public boolean getSwordEquipped(){
 		return swordEquipped;
 	}
 	
-	public boolean getnexttodragon(){
-		return nexttodragon;
-	}
-	
-	public boolean getlife(){
-		return life;
-	}
-	
 	
 	public char getChar(){
-		return swordEquipped ? 'A' : 'H';	//O QUE É ISTO??
+		return swordEquipped ? 'A' : 'H';	//O QUE ï¿½ ISTO?? Se swordEquipped e true entao retorna 'A' senao retorna 'H'. E um if basicamente
 	}
 	
-	public boolean NextToDragon(){
+	/*public boolean NextToDragon(){
 		if ((dragon.getX()==x+1 && dragon.getY()==y)||(dragon.getX()==x-1 && dragon.getY()==y)||
 			(dragon.getX()==x && dragon.getY()==y+1)||(dragon.getX()==x && dragon.getY()==y+1)){
 			 nexttodragon=true;
 		}
 		return nexttodragon;
-	}
-	
-	public boolean Dead(){
-		return life=false;
-	}
-	
+	}*/	
 }

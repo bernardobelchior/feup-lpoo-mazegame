@@ -2,10 +2,12 @@ package game;
 
 public class Sword {
 	private int x, y;	
+	private boolean pickedUp;
 
 	public Sword(int x, int y){
 		this.x = x;
 		this.y = y;
+		this.pickedUp = false;
 	}
 	
 	public int getX(){
@@ -18,6 +20,14 @@ public class Sword {
 	
 	public char getChar(){
 		return 'E';
+	}
+	
+	public void pickUp(){
+		pickedUp = true;
+	}
+	
+	public boolean getPickedUp(){
+		return pickedUp;
 	}
 
 }

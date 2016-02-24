@@ -4,14 +4,14 @@ public class Maze {
 	private Hero hero;
 	private Dragon dragon;
 	private Sword sword;
-	private boolean can;
-
+	private Exit exit;
+	
 	private char maze[][]={{'X','X','X','X','X','X','X','X','X','X'},
 			{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'},
 			{'X',' ','X','X',' ','X',' ','X',' ','X'},
 			{'X',' ','X','X',' ','X',' ','X',' ','X'},
 			{'X',' ','X','X',' ','X',' ','X',' ','X'},
-			{'X',' ',' ',' ',' ',' ',' ','X',' ','S'},
+			{'X',' ',' ',' ',' ',' ',' ','X',' ',' '},
 			{'X',' ','X','X',' ','X',' ','X',' ','X'},
 			{'X',' ','X','X',' ','X',' ','X',' ','X'},
 			{'X',' ','X','X',' ',' ',' ',' ',' ','X'},
@@ -26,6 +26,9 @@ public class Maze {
 
 		sword = new Sword(1, 8);
 		setChar(sword.getX(), sword.getY(), sword.getChar());
+		
+		exit = new Exit(9, 5);
+		setChar(exit.getX(), exit.getY(), exit.getChar());
 	}
 
 	public void setChar(int x, int y, char c){
@@ -41,35 +44,27 @@ public class Maze {
 	}
 
 	public void moveHero(Game.Direction direction){
-
-		canMove(hero.getX(),hero.getY(),direction);
-		if (can==true){
+		if (canMove(hero.getX(),hero.getY(),direction)){
 			unsetChar(hero.getX(), hero.getY());
 			hero.move(direction);
-			setChar(hero.getX(), hero.getY(), hero.getChar());
-			hero.FindSword();
-			hero.NextToDragon();	
-			if (hero.getnexttodragon()==true){
-				if (hero.getSwordEquipped()==true){
-					dragon.dead();
-				}
-				else 
-					hero.Dead();
-				System.out.println("you just died! GAME OVER!!!");
+			if(!sword.getPickedUp() && sword.getX() == hero.getX() && sword.getY() == hero.getY()){
+				pickUpSword();
 			}
+			setChar(hero.getX(), hero.getY(), hero.getChar());
 		}
 		else 
-			System.out.println("you cannot move in this direction");
+			System.out.println("You cannot move in this direction");
 	}	
 
 	public void moveDragon(Game.Direction direction){
-		canMove(dragon.getX(),dragon.getY(),direction);
-		if (can==true){
+		
+		if (canMove(dragon.getX(),dragon.getY(),direction)){
 			unsetChar(dragon.getX(), dragon.getY());
 			dragon.move(direction);
 			setChar(dragon.getX(), dragon.getY(), dragon.getChar());
+		} else {
+			System.out.println("You cannot move in this direction");
 		}
-		System.out.println("you cannot move in this direction");
 	}
 
 
@@ -78,82 +73,70 @@ public class Maze {
 		switch(direction){
 
 		case UP:
-			switch (getChar(x,y-1)){	
-			case 'X':
-				return can=false;
-				
-			case 'S':
-				if (dragon.getLife()==false && hero.getChar()=='A'){
-					System.out.println("you won the game!!!");
-					return can=true;
-				}
-				else 
-					return can=false;
-				
-			}
-
-
-		case DOWN:
-			switch (getChar(x,y+1)){	
-			case 'X':
-				return can=false;
-				
-			case 'S':
-				if (dragon.getLife()==false && hero.getChar()=='A'){
-					System.out.println("you won the game!!!");
-					return can=true;
-				}
-				else 
-					return can=false;
-				
-			}
-			break;	
-
-		case RIGHT:
-			switch (getChar(x+1,y)){	
-			case 'X':
-				return can=false;
-				
-			case 'S':
-				if (dragon.getLife()==false && hero.getChar()=='A'){
-					System.out.println("you won the game!!!");
-					return can=true;
-				}
-				else 
-					return can=false;
-				
-			}
-			break;	
-
-
-		case LEFT:
-			switch (getChar(x-1,y)){	
-			case 'X':
-				return can=false;
-				
-			case 'S':
-				if (dragon.getLife()==false && hero.getChar()=='A'){
-					System.out.println("you won the game!!!");
-					return can=true;
-				}
-				else 
-					return can=false;
-				
-			}
+			if(getChar(x, y-1) == 'X' || (getChar(x, y-1) == 'S' && dragon.isAlive()))
+				return false;
 			break;
-
-
+		case DOWN:
+			if(getChar(x, y+1) == 'X' || (getChar(x, y+1) == 'S' && dragon.isAlive()))
+				return false;
+			break;	
+		case RIGHT:
+			if(getChar(x+1, y) == 'X' || (getChar(x+1, y) == 'S' && dragon.isAlive()))
+				return false;
+			break;	
+		case LEFT:
+			if(getChar(x-1, y) == 'X' || (getChar(x-1, y) == 'S' && dragon.isAlive()))
+				return false;
+			break;
 		case STAY:
-			return can=true;
+			return true;
 		}
-		can=true;
-		return can;	//PARA QUE SERVE ISTO????
+		return true;	//PARA QUE SERVE ISTO???? O que? o return?
 	}
 
 
 	public void pickUpSword(){
 		hero.equipSword();
+		sword.pickUp();
 		unsetChar(sword.getX(), sword.getY());
+	}
+	
+	public void nextTurn(Game.Direction direction){
+		
+	}
+	
+	public boolean isHeroNextToDragon(){
+		//Checks if the hero is in an adjacent square to the dragon
+		if((Math.abs(hero.getX() - dragon.getX()) == 1 && Math.abs(hero.getY() - dragon.getY()) == 0) ||
+		   (Math.abs(hero.getX() - dragon.getX()) == 0 && Math.abs(hero.getY() - dragon.getY()) == 1)){
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isHeroOnExit(){
+		if(hero.getX() == exit.getX() && hero.getY() == exit.getY()){
+			return true;
+		}
+		return false;
+	}
+	
+	public Entity checkGameState(){
+		if(isHeroNextToDragon()){
+			if(hero.getSwordEquipped()){
+				return hero;
+			} else {
+				return dragon;
+			}
+		} else if(isHeroOnExit()){
+			if(dragon.isAlive()){
+				return null;
+			} else {
+				return hero;
+			}
+		} else {
+			return null;
+		}
 	}
 
 	public void print(){

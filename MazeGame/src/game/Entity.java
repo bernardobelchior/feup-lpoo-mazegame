@@ -1,11 +1,13 @@
 package game;
 
 public class Entity {
-	int x,y;
+	private int x,y;
+	private boolean alive;
 
 	public Entity(int x, int y){
 		this.x = x;
 		this.y = y;
+		this.alive = true;
 	}
 
 	public int getX(){
@@ -34,4 +36,13 @@ public class Entity {
 			break;
 		}
 	}
+
+	public boolean isAlive(){
+		return alive;
+	}
+
+	public void kill(){
+		alive = false;
+	}
+
 }

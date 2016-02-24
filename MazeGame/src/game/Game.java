@@ -4,11 +4,10 @@ public class Game {
 	public enum Direction { UP, DOWN, RIGHT, LEFT, STAY	}
 	
 	public static void main(String[] args) {
-		Maze maze=new Maze();
+		GameLogic gameLogic = new GameLogic();
 
-		maze.print();
-		
+		gameLogic.play();		
 	}
-		//TODO explicar a margarida todas as duvidas que estão em comentario espalhadas pelo código
+		//TODO explicar a margarida todas as duvidas que estï¿½o em comentario espalhadas pelo cï¿½digo
 }
 	

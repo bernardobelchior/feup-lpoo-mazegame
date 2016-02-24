@@ -1,4 +1,4 @@
-package game;
+package maze.logic;
 
 import java.util.Scanner;
 
@@ -36,6 +36,7 @@ public class GameLogic {
 			System.out.println("Where would you like to move?");
 			input = scanner.nextLine();
 			maze.moveHero(getDirection(input));
+			maze.update();
 		}
 		
 		scanner.close();

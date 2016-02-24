@@ -1,4 +1,4 @@
-package game;		//O QUE � ISTO?? Not sure
+package maze.logic;		//O QUE � ISTO?? Not sure
 
 public class Hero extends Entity{
 	private boolean swordEquipped;

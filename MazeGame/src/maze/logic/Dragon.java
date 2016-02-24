@@ -1,4 +1,4 @@
-package game;
+package maze.logic;
 
 public class Dragon extends Entity {
 

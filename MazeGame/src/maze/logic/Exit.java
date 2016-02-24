@@ -1,4 +1,4 @@
-package game;
+package maze.logic;
 
 public class Exit {
 	private int x,y;

@@ -1,4 +1,4 @@
-package game;
+package maze.logic;
 
 public class Game {
 	public enum Direction { UP, DOWN, RIGHT, LEFT, STAY	}

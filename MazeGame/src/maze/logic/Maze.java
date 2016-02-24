@@ -1,11 +1,11 @@
-package game;
+package maze.logic;
 
 public class Maze {
 	private Hero hero;
 	private Dragon dragon;
 	private Sword sword;
 	private Exit exit;
-	
+
 	private char maze[][]={{'X','X','X','X','X','X','X','X','X','X'},
 			{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'},
 			{'X',' ','X','X',' ','X',' ','X',' ','X'},
@@ -26,7 +26,7 @@ public class Maze {
 
 		sword = new Sword(1, 8);
 		setChar(sword.getX(), sword.getY(), sword.getChar());
-		
+
 		exit = new Exit(9, 5);
 		setChar(exit.getX(), exit.getY(), exit.getChar());
 	}
@@ -57,7 +57,7 @@ public class Maze {
 	}	
 
 	public void moveDragon(Game.Direction direction){
-		
+
 		if (canMove(dragon.getX(),dragon.getY(),direction)){
 			unsetChar(dragon.getX(), dragon.getY());
 			dragon.move(direction);
@@ -94,62 +94,61 @@ public class Maze {
 		return true;	//PARA QUE SERVE ISTO???? O que? o return?
 	}
 
-
+	public void update(){
+		if(isHeroNextToDragon() && hero.getSwordEquipped()){
+			dragon.kill();
+			unsetChar(dragon.getX(), dragon.getY());
+		}
+	}
+	
 	public void pickUpSword(){
 		hero.equipSword();
 		sword.pickUp();
 		unsetChar(sword.getX(), sword.getY());
 	}
-	
-	public void nextTurn(Game.Direction direction){
-		
-	}
-	
+
 	public boolean isHeroNextToDragon(){
 		//Checks if the hero is in an adjacent square to the dragon
 		if((Math.abs(hero.getX() - dragon.getX()) == 1 && Math.abs(hero.getY() - dragon.getY()) == 0) ||
-		   (Math.abs(hero.getX() - dragon.getX()) == 0 && Math.abs(hero.getY() - dragon.getY()) == 1)){
+				(Math.abs(hero.getX() - dragon.getX()) == 0 && Math.abs(hero.getY() - dragon.getY()) == 1)){
 			return true;
 		}
 		return false;
 	}
-	
+
 	public boolean isHeroOnExit(){
 		if(hero.getX() == exit.getX() && hero.getY() == exit.getY()){
 			return true;
 		}
 		return false;
 	}
-	
+
 	public Entity checkGameState(){
-		if(isHeroNextToDragon()){
-			if(hero.getSwordEquipped()){
-				return hero;
-			} else {
-				return dragon;
-			}
-		} else if(isHeroOnExit()){
-			if(dragon.isAlive()){
-				return null;
-			} else {
-				return hero;
-			}
-		} else {
-			return null;
+		if(isHeroOnExit() && !dragon.isAlive()){
+			return hero;
 		}
+		
+		if(isHeroNextToDragon() && !hero.getSwordEquipped()){
+			return dragon;
+		}
+		
+		return null;
 	}
 
 	public void print(){
-
-		for(int i=0; i<maze.length ;i++){
-			for (int j=0;j<maze[i].length;j++){
-				System.out.print(maze[i][j]);
-			}
-			System.out.println();
-		}
-
+		System.out.println(toString());
 	}
 
-
+	public String toString(){
+		String result = "";
+		for(int i=0; i<maze.length ;i++){
+			for (int j=0;j<maze[i].length;j++){
+				result += maze[i][j];
+			}
+			result += '\n';
+		}
+		
+		return result;
+	}
 
 }

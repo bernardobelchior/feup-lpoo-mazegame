@@ -7,15 +7,15 @@ public class Maze {
 	private boolean can;
 
 	private char maze[][]={{'X','X','X','X','X','X','X','X','X','X'},
-						   {'X',' ',' ',' ',' ',' ',' ',' ',' ','X'},
-						   {'X',' ','X','X',' ','X',' ','X',' ','X'},
-						   {'X',' ','X','X',' ','X',' ','X',' ','X'},
-						   {'X',' ','X','X',' ','X',' ','X',' ','X'},
-						   {'X',' ',' ',' ',' ',' ',' ','X',' ','S'},
-						   {'X',' ','X','X',' ','X',' ','X',' ','X'},
-						   {'X',' ','X','X',' ','X',' ','X',' ','X'},
-						   {'X',' ','X','X',' ',' ',' ',' ',' ','X'},
-						   {'X','X','X','X','X','X','X','X','X','X'}};
+			{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'},
+			{'X',' ','X','X',' ','X',' ','X',' ','X'},
+			{'X',' ','X','X',' ','X',' ','X',' ','X'},
+			{'X',' ','X','X',' ','X',' ','X',' ','X'},
+			{'X',' ',' ',' ',' ',' ',' ','X',' ','S'},
+			{'X',' ','X','X',' ','X',' ','X',' ','X'},
+			{'X',' ','X','X',' ','X',' ','X',' ','X'},
+			{'X',' ','X','X',' ',' ',' ',' ',' ','X'},
+			{'X','X','X','X','X','X','X','X','X','X'}};
 
 	public Maze(){
 		hero = new Hero(1,1);
@@ -47,15 +47,21 @@ public class Maze {
 			unsetChar(hero.getX(), hero.getY());
 			hero.move(direction);
 			setChar(hero.getX(), hero.getY(), hero.getChar());
-			hero.NextToDragon();
-			if (hero.nexttodragon==true){
-				if (hero.swordEquipped==true){
+			hero.
+			
+			
+			hero.NextToDragon();	//sei porque é que está mal mas estava demasiado cansada para mudar o metodo de classe
+			if (hero.getnexttodragon()==true){
+				if (hero.getSwordEquipped()==true){
 					dragon.dead();
 				}
-				
+				else 
+					hero.Dead();
+				System.out.println("you just died! GAME OVER!!!");
 			}
 		}
-		System.out.println("you cannot move in this direction");
+		else 
+			System.out.println("you cannot move in this direction");
 	}	
 
 	public void moveDragon(Game.Direction direction){
@@ -70,8 +76,6 @@ public class Maze {
 
 
 	public boolean canMove(int x, int y, Game.Direction direction){
-		//TODO check for 'S','D','E'
-
 
 		switch(direction){
 
@@ -85,15 +89,8 @@ public class Maze {
 					System.out.println("you won the game!!!");
 					return can=true;
 				}
-				return can=false;
-				break;
-			case 'D':
-				if 
-				
-				
-				break;
-			case 'E':
-
+				else 
+					return can=false;
 				break;
 			}
 

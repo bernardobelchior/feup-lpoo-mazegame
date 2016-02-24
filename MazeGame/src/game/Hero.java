@@ -5,6 +5,7 @@ public class Hero extends Entity{
 	private boolean nexttodragon;
 	private boolean life;
 	private Dragon dragon;
+	private Sword sword;
 	
 	public Hero(int x, int y){
 		super(x, y);		//O QUE É ISTO??
@@ -13,9 +14,15 @@ public class Hero extends Entity{
 		life=true;
 	}
 	
+	public void FindSword(){
+		if (x==sword.getX() && y==sword.getY()){
+			equipSword();
+		}
+	}
 		
 	public void equipSword(){
 		swordEquipped = true;
+		//é preciso mudar letra para 'A' mas nao criaste esse atributo em nenhuma das classes e tens um getchar ali em baixo...nao percebo...
 	}
 	
 	public boolean getSwordEquipped(){

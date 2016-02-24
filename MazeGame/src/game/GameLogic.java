@@ -38,6 +38,8 @@ public class GameLogic {
 			maze.moveHero(getDirection(input));
 		}
 		
+		scanner.close();
+	
 		if(gameState instanceof Dragon){
 			System.out.println("The dragon has won!");
 		} else {

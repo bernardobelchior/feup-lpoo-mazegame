@@ -1,5 +1,9 @@
 package maze.logic;
 
+import java.util.Random;
+
+import org.omg.CORBA.PUBLIC_MEMBER;
+
 public class Maze {
 	private Hero hero;
 	private Dragon dragon;
@@ -40,7 +44,7 @@ public class Maze {
 	}
 
 	public void moveHero(Game.Direction direction) {
-		if (canMove(hero.getX(), hero.getY(), direction)) {
+		if (canMoveHero(hero.getX(), hero.getY(), direction)) {
 			unsetChar(hero.getX(), hero.getY());
 			hero.move(direction);
 			if (!sword.getPickedUp() && sword.getX() == hero.getX() && sword.getY() == hero.getY()) {
@@ -49,20 +53,49 @@ public class Maze {
 			setChar(hero.getX(), hero.getY(), hero.getChar());
 		} else
 			System.out.println("You cannot move in this direction");
+		moveDragon(direction);	//acrescentei isto para o dragao se mover de cada vez que o heroi se move
+	}
+
+	public Game.Direction RandomDirectionDragon(){
+		Game.Direction direction;
+		String direction_string;
+		int random_direction;
+		Random rn = new Random();
+		int n = 4 ;
+		int i = rn.nextInt() % n;
+		random_direction =  1 + i;
+		switch (random_direction){
+		case 1:
+			direction=Game.Direction.UP;
+			break;
+		case 2:
+			direction=Game.Direction.DOWN;
+			break;
+		case 3:
+			direction=Game.Direction.RIGHT;
+			break;
+		case 4:
+			direction=Game.Direction.LEFT;
+			break;
+
+		}
+
+		return direction;	//TODO isto deve estar tudo mal resolve este erro pf e depois explica me
 	}
 
 	public void moveDragon(Game.Direction direction) {
-
-		if (canMove(dragon.getX(), dragon.getY(), direction)) {
-			unsetChar(dragon.getX(), dragon.getY());
-			dragon.move(direction);
-			setChar(dragon.getX(), dragon.getY(), dragon.getChar());
-		} else {
-			System.out.println("You cannot move in this direction");
+		Game.Direction RandomDirectionDragon();
+		while (!canMoveDragon(dragon.getX(), dragon.getY(), direction)) {
+			Game.Direction RandomDirectionDragon();
 		}
+		unsetChar(dragon.getX(), dragon.getY());
+		dragon.move(direction);
+		setChar(dragon.getX(), dragon.getY(), dragon.getChar());
+		//TODO if's no caso de encontrar a espada mudar char para F e noo caso de ficar ao lado do heroi morrer ou matar
+		//eu faço isto so nao tive tempo faço amanha!!!!!!!!!!!!
 	}
 
-	private boolean canMove(int x, int y, Game.Direction direction) {
+	private boolean canMoveHero(int x, int y, Game.Direction direction) {
 
 		switch (direction) {
 
@@ -85,8 +118,36 @@ public class Maze {
 		case STAY:
 			return true;
 		}
-		return true; // PARA QUE SERVE ISTO???? O que? o return?
+		return true; 
 	}
+
+
+	private boolean canMoveDragon(int x, int y, Game.Direction direction) {
+
+		switch (direction) {
+
+		case UP:
+			if (getChar(x, y - 1) == 'X' || (getChar(x, y - 1) == 'S'))
+				return false;
+			break;
+		case DOWN:
+			if (getChar(x, y + 1) == 'X' || (getChar(x, y + 1) == 'S' ))
+				return false;
+			break;
+		case RIGHT:
+			if (getChar(x + 1, y) == 'X' || (getChar(x + 1, y) == 'S' ))
+				return false;
+			break;
+		case LEFT:
+			if (getChar(x - 1, y) == 'X' || (getChar(x - 1, y) == 'S' ))
+				return false;
+			break;
+		case STAY:
+			return true;
+		}
+		return true; 
+	}
+
 
 	public void update() {
 		if (isHeroNextToDragon() && hero.getSwordEquipped()) {

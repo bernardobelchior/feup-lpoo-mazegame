@@ -4,21 +4,21 @@ import java.util.Scanner;
 import maze.logic.Game;
 
 public class CommandLineInterface {
-
+	static private Scanner scanner = new Scanner(System.in);
+	
 	public CommandLineInterface(){
 
 	}
 
 	public Game.Direction getHeroDirection(){
-		Scanner scanner = new Scanner(System.in);
 		System.out.println();
 		System.out.println("Where would you like to move?");
 		Game.Direction direction = toDirection(scanner.nextLine());
-		scanner.close();
 		return direction;
 	} 
 
 	private Game.Direction toDirection(String direction){
+		System.out.println(direction);
 		switch(direction){
 		case "W":
 			return Game.Direction.UP;

@@ -8,6 +8,5 @@ public class Game {
 
 		gameLogic.play();		
 	}
-		//TODO explicar a margarida todas as duvidas que est�o em comentario espalhadas pelo c�digo
 }
 	

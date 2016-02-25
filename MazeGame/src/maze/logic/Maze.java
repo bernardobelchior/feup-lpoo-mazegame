@@ -1,14 +1,14 @@
 package maze.logic;
 
 import java.util.Random;
-
-import org.omg.CORBA.PUBLIC_MEMBER;
+import maze.cli.CommandLineInterface;
 
 public class Maze {
 	private Hero hero;
 	private Dragon dragon;
 	private Sword sword;
 	private Exit exit;
+	private CommandLineInterface cli;
 
 	private char maze[][] = { { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
@@ -18,6 +18,8 @@ public class Maze {
 			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' } };
 
 	public Maze() {
+		cli = new CommandLineInterface();
+		
 		hero = new Hero(1, 1);
 		setChar(hero.getX(), hero.getY(), hero.getChar());
 
@@ -43,8 +45,8 @@ public class Maze {
 		return maze[y][x];
 	}
 
-	public void moveHero(Game.Direction direction) {
-		if (canMoveHero(hero.getX(), hero.getY(), direction)) {
+	private void moveHero(Game.Direction direction) {
+		if (canMove(hero.getX(), hero.getY(), direction)) {
 			unsetChar(hero.getX(), hero.getY());
 			hero.move(direction);
 			if (!sword.getPickedUp() && sword.getX() == hero.getX() && sword.getY() == hero.getY()) {
@@ -52,42 +54,43 @@ public class Maze {
 			}
 			setChar(hero.getX(), hero.getY(), hero.getChar());
 		} else
-			System.out.println("You cannot move in this direction");
-		moveDragon(direction);	//acrescentei isto para o dragao se mover de cada vez que o heroi se move
+			cli.print("You cannot move in this direction");
 	}
 
-	public Game.Direction RandomDirectionDragon(){
-		Game.Direction direction;
-		String direction_string;
-		int random_direction;
-		Random rn = new Random();
-		int n = 4 ;
-		int i = rn.nextInt() % n;
-		random_direction =  1 + i;
-		switch (random_direction){
+	public Game.Direction getRandomDirection(){
+		Random random = new Random();
+		int direction = random.nextInt(5);
+
+		switch (direction){
+		case 0:
+			return Game.Direction.UP;
 		case 1:
-			direction=Game.Direction.UP;
-			break;
+			return Game.Direction.DOWN;
 		case 2:
-			direction=Game.Direction.DOWN;
-			break;
+			return Game.Direction.RIGHT;
 		case 3:
-			direction=Game.Direction.RIGHT;
-			break;
-		case 4:
-			direction=Game.Direction.LEFT;
-			break;
-
+			return Game.Direction.LEFT;
+		default:
+			return Game.Direction.STAY;
 		}
-
-		return direction;	//TODO isto deve estar tudo mal resolve este erro pf e depois explica me
 	}
 
-	public void moveDragon(Game.Direction direction) {
-		Game.Direction RandomDirectionDragon();
-		while (!canMoveDragon(dragon.getX(), dragon.getY(), direction)) {
-			Game.Direction RandomDirectionDragon();
-		}
+	public void nextTurn(){
+		moveHero(cli.getHeroDirection());
+		moveDragon();
+		update();
+	}
+	
+	private void moveDragon() {
+		if(!dragon.isAlive())
+			return;
+		
+		Game.Direction direction; 
+		
+		do{
+			direction = getRandomDirection();
+		} while (!canMove(dragon.getX(), dragon.getY(), direction));
+
 		unsetChar(dragon.getX(), dragon.getY());
 		dragon.move(direction);
 		setChar(dragon.getX(), dragon.getY(), dragon.getChar());
@@ -95,8 +98,9 @@ public class Maze {
 		//eu faço isto so nao tive tempo faço amanha!!!!!!!!!!!!
 	}
 
-	private boolean canMoveHero(int x, int y, Game.Direction direction) {
 
+	private boolean canMove(int x, int y, Game.Direction direction) {
+	//private boolean canMoveHero(int x, int y, Game.Direction direction) {
 		switch (direction) {
 
 		case UP:
@@ -122,7 +126,7 @@ public class Maze {
 	}
 
 
-	private boolean canMoveDragon(int x, int y, Game.Direction direction) {
+/*	private boolean canMoveDragon(int x, int y, Game.Direction direction) {
 
 		switch (direction) {
 
@@ -146,10 +150,10 @@ public class Maze {
 			return true;
 		}
 		return true; 
-	}
+	}*/
 
 
-	public void update() {
+	private void update() {
 		if (isHeroNextToDragon() && hero.getSwordEquipped()) {
 			dragon.kill();
 			unsetChar(dragon.getX(), dragon.getY());
@@ -196,7 +200,7 @@ public class Maze {
 		String result = "";
 		for (int i = 0; i < maze.length; i++) {
 			for (int j = 0; j < maze[i].length; j++) {
-				result += maze[i][j];
+				result += " " + maze[i][j];
 			}
 			result += '\n';
 		}

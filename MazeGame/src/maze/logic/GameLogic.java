@@ -16,10 +16,11 @@ public class GameLogic {
 		
 		while((gameState = maze.checkGameState()) == null){
 			cli.print(maze.toString());
-			maze.moveHero(cli.getHeroDirection());
-			maze.update();
+			maze.nextTurn();
 		}
-	
+		
+		cli.print(maze.toString());
+		
 		if(gameState instanceof Dragon){
 			cli.print("The dragon has won!");
 		} else {

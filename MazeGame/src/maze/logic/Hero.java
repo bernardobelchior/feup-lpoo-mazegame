@@ -1,17 +1,16 @@
-package maze.logic;		//O QUE � ISTO?? Not sure
+package maze.logic;		
 
 public class Hero extends Entity{
 	private boolean swordEquipped;
 	
 	public Hero(int x, int y){
-		super(x, y);		//O QUE � ISTO?? Construtor da classe mae
+		super(x, y);		
 		swordEquipped = false;
 	}
 		
 	public void equipSword(){
 		swordEquipped = true;
-		//� preciso mudar letra para 'A' mas nao criaste esse atributo em nenhuma das classes e tens um getchar ali em baixo...nao percebo...
-		// Ve a funcao getChar
+		
 	}
 	
 	public boolean getSwordEquipped(){
@@ -20,7 +19,7 @@ public class Hero extends Entity{
 	
 	
 	public char getChar(){
-		return swordEquipped ? 'A' : 'H';	//O QUE � ISTO?? Se swordEquipped e true entao retorna 'A' senao retorna 'H'. E um if basicamente
+		return swordEquipped ? 'A' : 'H';	
 	}
 	
 	/*public boolean NextToDragon(){

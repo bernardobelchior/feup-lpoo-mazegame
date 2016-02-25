@@ -1,4 +1,4 @@
-package maze.logic;
+package maze.logic;		//TODO explicar margarida os packages
 
 public class Sword {
 	private int x, y;	

@@ -19,7 +19,7 @@ public class Maze {
 
 	public Maze() {
 		cli = new CommandLineInterface();
-		
+
 		hero = new Hero(1, 1);
 		setChar(hero.getX(), hero.getY(), hero.getChar());
 
@@ -80,27 +80,40 @@ public class Maze {
 		moveDragon();
 		update();
 	}
-	
+
 	private void moveDragon() {
 		if(!dragon.isAlive())
 			return;
-		
+
 		Game.Direction direction; 
-		
+
 		do{
 			direction = getRandomDirection();
 		} while (!canMove(dragon.getX(), dragon.getY(), direction));
 
-		unsetChar(dragon.getX(), dragon.getY());
-		dragon.move(direction);
-		setChar(dragon.getX(), dragon.getY(), dragon.getChar());
-		//TODO if's no caso de encontrar a espada mudar char para F e noo caso de ficar ao lado do heroi morrer ou matar
+		if (getChar(dragon.getX(),dragon.getY())=='F'){
+			unsetChar(dragon.getX(), dragon.getY());
+			setChar(dragon.getX(), dragon.getY(), 'E');
+			dragon.move(direction);
+			setChar(dragon.getX(), dragon.getY(), dragon.getChar());
+		}
+		else {
+			unsetChar(dragon.getX(), dragon.getY());
+			dragon.move(direction);
+			setChar(dragon.getX(), dragon.getY(), dragon.getChar());
+		}
+		if (dragon.getX()==sword.getX() && dragon.getY()==sword.getY()){
+			unsetChar(dragon.getX(), dragon.getY());
+			setChar(dragon.getX(), dragon.getY(), 'F');
+		}
+
+		//TODO if's  noo caso de ficar ao lado do heroi morrer ou matar
 		//eu faço isto so nao tive tempo faço amanha!!!!!!!!!!!!
 	}
 
 
 	private boolean canMove(int x, int y, Game.Direction direction) {
-	//private boolean canMoveHero(int x, int y, Game.Direction direction) {
+		
 		switch (direction) {
 
 		case UP:
@@ -125,32 +138,6 @@ public class Maze {
 		return true; 
 	}
 
-
-/*	private boolean canMoveDragon(int x, int y, Game.Direction direction) {
-
-		switch (direction) {
-
-		case UP:
-			if (getChar(x, y - 1) == 'X' || (getChar(x, y - 1) == 'S'))
-				return false;
-			break;
-		case DOWN:
-			if (getChar(x, y + 1) == 'X' || (getChar(x, y + 1) == 'S' ))
-				return false;
-			break;
-		case RIGHT:
-			if (getChar(x + 1, y) == 'X' || (getChar(x + 1, y) == 'S' ))
-				return false;
-			break;
-		case LEFT:
-			if (getChar(x - 1, y) == 'X' || (getChar(x - 1, y) == 'S' ))
-				return false;
-			break;
-		case STAY:
-			return true;
-		}
-		return true; 
-	}*/
 
 
 	private void update() {

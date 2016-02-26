@@ -91,24 +91,10 @@ public class Maze {
 			direction = getRandomDirection();
 		} while (!canMove(dragon.getX(), dragon.getY(), direction));
 
-		if (getChar(dragon.getX(),dragon.getY())=='F'){
-			unsetChar(dragon.getX(), dragon.getY());
-			setChar(dragon.getX(), dragon.getY(), 'E');
-			dragon.move(direction);
-			setChar(dragon.getX(), dragon.getY(), dragon.getChar());
-		}
-		else {
-			unsetChar(dragon.getX(), dragon.getY());
-			dragon.move(direction);
-			setChar(dragon.getX(), dragon.getY(), dragon.getChar());
-		}
-		if (dragon.getX()==sword.getX() && dragon.getY()==sword.getY()){
-			unsetChar(dragon.getX(), dragon.getY());
-			setChar(dragon.getX(), dragon.getY(), 'F');
-		}
-
-		//TODO if's  noo caso de ficar ao lado do heroi morrer ou matar
-		//eu faço isto so nao tive tempo faço amanha!!!!!!!!!!!!
+		unsetChar(dragon.getX(), dragon.getY());
+		dragon.move(direction);
+		setChar(dragon.getX(), dragon.getY(), dragon.getChar());
+		
 	}
 
 
@@ -145,6 +131,13 @@ public class Maze {
 			dragon.kill();
 			unsetChar(dragon.getX(), dragon.getY());
 		}
+		
+		if (dragon.getX()==sword.getX() && dragon.getY()==sword.getY()){
+			setChar(sword.getX(), sword.getY(), 'F');
+		}
+		else{
+			setChar(sword.getX(), sword.getY(), 'E');
+		}
 	}
 
 	private void pickUpSword() {
@@ -176,10 +169,14 @@ public class Maze {
 			return hero;
 		}
 
-		if (isHeroNextToDragon() && !hero.getSwordEquipped()) {
+		if (isHeroNextToDragon() && !hero.getSwordEquipped()) { //basta isto
 			return dragon;
 		}
-
+		if (isHeroNextToDragon() && hero.getSwordEquipped()){ //e isto para definir se o dragao morre ou mata
+																//quando está ao lado do heroi???
+			return hero;
+		}
+ 
 		return null;
 	}
 

@@ -9,6 +9,7 @@ public class Maze {
 	private Sword sword;
 	private Exit exit;
 	private CommandLineInterface cli;
+	private GameState gameState;
 
 	private char maze[][] = { { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
@@ -19,6 +20,7 @@ public class Maze {
 
 	public Maze() {
 		cli = new CommandLineInterface();
+		gameState = GameState.RUNNING;
 
 		hero = new Hero(1, 1);
 		setChar(hero.getX(), hero.getY(), hero.getChar());
@@ -31,6 +33,7 @@ public class Maze {
 
 		exit = new Exit(9, 5);
 		setChar(exit.getX(), exit.getY(), exit.getChar());
+
 	}
 
 	private void setChar(int x, int y, char c) {
@@ -94,14 +97,11 @@ public class Maze {
 		unsetChar(dragon.getX(), dragon.getY());
 		dragon.move(direction);
 		setChar(dragon.getX(), dragon.getY(), dragon.getChar());
-		
+
 	}
 
-
 	private boolean canMove(int x, int y, Game.Direction direction) {
-		
 		switch (direction) {
-
 		case UP:
 			if (getChar(x, y - 1) == 'X' || (getChar(x, y - 1) == 'S' && dragon.isAlive()))
 				return false;
@@ -124,19 +124,29 @@ public class Maze {
 		return true; 
 	}
 
-
-
 	private void update() {
-		if (isHeroNextToDragon() && hero.getSwordEquipped()) {
-			dragon.kill();
-			unsetChar(dragon.getX(), dragon.getY());
+		//Checks if the hero is next to a dragon
+		if (isHeroNextToDragon()) {
+			//If the hero has a sword equipped, then kill the dragon adjacent to him
+			if(hero.getSwordEquipped()){
+				dragon.kill();
+				unsetChar(dragon.getX(), dragon.getY());
+			} //Otherwise the dragon wins
+			else 
+				gameState = GameState.DRAGON_WIN;
 		}
-		
-		if (dragon.getX()==sword.getX() && dragon.getY()==sword.getY()){
-			setChar(sword.getX(), sword.getY(), 'F');
+
+		//Update game state
+		if (isHeroOnExit() && !dragon.isAlive()) {
+			gameState = GameState.HERO_WIN;
 		}
-		else{
-			setChar(sword.getX(), sword.getY(), 'E');
+
+		//Update dragon and sword characters on maze
+		if(!sword.getPickedUp()){
+			if (dragon.getX()==sword.getX() && dragon.getY()==sword.getY())
+				setChar(sword.getX(), sword.getY(), 'F');
+			else
+				setChar(sword.getX(), sword.getY(), 'E');
 		}
 	}
 
@@ -148,8 +158,8 @@ public class Maze {
 
 	private boolean isHeroNextToDragon() {
 		if(dragon.isAlive()){
-			// Checks if the hero is in an adjacent square to the dragon
-			if ((Math.abs(hero.getX() - dragon.getX()) == 1 && Math.abs(hero.getY() - dragon.getY()) == 0)
+			// Checks if the hero is in an adjacent square to the dragon or in the same square
+			if ((Math.abs(hero.getX() - dragon.getX()) <= 1 && Math.abs(hero.getY() - dragon.getY()) == 0)
 					|| (Math.abs(hero.getX() - dragon.getX()) == 0 && Math.abs(hero.getY() - dragon.getY()) == 1)) {
 				return true;
 			}
@@ -164,20 +174,8 @@ public class Maze {
 		return false;
 	}
 
-	public Entity checkGameState() {
-		if (isHeroOnExit() && !dragon.isAlive()) {
-			return hero;
-		}
-
-		if (isHeroNextToDragon() && !hero.getSwordEquipped()) { //basta isto
-			return dragon;
-		}
-		if (isHeroNextToDragon() && hero.getSwordEquipped()){ //e isto para definir se o dragao morre ou mata
-																//quando está ao lado do heroi???
-			return hero;
-		}
- 
-		return null;
+	public GameState getGameState() {
+		return gameState;
 	}
 
 	public String toString() {

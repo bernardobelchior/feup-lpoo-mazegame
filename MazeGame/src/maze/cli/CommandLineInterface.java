@@ -1,5 +1,6 @@
 package maze.cli;
 import java.util.Scanner;
+import java.lang.Character;
 
 import maze.logic.Game;
 
@@ -18,15 +19,14 @@ public class CommandLineInterface {
 	} 
 
 	private Game.Direction toDirection(String direction){
-		System.out.println(direction);
-		switch(direction){
-		case "W":
+		switch(Character.toUpperCase(direction.charAt(0))){
+		case 'W':
 			return Game.Direction.UP;
-		case "S":
+		case 'S':
 			return Game.Direction.DOWN;
-		case "A":
+		case 'A':
 			return Game.Direction.LEFT;
-		case "D":
+		case 'D':
 			return Game.Direction.RIGHT;
 		default:
 			return Game.Direction.STAY;

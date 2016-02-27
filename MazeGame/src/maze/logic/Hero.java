@@ -21,12 +21,4 @@ public class Hero extends Entity{
 	public char getChar(){
 		return swordEquipped ? 'A' : 'H';	
 	}
-	
-	/*public boolean NextToDragon(){
-		if ((dragon.getX()==x+1 && dragon.getY()==y)||(dragon.getX()==x-1 && dragon.getY()==y)||
-			(dragon.getX()==x && dragon.getY()==y+1)||(dragon.getX()==x && dragon.getY()==y+1)){
-			 nexttodragon=true;
-		}
-		return nexttodragon;
-	}*/	
 }

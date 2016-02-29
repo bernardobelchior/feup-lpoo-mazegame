@@ -1,5 +1,7 @@
 package maze.logic;
 
+import maze.logic.Game.*;
+
 public class Entity {
 	private int x,y;
 	private boolean alive;
@@ -18,7 +20,7 @@ public class Entity {
 		return y;
 	}
 
-	public void move(Game.Direction direction){
+	public void move(Direction direction){
 		switch(direction){
 		case UP:
 			y--;

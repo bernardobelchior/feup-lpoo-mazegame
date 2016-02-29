@@ -1,8 +1,7 @@
 package maze.logic;
 
 import maze.cli.CommandLineInterface;
-
-enum GameState { RUNNING, DRAGON_WIN, HERO_WIN };
+import maze.logic.Game.*;
 
 public class GameLogic {
 	private Maze maze;

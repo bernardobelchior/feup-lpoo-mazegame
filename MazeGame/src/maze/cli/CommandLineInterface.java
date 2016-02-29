@@ -1,8 +1,9 @@
 package maze.cli;
+
 import java.util.Scanner;
 import java.lang.Character;
 
-import maze.logic.Game;
+import maze.logic.Game.*;
 
 public class CommandLineInterface {
 	static private Scanner scanner = new Scanner(System.in);
@@ -11,25 +12,36 @@ public class CommandLineInterface {
 
 	}
 
-	public Game.Direction getHeroDirection(){
+	public Direction getHeroDirection(){
 		System.out.println();
 		System.out.println("Where would you like to move?");
-		Game.Direction direction = toDirection(scanner.nextLine());
+		Direction direction = toDirection(scanner.nextLine());
 		return direction;
 	} 
 
-	private Game.Direction toDirection(String direction){
+	private Direction toDirection(String direction){
 		switch(Character.toUpperCase(direction.charAt(0))){
 		case 'W':
-			return Game.Direction.UP;
+			return Direction.UP;
 		case 'S':
-			return Game.Direction.DOWN;
+			return Direction.DOWN;
 		case 'A':
-			return Game.Direction.LEFT;
+			return Direction.LEFT;
 		case 'D':
-			return Game.Direction.RIGHT;
+			return Direction.RIGHT;
 		default:
-			return Game.Direction.STAY;
+			return Direction.STAY;
+		}
+	}
+	
+	public GameMode getGameMode(){
+		switch(Character.toUpperCase(scanner.nextLine().charAt(0))){
+		case 'S':
+			return GameMode.STATIONARY;
+		case 'R':
+			return GameMode.RANDOM_MOVEMENT;
+		default:
+			return GameMode.SLEEP_RANDOM_MOVEMENT;
 		}
 	}
 	

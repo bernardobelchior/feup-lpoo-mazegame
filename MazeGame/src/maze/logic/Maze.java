@@ -1,7 +1,11 @@
 package maze.logic;
 
 import java.util.Random;
+
+import javax.naming.SizeLimitExceededException;
+
 import maze.cli.CommandLineInterface;
+import maze.logic.Game.*;
 
 public class Maze {
 	private Hero hero;
@@ -10,6 +14,7 @@ public class Maze {
 	private Exit exit;
 	private CommandLineInterface cli;
 	private GameState gameState;
+	private GameMode gameMode;
 
 	private char maze[][] = { { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
@@ -34,6 +39,11 @@ public class Maze {
 		exit = new Exit(9, 5);
 		setChar(exit.getX(), exit.getY(), exit.getChar());
 
+		cli.print("What mode would you like to play in?");
+		cli.print("S for Stationary Dragon.");
+		cli.print("R for Random Movement");
+		cli.print("Everything for Sleeping and Random Movement");
+		gameMode = cli.getGameMode();
 	}
 
 	private void setChar(int x, int y, char c) {
@@ -48,7 +58,7 @@ public class Maze {
 		return maze[y][x];
 	}
 
-	private void moveHero(Game.Direction direction) {
+	private void moveHero(Direction direction) {
 		if (canMove(hero.getX(), hero.getY(), direction)) {
 			unsetChar(hero.getX(), hero.getY());
 			hero.move(direction);
@@ -60,47 +70,81 @@ public class Maze {
 			cli.print("You cannot move in this direction");
 	}
 
-	public Game.Direction getRandomDirection(){
+	public Direction getRandomDirection(){
 		Random random = new Random();
 		int direction = random.nextInt(5);
 
 		switch (direction){
 		case 0:
-			return Game.Direction.UP;
+			return Direction.UP;
 		case 1:
-			return Game.Direction.DOWN;
+			return Direction.DOWN;
 		case 2:
-			return Game.Direction.RIGHT;
+			return Direction.RIGHT;
 		case 3:
-			return Game.Direction.LEFT;
+			return Direction.LEFT;
 		default:
-			return Game.Direction.STAY;
+			return Direction.STAY;
 		}
 	}
 
 	public void nextTurn(){
 		moveHero(cli.getHeroDirection());
-		moveDragon();
+		updateDragon();
 		update();
+	}
+
+	private void updateDragon(){
+		unsetChar(dragon.getX(), dragon.getY());
+
+		switch (gameMode){
+		case STATIONARY:
+			break;
+		case RANDOM_MOVEMENT:
+			moveDragon();
+			break;
+		case SLEEP_RANDOM_MOVEMENT:
+			Random random = new Random();
+			
+			if(dragon.isSleeping()){
+				switch(random.nextInt(2)){
+				case 0:
+					dragon.setSleeping(false);
+					break;
+				default:
+					break;
+				}
+			} else {
+				switch(random.nextInt(3)){
+				case 0:
+					dragon.setSleeping(true);
+					break;
+				case 1:
+					moveDragon();
+				default:
+					break;
+				}
+			}
+			break;
+		}
+
+		setChar(dragon.getX(), dragon.getY(), dragon.getChar());
 	}
 
 	private void moveDragon() {
 		if(!dragon.isAlive())
 			return;
 
-		Game.Direction direction; 
+		Direction direction; 
 
 		do{
 			direction = getRandomDirection();
 		} while (!canMove(dragon.getX(), dragon.getY(), direction));
 
-		unsetChar(dragon.getX(), dragon.getY());
 		dragon.move(direction);
-		setChar(dragon.getX(), dragon.getY(), dragon.getChar());
-
 	}
 
-	private boolean canMove(int x, int y, Game.Direction direction) {
+	private boolean canMove(int x, int y, Direction direction) {
 		switch (direction) {
 		case UP:
 			if (getChar(x, y - 1) == 'X' || (getChar(x, y - 1) == 'S' && dragon.isAlive()))
@@ -131,9 +175,11 @@ public class Maze {
 			if(hero.getSwordEquipped()){
 				dragon.kill();
 				unsetChar(dragon.getX(), dragon.getY());
-			} //Otherwise the dragon wins
-			else 
-				gameState = GameState.DRAGON_WIN;
+			} //Otherwise, if the dragon is awake, it wins
+			else{
+				if(!dragon.isSleeping())
+					gameState = GameState.DRAGON_WIN;
+			}
 		}
 
 		//Update game state

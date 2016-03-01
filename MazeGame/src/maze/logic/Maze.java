@@ -18,17 +18,11 @@ public class Maze {
 
 	public Maze(char[][] maze) {
 		this.maze = maze.clone(); 
-				
-		hero = new Hero(new Point(1, 1));
+		readMaze();
+
 		setChar(hero.getPosition(), hero.getChar());
-
-		dragon = new Dragon(new Point(1, 3));
 		setChar(dragon.getPosition(), dragon.getChar());
-
-		sword = new Sword(new Point(1, 8));
 		setChar(sword.getPosition(), sword.getChar());
-
-		exit = new Exit(new Point(9, 5));
 		setChar(exit.getPosition(), exit.getChar());
 
 		cli.print("What mode would you like to play in?");
@@ -36,6 +30,27 @@ public class Maze {
 		cli.print("R for Random Movement");
 		cli.print("Everything else for Sleeping and Random Movement");
 		gameMode = cli.getGameMode();
+	}
+
+	private void readMaze(){
+		for (int i = 0; i < maze.length; i++) {
+			for (int j = 0; j < maze[i].length; j++){
+				switch (getChar(new Point (i,j))){
+				case 'H':
+					hero = new Hero(new Point(i, j));
+					break;
+				case 'D':
+					dragon = new Dragon(new Point(i,j));
+					break;
+				case 'E':
+					sword = new Sword(new Point(i, j));
+					break;
+				case 'S':
+					exit = new Exit(new Point(i, j));
+					break;
+				}
+			}
+		}
 	}
 
 	private void setChar(Point position, char c) {
@@ -50,16 +65,15 @@ public class Maze {
 		return maze[position.y][position.x];
 	}
 
-	private void moveHero(Direction direction) {
-		if (canMove(hero.getPosition(), direction)) {
-			unsetChar(hero.getPosition());
-			hero.move(direction);
-			if (!sword.getPickedUp() && sword.getPosition().equals(hero.getPosition())) {
-				pickUpSword();
-			}
-			setChar(hero.getPosition(), hero.getChar());
-		} else
-			cli.print("You cannot move in this direction");
+	public void moveHero(Direction direction) {
+
+		unsetChar(hero.getPosition());
+		hero.move(direction);
+		if (!sword.getPickedUp() && sword.getPosition().equals(hero.getPosition())) {
+			pickUpSword();
+		}
+		setChar(hero.getPosition(), hero.getChar());
+
 	}
 
 	public Direction getRandomDirection(){
@@ -81,7 +95,7 @@ public class Maze {
 	}
 
 	public void nextTurn(){
-		moveHero(cli.getHeroDirection());
+		updateHero();
 		updateDragon();
 		update();
 	}
@@ -97,7 +111,7 @@ public class Maze {
 			break;
 		case SLEEP_RANDOM_MOVEMENT:
 			Random random = new Random();
-			
+
 			if(dragon.isSleeping()){
 				switch(random.nextInt(2)){
 				case 0:
@@ -119,9 +133,19 @@ public class Maze {
 			}
 			break;
 		}
-		
+
 		if(dragon.isAlive())
 			setChar(dragon.getPosition(), dragon.getChar());
+	}
+
+
+	private void updateHero(){
+		Direction direction = cli.getHeroDirection();
+		if (canMove(hero.getPosition(), direction)) {
+			moveHero(direction);
+		}
+		else
+			cli.print("You cannot move in this direction");
 	}
 
 	private void moveDragon(Direction direction) {
@@ -222,7 +246,7 @@ public class Maze {
 		} while (!canMove(dragon.getPosition(), direction));
 		return direction;
 	}
-	
+
 	public String toString() {
 		String result = "";
 		for (int i = 0; i < maze.length; i++) {
@@ -233,6 +257,10 @@ public class Maze {
 		}
 
 		return result;
+	}
+
+	public Point getHeroPosition() {
+		return hero.getPosition();
 	}
 
 }

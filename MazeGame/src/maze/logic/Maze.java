@@ -35,7 +35,7 @@ public class Maze {
 		cli.print("What mode would you like to play in?");
 		cli.print("S for Stationary Dragon.");
 		cli.print("R for Random Movement");
-		cli.print("Everything for Sleeping and Random Movement");
+		cli.print("Everything else for Sleeping and Random Movement");
 		gameMode = cli.getGameMode();
 	}
 

@@ -43,6 +43,12 @@ public class CommandLineInterface {
 		}
 	}
 	
+	public int getInt(){
+		int result = scanner.nextInt();
+		scanner.nextLine();
+		return result;
+	}
+	
 	public void print(String string){
 		System.out.println(string);
 	}

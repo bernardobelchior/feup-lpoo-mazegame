@@ -8,7 +8,19 @@ public class GameLogic {
 	private CommandLineInterface cli;
 
 	public GameLogic(){
-		maze = new Maze();
+		char grid[][] = { { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+						  { 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, 
+						  { 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
+						  { 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' }, 
+						  { 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
+						  { 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ' }, 
+						  { 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
+						  { 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' }, 
+						  { 'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X' },
+						  { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' } };
+		
+		
+		maze = new Maze(grid);
 		cli = new CommandLineInterface();
 	}
 

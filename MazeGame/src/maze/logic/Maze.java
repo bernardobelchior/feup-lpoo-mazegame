@@ -12,21 +12,14 @@ public class Maze {
 	private Dragon dragon;
 	private Sword sword;
 	private Exit exit;
-	private CommandLineInterface cli;
-	private GameState gameState;
+	private CommandLineInterface cli = new CommandLineInterface();
+	private GameState gameState = GameState.RUNNING;
 	private GameMode gameMode;
+	private char[][] maze;
 
-	private char maze[][] = { { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
-			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
-			{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' }, { 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
-			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ' }, { 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
-			{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' }, { 'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X' },
-			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' } };
-
-	public Maze() {
-		cli = new CommandLineInterface();
-		gameState = GameState.RUNNING;
-
+	public Maze(char[][] maze) {
+		this.maze = maze.clone(); 
+				
 		hero = new Hero(1, 1);
 		setChar(hero.getX(), hero.getY(), hero.getChar());
 

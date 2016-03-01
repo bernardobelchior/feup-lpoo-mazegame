@@ -1,50 +1,45 @@
 package maze.logic;
 
+import java.awt.Point;
+
 import maze.logic.Game.*;
 
 public class Entity {
-	private int x,y;
-	private boolean alive;
+	private Point position;
 
-	public Entity(int x, int y){
-		this.x = x;
-		this.y = y;
-		this.alive = true;
+	public Entity(Point position){
+		this.position = position;
+
 	}
 
 	public int getX(){
-		return x;
+		return position.x;
 	}
 
 	public int getY(){
-		return y;
+		return position.y;
+	}
+
+	public Point getPosition(){
+		return position;
 	}
 
 	public void move(Direction direction){
 		switch(direction){
 		case UP:
-			y--;
+			position.y--;
 			break;
 		case DOWN:
-			y++;
+			position.y++;
 			break;
 		case LEFT:
-			x--;
+			position.x--;
 			break;
 		case RIGHT:
-			x++;
+			position.x++;
 			break;
 		case STAY:
 			break;
 		}
 	}
-
-	public boolean isAlive(){
-		return alive;
-	}
-
-	public void kill(){
-		alive = false;
-	}
-
 }

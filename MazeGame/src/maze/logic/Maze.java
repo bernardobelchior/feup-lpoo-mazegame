@@ -1,8 +1,7 @@
 package maze.logic;
 
+import java.awt.Point;
 import java.util.Random;
-
-import javax.naming.SizeLimitExceededException;
 
 import maze.cli.CommandLineInterface;
 import maze.logic.Game.*;
@@ -20,17 +19,17 @@ public class Maze {
 	public Maze(char[][] maze) {
 		this.maze = maze.clone(); 
 				
-		hero = new Hero(1, 1);
-		setChar(hero.getX(), hero.getY(), hero.getChar());
+		hero = new Hero(new Point(1, 1));
+		setChar(hero.getPosition(), hero.getChar());
 
-		dragon = new Dragon(1, 3);
-		setChar(dragon.getX(), dragon.getY(), dragon.getChar());
+		dragon = new Dragon(new Point(1, 3));
+		setChar(dragon.getPosition(), dragon.getChar());
 
-		sword = new Sword(1, 8);
-		setChar(sword.getX(), sword.getY(), sword.getChar());
+		sword = new Sword(new Point(1, 8));
+		setChar(sword.getPosition(), sword.getChar());
 
-		exit = new Exit(9, 5);
-		setChar(exit.getX(), exit.getY(), exit.getChar());
+		exit = new Exit(new Point(9, 5));
+		setChar(exit.getPosition(), exit.getChar());
 
 		cli.print("What mode would you like to play in?");
 		cli.print("S for Stationary Dragon.");
@@ -39,26 +38,26 @@ public class Maze {
 		gameMode = cli.getGameMode();
 	}
 
-	private void setChar(int x, int y, char c) {
-		maze[y][x] = c;
+	private void setChar(Point position, char c) {
+		maze[position.y][position.x] = c;
 	}
 
-	private void unsetChar(int x, int y) {
-		maze[y][x] = ' ';
+	private void unsetChar(Point position) {
+		maze[position.y][position.x] = ' ';
 	}
 
-	private char getChar(int x, int y) {
-		return maze[y][x];
+	private char getChar(Point position) {
+		return maze[position.y][position.x];
 	}
 
 	private void moveHero(Direction direction) {
-		if (canMove(hero.getX(), hero.getY(), direction)) {
-			unsetChar(hero.getX(), hero.getY());
+		if (canMove(hero.getPosition(), direction)) {
+			unsetChar(hero.getPosition());
 			hero.move(direction);
-			if (!sword.getPickedUp() && sword.getX() == hero.getX() && sword.getY() == hero.getY()) {
+			if (!sword.getPickedUp() && sword.getPosition().equals(hero.getPosition())) {
 				pickUpSword();
 			}
-			setChar(hero.getX(), hero.getY(), hero.getChar());
+			setChar(hero.getPosition(), hero.getChar());
 		} else
 			cli.print("You cannot move in this direction");
 	}
@@ -88,13 +87,13 @@ public class Maze {
 	}
 
 	private void updateDragon(){
-		unsetChar(dragon.getX(), dragon.getY());
+		unsetChar(dragon.getPosition());
 
 		switch (gameMode){
 		case STATIONARY:
 			break;
 		case RANDOM_MOVEMENT:
-			moveDragon();
+			moveDragon(getValidDragonRandomDirection());
 			break;
 		case SLEEP_RANDOM_MOVEMENT:
 			Random random = new Random();
@@ -113,46 +112,45 @@ public class Maze {
 					dragon.setSleeping(true);
 					break;
 				case 1:
-					moveDragon();
+					moveDragon(getValidDragonRandomDirection());
 				default:
 					break;
 				}
 			}
 			break;
 		}
-
-		setChar(dragon.getX(), dragon.getY(), dragon.getChar());
+		
+		if(dragon.isAlive())
+			setChar(dragon.getPosition(), dragon.getChar());
 	}
 
-	private void moveDragon() {
+	private void moveDragon(Direction direction) {
 		if(!dragon.isAlive())
 			return;
-
-		Direction direction; 
-
-		do{
-			direction = getRandomDirection();
-		} while (!canMove(dragon.getX(), dragon.getY(), direction));
 
 		dragon.move(direction);
 	}
 
-	private boolean canMove(int x, int y, Direction direction) {
+	private boolean canMove(Point position, Direction direction) {
 		switch (direction) {
 		case UP:
-			if (getChar(x, y - 1) == 'X' || (getChar(x, y - 1) == 'S' && dragon.isAlive()))
+			if (getChar(new Point(position.x, position.y -1)) == 'X' 
+			|| (getChar(new Point(position.x, position.y -1)) == 'S' && dragon.isAlive()))
 				return false;
 			break;
 		case DOWN:
-			if (getChar(x, y + 1) == 'X' || (getChar(x, y + 1) == 'S' && dragon.isAlive()))
+			if (getChar(new Point(position.x, position.y + 1)) == 'X'
+			|| (getChar(new Point(position.x, position.y + 1)) == 'S' && dragon.isAlive()))
 				return false;
 			break;
 		case RIGHT:
-			if (getChar(x + 1, y) == 'X' || (getChar(x + 1, y) == 'S' && dragon.isAlive()))
+			if (getChar(new Point(position.x + 1, position.y)) == 'X' 
+			|| (getChar(new Point(position.x + 1, position.y)) == 'S' && dragon.isAlive()))
 				return false;
 			break;
 		case LEFT:
-			if (getChar(x - 1, y) == 'X' || (getChar(x - 1, y) == 'S' && dragon.isAlive()))
+			if (getChar(new Point(position.x - 1, position.y)) == 'X'
+			|| (getChar(new Point(position.x - 1, position.y)) == 'S' && dragon.isAlive()))
 				return false;
 			break;
 		case STAY:
@@ -167,7 +165,7 @@ public class Maze {
 			//If the hero has a sword equipped, then kill the dragon adjacent to him
 			if(hero.getSwordEquipped()){
 				dragon.kill();
-				unsetChar(dragon.getX(), dragon.getY());
+				unsetChar(dragon.getPosition());
 			} //Otherwise, if the dragon is awake, it wins
 			else{
 				if(!dragon.isSleeping())
@@ -182,17 +180,17 @@ public class Maze {
 
 		//Update dragon and sword characters on maze
 		if(!sword.getPickedUp()){
-			if (dragon.getX()==sword.getX() && dragon.getY()==sword.getY())
-				setChar(sword.getX(), sword.getY(), 'F');
+			if (dragon.getPosition().equals(sword.getPosition()))
+				setChar(sword.getPosition(), 'F');
 			else
-				setChar(sword.getX(), sword.getY(), 'E');
+				setChar(sword.getPosition(), 'E');
 		}
 	}
 
 	private void pickUpSword() {
 		hero.equipSword();
 		sword.pickUp();
-		unsetChar(sword.getX(), sword.getY());
+		unsetChar(sword.getPosition());
 	}
 
 	private boolean isHeroNextToDragon() {
@@ -207,7 +205,7 @@ public class Maze {
 	}
 
 	private boolean isHeroOnExit() {
-		if (hero.getX() == exit.getX() && hero.getY() == exit.getY()) {
+		if (hero.getPosition().equals(exit.getPosition())) {
 			return true;
 		}
 		return false;
@@ -217,6 +215,14 @@ public class Maze {
 		return gameState;
 	}
 
+	private Direction getValidDragonRandomDirection(){
+		Direction direction;
+		do{
+			direction = getRandomDirection();
+		} while (!canMove(dragon.getPosition(), direction));
+		return direction;
+	}
+	
 	public String toString() {
 		String result = "";
 		for (int i = 0; i < maze.length; i++) {

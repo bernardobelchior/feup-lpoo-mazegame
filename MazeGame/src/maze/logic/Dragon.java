@@ -1,10 +1,12 @@
 package maze.logic;
 
-public class Dragon extends Entity {
+import java.awt.Point;
+
+public class Dragon extends Character {
 	private boolean sleeping;
 
-	public Dragon(int x, int y){
-		super(x,y);
+	public Dragon(Point position){
+		super(position);
 		sleeping = false;
 	}
 

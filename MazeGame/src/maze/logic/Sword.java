@@ -1,21 +1,13 @@
 package maze.logic;		//TODO explicar margarida os packages
 
-public class Sword {
-	private int x, y;	
+import java.awt.Point;
+
+public class Sword extends Entity {	
 	private boolean pickedUp;
 
-	public Sword(int x, int y){
-		this.x = x;
-		this.y = y;
+	public Sword(Point position){
+		super(position);
 		this.pickedUp = false;
-	}
-	
-	public int getX(){
-		return x;
-	}
-	
-	public int getY(){
-		return y;
 	}
 	
 	public char getChar(){

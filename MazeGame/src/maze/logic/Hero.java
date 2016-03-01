@@ -1,10 +1,12 @@
-package maze.logic;		
+package maze.logic;
 
-public class Hero extends Entity{
+import java.awt.Point;
+
+public class Hero extends Character {
 	private boolean swordEquipped;
 	
-	public Hero(int x, int y){
-		super(x, y);		
+	public Hero(Point position){
+		super(position);		
 		swordEquipped = false;
 	}
 		

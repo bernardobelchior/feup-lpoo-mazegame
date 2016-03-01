@@ -2,7 +2,6 @@ package maze.cli;
 
 import java.util.Scanner;
 import java.lang.Character;
-
 import maze.logic.Game.*;
 
 public class CommandLineInterface {
@@ -15,8 +14,7 @@ public class CommandLineInterface {
 	public Direction getHeroDirection(){
 		System.out.println();
 		System.out.println("Where would you like to move?");
-		Direction direction = toDirection(scanner.nextLine());
-		return direction;
+		return toDirection(scanner.nextLine());
 	} 
 
 	private Direction toDirection(String direction){

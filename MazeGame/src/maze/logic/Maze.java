@@ -3,7 +3,6 @@ package maze.logic;
 import java.awt.Point;
 import java.util.Random;
 
-import maze.cli.CommandLineInterface;
 import maze.logic.Game.*;
 
 public class Maze {
@@ -11,14 +10,11 @@ public class Maze {
 	private Dragon dragon;
 	private Sword sword;
 	private Exit exit;
-	private CommandLineInterface cli = new CommandLineInterface();
 	private GameState gameState = GameState.RUNNING;
 	private GameMode gameMode;
 	private char[][] maze;
-	private boolean test;
 
-	public Maze(char[][] maze, boolean test, GameMode gameMode) {
-		this.test = test;
+	public Maze(char[][] maze, GameMode gameMode) {
 		this.gameMode = gameMode;
 		this.maze = maze.clone(); 
 		readMaze();
@@ -135,11 +131,6 @@ public class Maze {
 		}
 
 		setChar(dragon.getPosition(), dragon.getChar());
-	}
-
-
-	public boolean updateHero(){
-		return moveHero(cli.getHeroDirection());
 	}
 
 	private void moveDragon(Direction direction) {

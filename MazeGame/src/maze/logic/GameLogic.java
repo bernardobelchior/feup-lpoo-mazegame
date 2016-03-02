@@ -10,7 +10,7 @@ public class GameLogic {
 	private CommandLineInterface cli = new CommandLineInterface();
 	private char[][] grid;
 	
-	public GameLogic(boolean test){
+	public GameLogic(){
 		grid = new char[][] { { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 						  	  { 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, 
 						  	  { 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
@@ -28,7 +28,7 @@ public class GameLogic {
 			cli.print("R for Random Movement");
 			cli.print("Everything else for Sleeping and Random Movement");
 		
-		maze = new Maze(grid, test, cli.getGameMode());
+		maze = new Maze(grid, cli.getGameMode());
 	}
 
 	public void play(){	
@@ -47,7 +47,7 @@ public class GameLogic {
 	}
 	
 	private void nextTurn(){
-		if(!maze.updateHero())
+		if(!maze.moveHero(cli.getHeroDirection()))
 			cli.print("You cannot move in this direction");
 		maze.updateDragon();
 	}

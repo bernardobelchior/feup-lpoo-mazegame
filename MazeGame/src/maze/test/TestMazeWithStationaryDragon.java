@@ -21,7 +21,7 @@ public class TestMazeWithStationaryDragon {
 	
 	@Test
 	public void testMoveHeroToFreeCell() {
-		Maze maze = new Maze(m1, true, GameMode.STATIONARY);
+		Maze maze = new Maze(m1, GameMode.STATIONARY);
 		assertEquals(new Point(3, 1), maze.getHero().getPosition());
 		maze.moveHero(Direction.LEFT);
 		assertEquals(new Point(2, 1), maze.getHero().getPosition());
@@ -29,7 +29,7 @@ public class TestMazeWithStationaryDragon {
 	
 	@Test
 	public void testMoveHeroToFullCell() {
-		Maze maze = new Maze(m1, true, GameMode.STATIONARY);
+		Maze maze = new Maze(m1, GameMode.STATIONARY);
 		assertEquals(new Point(3, 1), maze.getHero().getPosition());
 		maze.moveHero(Direction.UP);
 		assertEquals(new Point(3, 1), maze.getHero().getPosition());
@@ -37,7 +37,7 @@ public class TestMazeWithStationaryDragon {
 	
 	@Test
 	public void testMoveHeroToSwordAndEquipsIt() {
-		Maze maze = new Maze(m1, true, GameMode.STATIONARY);
+		Maze maze = new Maze(m1, GameMode.STATIONARY);
 		assertEquals(false, maze.getHero().getSwordEquipped());
 		maze.moveHero(Direction.LEFT);
 		maze.moveHero(Direction.LEFT);
@@ -49,7 +49,7 @@ public class TestMazeWithStationaryDragon {
 	
 	@Test
 	public void testMoveUnarmedHeroNextToDragon() {
-		Maze maze = new Maze(m1, true, GameMode.STATIONARY);
+		Maze maze = new Maze(m1, GameMode.STATIONARY);
 		assertEquals(GameState.RUNNING, maze.getGameState());
 		maze.moveHero(Direction.DOWN);
 		assertEquals(GameState.DRAGON_WIN, maze.getGameState());
@@ -57,7 +57,7 @@ public class TestMazeWithStationaryDragon {
 	
 	@Test
 	public void testMoveArmedHeroNextToDragon() {
-		Maze maze = new Maze(m1, true, GameMode.STATIONARY);
+		Maze maze = new Maze(m1, GameMode.STATIONARY);
 		assertEquals(true, maze.getDragon().isAlive());
 		maze.moveHero(Direction.LEFT);
 		maze.moveHero(Direction.LEFT);
@@ -69,7 +69,7 @@ public class TestMazeWithStationaryDragon {
 	
 	@Test
 	public void testHeroKillsDragonAndExits() {
-		Maze maze = new Maze(m1, true, GameMode.STATIONARY);
+		Maze maze = new Maze(m1, GameMode.STATIONARY);
 		assertEquals(GameState.RUNNING, maze.getGameState());
 		maze.moveHero(Direction.LEFT);
 		maze.moveHero(Direction.LEFT);
@@ -86,7 +86,7 @@ public class TestMazeWithStationaryDragon {
 	
 	@Test
 	public void testMoveUnarmedHeroToExit() {
-		Maze maze = new Maze(m1, true, GameMode.STATIONARY);
+		Maze maze = new Maze(m1, GameMode.STATIONARY);
 		assertEquals(false, maze.getHero().getSwordEquipped());
 		assertEquals(new Point(3, 1), maze.getHero().getPosition());
 		maze.moveHero(Direction.RIGHT);
@@ -95,7 +95,7 @@ public class TestMazeWithStationaryDragon {
 	
 	@Test
 	public void testMoveArmedHeroToExitButDragonIsAlive() {
-		Maze maze = new Maze(m1, true, GameMode.STATIONARY);
+		Maze maze = new Maze(m1, GameMode.STATIONARY);
 		assertEquals(false, maze.getHero().getSwordEquipped());
 		assertEquals(true, maze.getDragon().isAlive());
 		maze.moveHero(Direction.LEFT);

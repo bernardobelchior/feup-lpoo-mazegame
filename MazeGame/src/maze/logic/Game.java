@@ -8,7 +8,7 @@ public class Game {
 	public enum GameMode { STATIONARY, RANDOM_MOVEMENT, SLEEP_RANDOM_MOVEMENT };
 	
 	public static void main(String[] args) {	
-		GameLogic gameLogic = new GameLogic(false);
+		GameLogic gameLogic = new GameLogic();
 
 		gameLogic.play();		
 	}

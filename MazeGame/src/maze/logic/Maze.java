@@ -15,8 +15,11 @@ public class Maze {
 	private GameState gameState = GameState.RUNNING;
 	private GameMode gameMode;
 	private char[][] maze;
+	private boolean test;
 
-	public Maze(char[][] maze) {
+	public Maze(char[][] maze, boolean test, GameMode gameMode) {
+		this.test = test;
+		this.gameMode = gameMode;
 		this.maze = maze.clone(); 
 		readMaze();
 
@@ -24,12 +27,6 @@ public class Maze {
 		setChar(dragon.getPosition(), dragon.getChar());
 		setChar(sword.getPosition(), sword.getChar());
 		setChar(exit.getPosition(), exit.getChar());
-
-		cli.print("What mode would you like to play in?");
-		cli.print("S for Stationary Dragon.");
-		cli.print("R for Random Movement");
-		cli.print("Everything else for Sleeping and Random Movement");
-		gameMode = cli.getGameMode();
 	}
 
 	private void readMaze(){
@@ -65,15 +62,21 @@ public class Maze {
 		return maze[position.y][position.x];
 	}
 
-	public void moveHero(Direction direction) {
-
-		unsetChar(hero.getPosition());
-		hero.move(direction);
-		if (!sword.getPickedUp() && sword.getPosition().equals(hero.getPosition())) {
-			pickUpSword();
+	public boolean moveHero(Direction direction) {
+		boolean ret = false;
+		
+		if (canMove(hero.getPosition(), direction)) {
+			unsetChar(hero.getPosition());
+			hero.move(direction);
+			if (!sword.getPickedUp() && sword.getPosition().equals(hero.getPosition())) {
+				pickUpSword();
+			}
+			setChar(hero.getPosition(), hero.getChar());
+			ret = true;
 		}
-		setChar(hero.getPosition(), hero.getChar());
-
+		
+		update();
+		return ret;
 	}
 
 	public Direction getRandomDirection(){
@@ -94,13 +97,10 @@ public class Maze {
 		}
 	}
 
-	public void nextTurn(){
-		updateHero();
-		updateDragon();
-		update();
-	}
+	public void updateDragon(){
+		if(!dragon.isAlive())
+			return;
 
-	private void updateDragon(){
 		unsetChar(dragon.getPosition());
 
 		switch (gameMode){
@@ -134,18 +134,12 @@ public class Maze {
 			break;
 		}
 
-		if(dragon.isAlive())
-			setChar(dragon.getPosition(), dragon.getChar());
+		setChar(dragon.getPosition(), dragon.getChar());
 	}
 
 
-	private void updateHero(){
-		Direction direction = cli.getHeroDirection();
-		if (canMove(hero.getPosition(), direction)) {
-			moveHero(direction);
-		}
-		else
-			cli.print("You cannot move in this direction");
+	public boolean updateHero(){
+		return moveHero(cli.getHeroDirection());
 	}
 
 	private void moveDragon(Direction direction) {
@@ -153,6 +147,7 @@ public class Maze {
 			return;
 
 		dragon.move(direction);
+		update();
 	}
 
 	private boolean canMove(Point position, Direction direction) {
@@ -183,13 +178,14 @@ public class Maze {
 		return true; 
 	}
 
-	private void update() {
+	public void update() {
 		//Checks if the hero is next to a dragon
 		if (isHeroNextToDragon()) {
 			//If the hero has a sword equipped, then kill the dragon adjacent to him
 			if(hero.getSwordEquipped()){
 				dragon.kill();
 				unsetChar(dragon.getPosition());
+				setChar(hero.getPosition(), hero.getChar());
 			} //Otherwise, if the dragon is awake, it wins
 			else{
 				if(!dragon.isSleeping())
@@ -259,8 +255,16 @@ public class Maze {
 		return result;
 	}
 
-	public Point getHeroPosition() {
-		return hero.getPosition();
+	public Hero getHero() {
+		return hero;
 	}
-
+	
+	public Sword getSword() {
+		return sword;
+	}
+	
+	public Dragon getDragon() {
+		return dragon;
+	}
+	
 }

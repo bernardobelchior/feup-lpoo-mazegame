@@ -10,7 +10,7 @@ public class GameLogic {
 	private CommandLineInterface cli = new CommandLineInterface();
 	private char[][] grid;
 	
-	public GameLogic(){
+	public GameLogic(boolean test){
 		grid = new char[][] { { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 						  	  { 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, 
 						  	  { 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
@@ -21,15 +21,20 @@ public class GameLogic {
 						  	  { 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' }, 
 						  	  { 'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X' },
 						  	  { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' } };
-		
 		generateRandomMaze();
-		maze = new Maze(grid);
+		
+			cli.print("What mode would you like to play in?");
+			cli.print("S for Stationary Dragon.");
+			cli.print("R for Random Movement");
+			cli.print("Everything else for Sleeping and Random Movement");
+		
+		maze = new Maze(grid, test, cli.getGameMode());
 	}
 
 	public void play(){	
 		while(maze.getGameState() == GameState.RUNNING){
 			cli.print(maze.toString());
-			maze.nextTurn();
+			nextTurn();
 		}
 		
 		cli.print(maze.toString());
@@ -39,6 +44,12 @@ public class GameLogic {
 		} else {
 			cli.print("You have won!");
 		}
+	}
+	
+	private void nextTurn(){
+		if(!maze.updateHero())
+			cli.print("You cannot move in this direction");
+		maze.updateDragon();
 	}
 	
 	private void generateRandomMaze(){

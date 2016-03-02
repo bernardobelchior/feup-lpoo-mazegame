@@ -103,8 +103,8 @@ public class GameLogic {
 		do{
 			x = random.nextInt(side);
 			y = random.nextInt(side);	
-		} while((x != 0 && x != side-1 && y != 0 && y != side-1) &&
-				((x == 0 && (y == 0 || y == side-1)) || (x == side-1 && (y == 0 || y == side-1)))); //Not working
+		} while(((x == 0 || x == side-1) && (y == 0 || y == side -1)) || 	//Checks if the exit is on the corner
+				((x != 0 && x != side -1) && (y != 0 && y != side-1))); 	//Checks if the exit is in the middle of the maze
 		cli.print(Integer.toString(x));
 		cli.print(Integer.toString(y));
 		grid[y][x] = 'S';

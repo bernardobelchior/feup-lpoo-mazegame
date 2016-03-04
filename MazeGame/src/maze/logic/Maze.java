@@ -133,7 +133,7 @@ public class Maze {
 		setChar(dragon.getPosition(), dragon.getChar());
 	}
 
-	private void moveDragon(Direction direction) {
+	public void moveDragon(Direction direction) {
 		if(!dragon.isAlive())
 			return;
 

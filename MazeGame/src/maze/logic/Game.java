@@ -1,6 +1,6 @@
 package maze.logic;
 
-
+import maze.cli.GameInterface;
 
 public class Game {
 	public enum Direction { UP, DOWN, RIGHT, LEFT, STAY };
@@ -8,7 +8,7 @@ public class Game {
 	public enum GameMode { STATIONARY, RANDOM_MOVEMENT, SLEEP_RANDOM_MOVEMENT };
 	
 	public static void main(String[] args) {	
-		GameLogic gameLogic = new GameLogic();
+		GameInterface gameLogic = new GameInterface();
 
 		gameLogic.play();		
 	}

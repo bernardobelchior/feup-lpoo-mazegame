@@ -9,7 +9,6 @@ import org.junit.Test;
 import maze.logic.Maze;
 import maze.logic.Game.Direction;
 import maze.logic.Game.GameMode;
-import maze.logic.Game.GameState;
 
 public class TestGameWithDragonWithComplexMovements {
 

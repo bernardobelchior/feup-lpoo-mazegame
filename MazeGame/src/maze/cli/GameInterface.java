@@ -1,16 +1,16 @@
-package maze.logic;
+package maze.cli;
 
 import java.util.Random;
 
-import maze.cli.CommandLineInterface;
+import maze.logic.Maze;
 import maze.logic.Game.*;
 
-public class GameLogic {
+public class GameInterface {
 	private Maze maze;
 	private CommandLineInterface cli = new CommandLineInterface();
 	private char[][] grid;
 
-	public GameLogic(){
+	public GameInterface(){
 		grid = new char[][] { { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, 
 			{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },

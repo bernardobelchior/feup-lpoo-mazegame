@@ -10,6 +10,7 @@ public class GameInterface {
 	private CommandLineInterface cli = new CommandLineInterface();
 	private char[][] grid;
 
+
 	public GameInterface(){
 		grid = new char[][] { { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, 
@@ -54,6 +55,7 @@ public class GameInterface {
 
 	private void generateRandomMaze(){
 		int side; 
+		int nDragons;
 		Random random = new Random();
 
 		cli.print("We are generating a NxN maze.");
@@ -65,6 +67,7 @@ public class GameInterface {
 			cli.print("Please introduce your N:");
 			side = cli.getInt();
 		}
+
 
 		grid = new char[side][side];
 
@@ -89,19 +92,46 @@ public class GameInterface {
 
 		int x,y;
 
+		//TODO create random walls inside the maze
+
+
+		//Count the number of blank cells in the maze
+		int nBlankCells=0;
+		for (int i=0;i<grid.length;i++){
+			for (int j=0; j<grid[i].length;j++){
+				if (grid[i][j]==' ')
+					nBlankCells=nBlankCells+1;
+			}
+		}
+
+
 		//Generates Hero
-		x = random.nextInt(side-2)+1;
-		y = random.nextInt(side-2)+1;
+		do{
+			x = random.nextInt(side-2)+1;
+			y = random.nextInt(side-2)+1;
+		}
+		while (grid[y][x]!=' ');
 		grid[y][x] = 'H';
 
-		//Generates Dragon
-		x = random.nextInt(side-2)+1;
-		y = random.nextInt(side-2)+1;
-		grid[y][x] = 'D';
+
+		//Generates Dragons
+		nDragons=random.nextInt(nBlankCells/2)+1;
+		for (int i=1;i==nBlankCells;i++){
+			do{
+				x = random.nextInt(side-2)+1;
+				y = random.nextInt(side-2)+1;
+			}
+			while (grid[y][x]!=' ');
+			grid[y][x] = 'D';
+		}
+
 
 		//Generates Sword
-		x = random.nextInt(side-2)+1;
-		y = random.nextInt(side-2)+1;
+		do{
+			x = random.nextInt(side-2)+1;
+			y = random.nextInt(side-2)+1;
+		}
+		while (grid[y][x]!=' ');
 		grid[y][x] = 'E';
 
 		//Generates Exit

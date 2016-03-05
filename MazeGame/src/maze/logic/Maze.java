@@ -7,7 +7,7 @@ import maze.logic.Game.*;
 
 public class Maze {
 	private Hero hero;
-	private Dragon dragon;
+	private Dragon dragon[];
 	private Sword sword;
 	private Exit exit;
 	private GameState gameState = GameState.RUNNING;

@@ -7,7 +7,7 @@ import maze.logic.Game.*;
 
 public class Maze {
 	private Hero hero;
-	private Dragon dragon[];
+	private Dragon[] dragon;
 	private Sword sword;
 	private Exit exit;
 	private GameState gameState = GameState.RUNNING;
@@ -20,7 +20,9 @@ public class Maze {
 		readMaze();
 
 		setChar(hero.getPosition(), hero.getChar());
-		setChar(dragon.getPosition(), dragon.getChar());
+		for(int i=0;i<dragon.length;i++){
+			setChar(dragon[i].getPosition(), dragon[i].getChar());
+		}
 		setChar(sword.getPosition(), sword.getChar());
 		setChar(exit.getPosition(), exit.getChar());
 	}
@@ -33,7 +35,9 @@ public class Maze {
 					hero = new Hero(new Point(i, j));
 					break;
 				case 'D':
-					dragon = new Dragon(new Point(i,j));
+					for (int k=0; i<dragon.length; i++){
+						dragon[k] = new Dragon(new Point(i,j));
+					}
 					break;
 				case 'E':
 					sword = new Sword(new Point(i, j));
@@ -60,7 +64,7 @@ public class Maze {
 
 	public boolean moveHero(Direction direction) {
 		boolean ret = false;
-		
+
 		if (canMove(hero.getPosition(), direction)) {
 			unsetChar(hero.getPosition());
 			hero.move(direction);
@@ -69,9 +73,10 @@ public class Maze {
 			}
 			setChar(hero.getPosition(), hero.getChar());
 			ret = true;
+			update();
 		}
-		
-		update();
+
+
 		return ret;
 	}
 
@@ -94,74 +99,97 @@ public class Maze {
 	}
 
 	public void updateDragon(){
-		if(!dragon.isAlive())
-			return;
+		for (int i=0;i<dragon.length;i++){
+			if(!dragon[i].isAlive())
+				return;
 
-		unsetChar(dragon.getPosition());
+			unsetChar(dragon[i].getPosition());
 
-		switch (gameMode){
-		case STATIONARY:
-			break;
-		case RANDOM_MOVEMENT:
-			moveDragon(getValidDragonRandomDirection());
-			break;
-		case SLEEP_RANDOM_MOVEMENT:
-			Random random = new Random();
+			switch (gameMode){
+			case STATIONARY:
+				break;
+			case RANDOM_MOVEMENT:
+				moveDragon(getValidDragonRandomDirection(i), i);
+				break;
+			case SLEEP_RANDOM_MOVEMENT:
+				Random random = new Random();
 
-			if(dragon.isSleeping()){
-				switch(random.nextInt(2)){
-				case 0:
-					dragon.setSleeping(false);
-					break;
-				default:
-					break;
+				if(dragon[i].isSleeping()){
+					switch(random.nextInt(2)){
+					case 0:
+						dragon[i].setSleeping(false);
+						break;
+					default:
+						break;
+					}
+				} else {
+					switch(random.nextInt(3)){
+					case 0:
+						dragon[i].setSleeping(true);
+						break;
+					case 1:
+						moveDragon(getValidDragonRandomDirection(i),i);
+					default:
+						break;
+					}
 				}
-			} else {
-				switch(random.nextInt(3)){
-				case 0:
-					dragon.setSleeping(true);
-					break;
-				case 1:
-					moveDragon(getValidDragonRandomDirection());
-				default:
-					break;
-				}
+				break;
 			}
-			break;
+
+			setChar(dragon[i].getPosition(), dragon[i].getChar());
 		}
-
-		setChar(dragon.getPosition(), dragon.getChar());
 	}
-
-	public void moveDragon(Direction direction) {
-		if(!dragon.isAlive())
+	public void moveDragon(Direction direction, int i) {
+		if(!dragon[i].isAlive())
 			return;
 
-		dragon.move(direction);
+		dragon[i].move(direction);
 		update();
+
 	}
 
 	private boolean canMove(Point position, Direction direction) {
+		boolean canmove = true;
 		switch (direction) {
 		case UP:
-			if (getChar(new Point(position.x, position.y -1)) == 'X' 
-			|| (getChar(new Point(position.x, position.y -1)) == 'S' && dragon.isAlive()))
-				return false;
+			for (int i=0; i<dragon.length;i++){ 
+				if (dragon[i].isAlive()) 
+					canmove=false;
+			}
+			if (canmove==false)
+				if (getChar(new Point(position.x, position.y -1)) == 'X' 
+				|| getChar(new Point(position.x, position.y -1)) == 'S' && canmove==false)
+					return false;
 			break;
 		case DOWN:
-			if (getChar(new Point(position.x, position.y + 1)) == 'X'
-			|| (getChar(new Point(position.x, position.y + 1)) == 'S' && dragon.isAlive()))
-				return false;
+			for (int i=0; i<dragon.length;i++){ 
+				if (dragon[i].isAlive()) 
+					canmove=false;
+			}
+			if (canmove==false)
+				if (getChar(new Point(position.x, position.y +1)) == 'X' 
+				|| getChar(new Point(position.x, position.y +1)) == 'S' && canmove==false)
+					return false;
 			break;
 		case RIGHT:
-			if (getChar(new Point(position.x + 1, position.y)) == 'X' 
-			|| (getChar(new Point(position.x + 1, position.y)) == 'S' && dragon.isAlive()))
-				return false;
+			for (int i=0; i<dragon.length;i++){ 
+				if (dragon[i].isAlive()) 
+					canmove=false;
+			}
+			if (canmove==false)
+				if (getChar(new Point(position.x+1, position.y)) == 'X' 
+				|| getChar(new Point(position.x+1, position.y)) == 'S' && canmove==false)
+					return false;
 			break;
 		case LEFT:
-			if (getChar(new Point(position.x - 1, position.y)) == 'X'
-			|| (getChar(new Point(position.x - 1, position.y)) == 'S' && dragon.isAlive()))
-				return false;
+			for (int i=0; i<dragon.length;i++){ 
+				if (dragon[i].isAlive()) 
+					canmove=false;
+			}
+			if (canmove==false)
+				if (getChar(new Point(position.x-1, position.y)) == 'X' 
+				|| getChar(new Point(position.x-1, position.y)) == 'S' && canmove==false)
+					return false;
 			break;
 		case STAY:
 			return true;
@@ -171,27 +199,27 @@ public class Maze {
 
 	public void update() {
 		//Checks if the hero is next to a dragon
-		if (isHeroNextToDragon()) {
+		if (isHeroNextToDragon()!=-1) {
 			//If the hero has a sword equipped, then kill the dragon adjacent to him
 			if(hero.getSwordEquipped()){
-				dragon.kill();
-				unsetChar(dragon.getPosition());
+				dragon[isHeroNextToDragon()].kill();
+				unsetChar(dragon[isHeroNextToDragon()].getPosition());
 				setChar(hero.getPosition(), hero.getChar());
 			} //Otherwise, if the dragon is awake, it wins
 			else{
-				if(!dragon.isSleeping())
+				if(!dragon[isHeroNextToDragon()].isSleeping())
 					gameState = GameState.DRAGON_WIN;
 			}
 		}
 
 		//Update game state
-		if (isHeroOnExit() && !dragon.isAlive()) {
+		if (isHeroOnExit() && !dragon[isHeroNextToDragon()].isAlive()) {
 			gameState = GameState.HERO_WIN;
 		}
 
 		//Update dragon and sword characters on maze
 		if(!sword.getPickedUp()){
-			if (dragon.getPosition().equals(sword.getPosition()))
+			if (dragon[isHeroNextToDragon()].getPosition().equals(sword.getPosition()))
 				setChar(sword.getPosition(), 'F');
 			else
 				setChar(sword.getPosition(), 'E');
@@ -204,15 +232,21 @@ public class Maze {
 		unsetChar(sword.getPosition());
 	}
 
-	private boolean isHeroNextToDragon() {
-		if(dragon.isAlive()){
-			// Checks if the hero is in an adjacent square to the dragon or in the same square
-			if ((Math.abs(hero.getX() - dragon.getX()) <= 1 && Math.abs(hero.getY() - dragon.getY()) == 0)
-					|| (Math.abs(hero.getX() - dragon.getX()) == 0 && Math.abs(hero.getY() - dragon.getY()) == 1)) {
-				return true;
+	private int isHeroNextToDragon() {
+		int k=-1;		//k é o inteiro que me vai dizer a posiçao do dragao que está ao pé do heroi no vetor dos dragoes; 
+						//se k=-1 quer dizer que o heroi nao está ao pé de nenhum dragao, se for outro numero quer dizer que 
+						//o heroi está ao pe de um dragao e diz me a posiçao desse dragao e a posiçao desse dragao no vetor dos dragoes; 
+						//por esta funçao a retornar um inteiro em vez de um booleano vai facilitar imenso na funçao update()
+		for (int i=0; i<dragon.length;i++){
+			if(dragon[i].isAlive()){
+				// Checks if the hero is in an adjacent square to the dragon or in the same square
+				if ((Math.abs(hero.getX() - dragon[i].getX()) <= 1 && Math.abs(hero.getY() - dragon[i].getY()) == 0)
+						|| (Math.abs(hero.getX() - dragon[i].getX()) == 0 && Math.abs(hero.getY() - dragon[i].getY()) == 1)) {
+					return k=i;
+				}
 			}
 		}
-		return false;
+		return k;
 	}
 
 	private boolean isHeroOnExit() {
@@ -226,11 +260,11 @@ public class Maze {
 		return gameState;
 	}
 
-	private Direction getValidDragonRandomDirection(){
+	private Direction getValidDragonRandomDirection(int i){
 		Direction direction;
 		do{
 			direction = getRandomDirection();
-		} while (!canMove(dragon.getPosition(), direction));
+		} while (!canMove(dragon[i].getPosition(), direction));
 		return direction;
 	}
 
@@ -249,13 +283,15 @@ public class Maze {
 	public Hero getHero() {
 		return hero;
 	}
-	
+
 	public Sword getSword() {
 		return sword;
 	}
-	
+
 	public Dragon getDragon() {
-		return dragon;
+		return dragon[0];		 //TODO se esta funçao só for chamada na classe do teste em que só há um dragao
+									//esse draçao está no indice 0 do vetor dos drages logo o que fiz faz sentido senao isto está mal
+								
 	}
-	
+
 }

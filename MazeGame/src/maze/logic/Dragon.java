@@ -4,12 +4,14 @@ import java.awt.Point;
 
 public class Dragon extends Character {
 	private boolean sleeping;
+	
 
 	public Dragon(Point position){
 		super(position);
 		sleeping = false;
 	}
 
+		
 	public char getChar(){
 		return sleeping ? 'd' : 'D';
 	}

@@ -3,12 +3,14 @@ package maze.cli;
 import java.util.Random;
 
 import maze.logic.Maze;
+import maze.logic.Dragon;
 import maze.logic.Game.*;
 
 public class GameInterface {
 	private Maze maze;
 	private CommandLineInterface cli = new CommandLineInterface();
 	private char[][] grid;
+	private Dragon dragon[];
 
 
 	public GameInterface(){
@@ -116,6 +118,7 @@ public class GameInterface {
 
 		//Generates Dragons
 		nDragons=random.nextInt(nBlankCells/2)+1;
+		dragon= new Dragon[nDragons];
 		for (int i=1;i==nBlankCells;i++){
 			do{
 				x = random.nextInt(side-2)+1;

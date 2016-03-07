@@ -1,5 +1,7 @@
 package maze.logic;
 
+import java.util.Random;
+
 import maze.cli.GameInterface;
 
 public class Game {
@@ -11,6 +13,24 @@ public class Game {
 		GameInterface gameLogic = new GameInterface();
 
 		gameLogic.play();		
+	}
+	
+	public static Direction getRandomDirection(){
+		Random random = new Random();
+		int direction = random.nextInt(5);
+
+		switch (direction){
+		case 0:
+			return Direction.UP;
+		case 1:
+			return Direction.DOWN;
+		case 2:
+			return Direction.RIGHT;
+		case 3:
+			return Direction.LEFT;
+		default:
+			return Direction.STAY;
+		}
 	}
 }
 	

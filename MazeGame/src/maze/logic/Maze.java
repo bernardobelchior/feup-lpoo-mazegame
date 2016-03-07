@@ -48,6 +48,9 @@ public class Maze {
 					exit = new Exit(new Point(i, j));
 					setChar(new Point(i, j), ' ');
 					break;
+				case '+':
+					setChar(new Point(i, j), ' ');
+					break;
 				}
 			}
 		}
@@ -79,23 +82,7 @@ public class Maze {
 		return successfulMove;
 	}
 
-	public Direction getRandomDirection(){
-		Random random = new Random();
-		int direction = random.nextInt(5);
 
-		switch (direction){
-		case 0:
-			return Direction.UP;
-		case 1:
-			return Direction.DOWN;
-		case 2:
-			return Direction.RIGHT;
-		case 3:
-			return Direction.LEFT;
-		default:
-			return Direction.STAY;
-		}
-	}
 
 	public void updateDragon(){
 		switch (gameMode){
@@ -246,7 +233,7 @@ public class Maze {
 	private Direction getValidDragonRandomDirection(Point position){
 		Direction direction;
 		do{
-			direction = getRandomDirection();
+			direction = Game.getRandomDirection();
 		} while (!canMove(position, direction));
 		return direction;
 	}

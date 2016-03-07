@@ -1,38 +1,37 @@
 package maze.cli;
 
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Stack;
-
 import maze.logic.Maze;
-import maze.logic.Dragon;
+import maze.logic.RandomMazeGenerator;
 import maze.logic.Game.*;
 
 public class GameInterface {
 	private Maze maze;
 	private CommandLineInterface cli = new CommandLineInterface();
-	private char[][] grid;
 
 	public GameInterface(){
-		grid = new char[][] { { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
-			{ 'X', 'H', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, 
-			{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
-			{ 'X', 'D', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' }, 
-			{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
-			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'S' }, 
-			{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
-			{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' }, 
-			{ 'X', 'E', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X' },
-			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' } };
-			//generateRandomMaze();
-
+		//TODO Grid is temporary until we figure out how to place dragons randomly
+			char[][] grid = new char[][] { { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+				{ 'X', 'H', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, 
+				{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
+				{ 'X', 'D', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' }, 
+				{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
+				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'S' }, 
+				{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
+				{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' }, 
+				{ 'X', 'E', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X' },
+				{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' } };
+		
+			cli.print("How long do you want the maze to be? (Odd numbers only)");
+			
+			RandomMazeGenerator rmg = new RandomMazeGenerator(cli.getInt());
+			
 			cli.print("What mode would you like to play in?");
-			cli.print("S for Stationary Dragon.");
+			cli.print("S for Stationary Dragons.");
 			cli.print("R for Random Movement");
 			cli.print("Everything else for Sleeping and Random Movement");
 
 			maze = new Maze(grid, cli.getGameMode());
+			//maze = new Maze(rmg.getMaze(), cli.getGameMode());
 	}
 
 	public void play(){	
@@ -54,157 +53,5 @@ public class GameInterface {
 		if(!maze.moveHero(cli.getHeroDirection()))
 			cli.print("You cannot move in this direction");
 		maze.updateDragon();
-	}
-
-	/*private void generateRandomMaze(){
-		int side; 
-		int nDragons;
-		Random random = new Random();
-
-		cli.print("We are generating a NxN maze.");
-		cli.print("Please introduce your N:");
-		side = cli.getInt();
-
-		while(side < 6){
-			cli.print("Maze too small.");
-			cli.print("Please introduce your N:");
-			side = cli.getInt();
-		}
-
-
-		grid = new char[side][side];
-
-		//Fill with spaces
-		for(int i = 0; i < grid.length; i++){
-			for(int j = 0; j < grid[i].length; j++){
-				grid[j][i] = ' ';
-			}
-		}
-
-		//Creates horizontal walls
-		for(int i = 0; i < grid.length; i++){
-			grid[i][0] = 'X';
-			grid[i][grid.length-1] = 'X';
-		}
-
-		//Creates vertical walls
-		for(int i = 1; i < grid.length-1; i++){
-			grid[0][i] = 'X';
-			grid[grid.length-1][i] = 'X';
-		}
-
-		int x,y;
-
-		//TODO create random walls inside the maze
-
-
-		//Count the number of blank cells in the maze
-		int nBlankCells=0;
-		for (int i=0;i<grid.length;i++){
-			for (int j=0; j<grid[i].length;j++){
-				if (grid[i][j]==' ')
-					nBlankCells++;
-			}
-		}
-
-
-		//Generates Hero
-		do{
-			x = random.nextInt(side-2)+1;
-			y = random.nextInt(side-2)+1;
-		}
-		while (grid[y][x]!=' ');
-		grid[y][x] = 'H';
-
-
-		//Generates Dragons TODO Check how to do the multiple dragon generation
-		nDragons=random.nextInt(nBlankCells/2)+1;
-		for (int i = 1; i < nDragons; i++){
-			do{
-				x = random.nextInt(side-2)+1;
-				y = random.nextInt(side-2)+1;
-			}
-			while (grid[y][x]!=' ');
-			grid[y][x] = 'D';
-		}
-
-
-		//Generates Sword
-		do{
-			x = random.nextInt(side-2)+1;
-			y = random.nextInt(side-2)+1;
-		}
-		while (grid[y][x]!=' ');
-		grid[y][x] = 'E';
-
-		//Generates Exit
-		do{
-			x = random.nextInt(side);
-			y = random.nextInt(side);	
-		} while(((x == 0 || x == side-1) && (y == 0 || y == side -1)) || 	//Checks if the exit is on the corner
-				((x != 0 && x != side -1) && (y != 0 && y != side-1))); 	//Checks if the exit is in the middle of the maze
-		grid[y][x] = 'S';
-	}*/
-
-	private void generateRandomMaze(int size){
-		if(size % 2 == 0)
-			return;
-
-		Random random = new Random();
-		Stack<Point> pathHistory = new Stack<Point>();
-		char[][] maze = new char[size][size];
-		char[][] visitedCells = new char[(size-1)/2][(size-1)/2];
-
-		for(int i = 0; i < visitedCells.length; i++){
-			for(int j = 0; j < visitedCells[i].length; j++){
-				visitedCells[j][i] = '.';
-			}
-		}
-
-		//Generates Walls
-		for(int i = 0; i < size; i += 2){
-			for(int j = 0; j < size; j += 2){
-				maze[j][i] = 'X';
-			}
-		}
-
-		//Generates Exit
-		int x, y;
-		do{
-			x = random.nextInt(size);
-			y = random.nextInt(size);	
-		} while(((x == 0 || x == size-1) && (y == 0 || y == size -1)) || 	//Checks if the exit is on the corner
-				((x != 0 && x != size -1) && (y != 0 && y != size-1))); 	//Checks if the exit is in the middle of the maze
-		maze[y][x] = 'S'; //Not working; needs to generate only odd numbers
-
-		Point pos;
-		if(y == size)
-			pos = new Point(x, y - 1);
-		else
-			pos = new Point(x - 1, y);
-
-		pos = new Point((pos.x-1)/2, (pos.y-1)/2);
-		pathHistory.push(pos);
-		visitedCells[pos.y][pos.x] = '+';
-
-		ArrayList<Point> validDirections = new ArrayList<Point>();
-		if(pos.y + 1 < visitedCells.length && visitedCells[pos.y + 1][pos.x] == '.') {
-			validDirections.add(new Point(pos.x, pos.y + 1));
-		}
-		
-		if(pos.x + 1 < visitedCells.length && visitedCells[pos.y][pos.x + 1] == '.') {
-			validDirections.add(new Point(pos.x + 1, pos.y));
-		}
-		
-		if(pos.y - 1 > 0 && visitedCells[pos.y - 1][pos.x] == '.') {
-			validDirections.add(new Point(pos.x, pos.y - 1));
-		}
-		
-		if(pos.x - 1 > 0 && visitedCells[pos.y][pos.x - 1] == '.') {
-			validDirections.add(new Point(pos.x - 1, pos.y));
-		}
-		
-		pos = validDirections.get(random.nextInt(validDirections.size()));
-		
 	}
 }

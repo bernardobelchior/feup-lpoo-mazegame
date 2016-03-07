@@ -10,7 +10,7 @@ public class GameInterface {
 	private Maze maze;
 	private CommandLineInterface cli = new CommandLineInterface();
 	private char[][] grid;
-	private Dragon dragon[];
+	private Dragon dragon[];		//TODO fazer uma arraylist() para os dragoes em vez do vetor
 
 
 	public GameInterface(){

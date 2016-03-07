@@ -164,8 +164,23 @@ public class RandomMazeGenerator {
 		mazeCleanup();
 		placeHero();
 		placeDragons();
+		placeSword();
 		
 		return maze;
+	}
+
+	private void placeSword() {
+		Random random = new Random();
+		int x, y;
+		Point position;
+		
+		do {
+			x = random.nextInt(size);
+			y = random.nextInt(size);
+			position = new Point(x, y);
+		} while(maze[y][x] != ' ');
+		
+		maze[y][x] = 'E';
 	}
 
 	private void placeDragons() {

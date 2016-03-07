@@ -21,7 +21,7 @@ public class TestGameWithDragonWithComplexMovements {
 //@Test
 public void testMoveDragon() {
 Maze maze = new Maze(m1, GameMode.RANDOM_MOVEMENT);
-assertEquals(new Point(3,2), maze.getDragon().getPosition());
+assertEquals(new Point(3,2), maze.getDragon(0).getPosition());
 maze.moveHero(Direction.LEFT);
 /*maze.moveDragon(Direction.LEFT);
 assertEquals(new Point(3,2), maze.getDragon().getPosition());

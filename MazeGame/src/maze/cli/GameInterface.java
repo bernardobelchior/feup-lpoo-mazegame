@@ -10,21 +10,19 @@ public class GameInterface {
 	private Maze maze;
 	private CommandLineInterface cli = new CommandLineInterface();
 	private char[][] grid;
-	private Dragon dragon[];		//TODO fazer uma arraylist() para os dragoes em vez do vetor
-
 
 	public GameInterface(){
 		grid = new char[][] { { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
-			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, 
+			{ 'X', 'H', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, 
+			{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
+			{ 'X', 'D', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' }, 
+			{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
+			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'S' }, 
 			{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
 			{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' }, 
-			{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
-			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ' }, 
-			{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
-			{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' }, 
-			{ 'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X' },
+			{ 'X', 'E', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X' },
 			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' } };
-			generateRandomMaze();
+			//generateRandomMaze();
 
 			cli.print("What mode would you like to play in?");
 			cli.print("S for Stationary Dragon.");
@@ -102,7 +100,7 @@ public class GameInterface {
 		for (int i=0;i<grid.length;i++){
 			for (int j=0; j<grid[i].length;j++){
 				if (grid[i][j]==' ')
-					nBlankCells=nBlankCells+1;
+					nBlankCells++;
 			}
 		}
 
@@ -116,10 +114,9 @@ public class GameInterface {
 		grid[y][x] = 'H';
 
 
-		//Generates Dragons
+		//Generates Dragons TODO Check how to do the multiple dragon generation
 		nDragons=random.nextInt(nBlankCells/2)+1;
-		dragon= new Dragon[nDragons];
-		for (int i=1;i==nBlankCells;i++){
+		for (int i = 1; i < nDragons; i++){
 			do{
 				x = random.nextInt(side-2)+1;
 				y = random.nextInt(side-2)+1;

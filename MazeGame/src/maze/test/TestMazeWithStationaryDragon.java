@@ -58,13 +58,13 @@ public class TestMazeWithStationaryDragon {
 	@Test
 	public void testMoveArmedHeroNextToDragon() {
 		Maze maze = new Maze(m1, GameMode.STATIONARY);
-		assertEquals(true, maze.getDragon().isAlive());
+		assertEquals(1, maze.getDragons().size());
 		maze.moveHero(Direction.LEFT);
 		maze.moveHero(Direction.LEFT);
 		maze.moveHero(Direction.DOWN);
 		maze.moveHero(Direction.DOWN);
 		maze.moveHero(Direction.RIGHT);
-		assertEquals(false, maze.getDragon().isAlive());
+		assertEquals(0, maze.getDragons().size());
 	}
 	
 	@Test
@@ -97,7 +97,7 @@ public class TestMazeWithStationaryDragon {
 	public void testMoveArmedHeroToExitButDragonIsAlive() {
 		Maze maze = new Maze(m1, GameMode.STATIONARY);
 		assertEquals(false, maze.getHero().getSwordEquipped());
-		assertEquals(true, maze.getDragon().isAlive());
+		assertEquals(1, maze.getDragons().size());
 		maze.moveHero(Direction.LEFT);
 		maze.moveHero(Direction.LEFT);
 		maze.moveHero(Direction.DOWN);

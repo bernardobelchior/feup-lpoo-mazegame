@@ -173,7 +173,20 @@ public class RandomMazeGenerator {
 	}
 
 	private void placeHero() {
+		Random random = new Random();
+		int x, y;
+		Point position;
 		
+		//Adds a hero in a place where is distance
+		//between its position and the exit is at least
+		//one third of the maze's size
+		do {
+			x = random.nextInt(size);
+			y = random.nextInt(size);
+			position = new Point(x, y);
+		} while(position.distance(exit) < size/3 || maze[y][x] != ' ');
+		
+		maze[y][x] = 'H';
 	}
 
 	private void mazeCleanup() {

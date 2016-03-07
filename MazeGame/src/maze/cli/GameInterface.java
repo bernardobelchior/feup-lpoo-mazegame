@@ -1,6 +1,9 @@
 package maze.cli;
 
+import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Random;
+import java.util.Stack;
 
 import maze.logic.Maze;
 import maze.logic.Dragon;
@@ -53,7 +56,7 @@ public class GameInterface {
 		maze.updateDragon();
 	}
 
-	private void generateRandomMaze(){
+	/*private void generateRandomMaze(){
 		int side; 
 		int nDragons;
 		Random random = new Random();
@@ -141,5 +144,67 @@ public class GameInterface {
 		} while(((x == 0 || x == side-1) && (y == 0 || y == side -1)) || 	//Checks if the exit is on the corner
 				((x != 0 && x != side -1) && (y != 0 && y != side-1))); 	//Checks if the exit is in the middle of the maze
 		grid[y][x] = 'S';
+	}*/
+
+	private void generateRandomMaze(int size){
+		if(size % 2 == 0)
+			return;
+
+		Random random = new Random();
+		Stack<Point> pathHistory = new Stack<Point>();
+		char[][] maze = new char[size][size];
+		char[][] visitedCells = new char[(size-1)/2][(size-1)/2];
+
+		for(int i = 0; i < visitedCells.length; i++){
+			for(int j = 0; j < visitedCells[i].length; j++){
+				visitedCells[j][i] = '.';
+			}
+		}
+
+		//Generates Walls
+		for(int i = 0; i < size; i += 2){
+			for(int j = 0; j < size; j += 2){
+				maze[j][i] = 'X';
+			}
+		}
+
+		//Generates Exit
+		int x, y;
+		do{
+			x = random.nextInt(size);
+			y = random.nextInt(size);	
+		} while(((x == 0 || x == size-1) && (y == 0 || y == size -1)) || 	//Checks if the exit is on the corner
+				((x != 0 && x != size -1) && (y != 0 && y != size-1))); 	//Checks if the exit is in the middle of the maze
+		maze[y][x] = 'S'; //Not working; needs to generate only odd numbers
+
+		Point pos;
+		if(y == size)
+			pos = new Point(x, y - 1);
+		else
+			pos = new Point(x - 1, y);
+
+		pos = new Point((pos.x-1)/2, (pos.y-1)/2);
+		pathHistory.push(pos);
+		visitedCells[pos.y][pos.x] = '+';
+
+		ArrayList<Point> validDirections = new ArrayList<Point>();
+		if(pos.y + 1 < visitedCells.length && visitedCells[pos.y + 1][pos.x] == '.') {
+			validDirections.add(new Point(pos.x, pos.y + 1));
+		}
+		
+		if(pos.x + 1 < visitedCells.length && visitedCells[pos.y][pos.x + 1] == '.') {
+			validDirections.add(new Point(pos.x + 1, pos.y));
+		}
+		
+		if(pos.y - 1 > 0 && visitedCells[pos.y - 1][pos.x] == '.') {
+			validDirections.add(new Point(pos.x, pos.y - 1));
+		}
+		
+		if(pos.x - 1 > 0 && visitedCells[pos.y][pos.x - 1] == '.') {
+			validDirections.add(new Point(pos.x - 1, pos.y));
+		}
+		
+		pos = validDirections.get(random.nextInt(validDirections.size()));
+		
 	}
 }

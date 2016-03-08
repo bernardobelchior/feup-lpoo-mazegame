@@ -143,10 +143,10 @@ public class RandomMazeGenerator {
 			}
 		}
 
-		mazeCleanup();
 		placeHero();
 		placeDragons();
 		placeSword();
+		mazeCleanup();
 		
 		return maze;
 	}
@@ -165,6 +165,12 @@ public class RandomMazeGenerator {
 
 	private void placeDragons() {
 			//Maybe place them in the '+' sign before the cleanup
+		for(int i = 0; i < maze.length; i++){
+			for(int j = 0; j < maze[i].length; j++){
+				if(maze[j][i] == '+')
+					maze[j][i] = 'D';
+			}
+		}
 	}
 
 	private void placeHero() {

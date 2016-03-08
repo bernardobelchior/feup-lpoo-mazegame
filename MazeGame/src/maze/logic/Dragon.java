@@ -2,7 +2,7 @@ package maze.logic;
 
 import java.awt.Point;
 
-public class Dragon extends Character {
+public class Dragon extends Entity {
 	private boolean sleeping;
 	
 

@@ -2,7 +2,7 @@ package maze.logic;
 
 import java.awt.Point;
 
-public class Hero extends Character {
+public class Hero extends Entity {
 	private boolean swordEquipped;
 	
 	public Hero(Point position){

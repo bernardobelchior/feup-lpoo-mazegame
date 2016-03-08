@@ -1,8 +1,8 @@
 package maze.cli;
 
+import maze.cli.Game.*;
 import maze.logic.Maze;
 import maze.logic.RandomMazeGenerator;
-import maze.logic.Game.*;
 
 public class GameInterface {
 	private Maze maze;

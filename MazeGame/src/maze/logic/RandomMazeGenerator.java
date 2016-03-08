@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 
-import maze.logic.Game.Direction;
+import maze.cli.Game.Direction;
 
 public class RandomMazeGenerator {
 	boolean[][] visitedCells;
@@ -18,13 +18,13 @@ public class RandomMazeGenerator {
 		this.size = size;
 		if(this.size % 2 == 0)
 			this.size++;
+	}
 
+	public void initializeVariables(){
 		visitedCells = new boolean[size][size];
 		maze = new char[size][size];
 		pathHistory = new Stack<Point>();
-	}
-
-	private void initializeVariables(){
+		
 		for(int i = 0; i < size; i++){
 			for(int j = 0; j < size; j++){
 				visitedCells[i][j] = false;
@@ -39,7 +39,7 @@ public class RandomMazeGenerator {
 		}
 	}
 
-	private void generateExit(){
+	public void generateExit(){
 		Random random = new Random();
 		int x,y;
 
@@ -52,7 +52,7 @@ public class RandomMazeGenerator {
 		maze[exit.y][exit.x] = 'S';
 	}
 
-	private Point getValidStartingPosition() {
+	public Point getValidStartingPosition() {
 		if(exit.x + 1 < size && maze[exit.y][exit.x + 1] == ' ')
 			return new Point(exit.x + 1, exit. y);
 		if(exit.y + 1 < size && maze[exit.y + 1][exit.x] == ' ')
@@ -191,5 +191,9 @@ public class RandomMazeGenerator {
 					maze[j][i] = ' ';
 			}
 		}
+	}
+	
+	public Point getExit(){
+		return exit;
 	}
 }

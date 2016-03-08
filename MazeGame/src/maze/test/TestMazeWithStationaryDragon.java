@@ -6,9 +6,9 @@ import java.awt.Point;
 
 import org.junit.Test;
 
-import maze.logic.Game.Direction;
-import maze.logic.Game.GameMode;
-import maze.logic.Game.GameState;
+import maze.cli.Game.Direction;
+import maze.cli.Game.GameMode;
+import maze.cli.Game.GameState;
 import maze.logic.Maze;
 
 public class TestMazeWithStationaryDragon {
@@ -108,6 +108,7 @@ public class TestMazeWithStationaryDragon {
 		maze.moveHero(Direction.RIGHT);
 		maze.moveHero(Direction.RIGHT);
 		maze.moveHero(Direction.RIGHT);
+		maze.updateDragons();
 		assertEquals(GameState.RUNNING, maze.getGameState());
 	}
 }

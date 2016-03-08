@@ -6,12 +6,12 @@ import java.awt.Point;
 
 import org.junit.Test;
 
+import maze.cli.Game;
+import maze.cli.Game.Direction;
+import maze.cli.Game.GameMode;
 import maze.logic.Maze;
-import maze.logic.Game;
-import maze.logic.Game.Direction;
-import maze.logic.Game.GameMode;
 
-public class TestGameWithDragonWithRandomMovement {
+public class TestMazeWithDragonWithRandomMovement {
 
 	char [][] m1 = {{'X', 'X', 'X', 'X', 'X'},
 			{'X', ' ', ' ', 'H', 'S'},

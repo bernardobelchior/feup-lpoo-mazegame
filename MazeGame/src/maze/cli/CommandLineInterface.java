@@ -1,8 +1,10 @@
 package maze.cli;
 
 import java.util.Scanner;
+
+import maze.cli.Game.*;
+
 import java.lang.Character;
-import maze.logic.Game.*;
 
 public class CommandLineInterface {
 	static private Scanner scanner = new Scanner(System.in);

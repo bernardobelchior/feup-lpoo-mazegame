@@ -43,18 +43,10 @@ public class RandomMazeGenerator {
 		Random random = new Random();
 		int x,y;
 
-		/*do {
+		do {
 			x = random.nextInt(size);
 			y = random.nextInt(size);
-		} while( ((x != 0 && x != size-1) && y % 2 == 0) 
-				|| ((y != 0 && y != size-1) && x % 2 == 0));*/
-
-		while(true){
-			x = random.nextInt(size);
-			y = random.nextInt(size);
-			if(((x == 0 || x == size - 1) && y % 2 == 1) || ((y == 0 || y == size - 1) && x % 2 == 1))
-				break;
-		}
+		} while(!(((x == 0 || x == size - 1) && y % 2 == 1) || ((y == 0 || y == size - 1) && x % 2 == 1)));;
 
 		exit = new Point(x, y);
 		maze[exit.y][exit.x] = 'S';
@@ -108,14 +100,12 @@ public class RandomMazeGenerator {
 		visitedCells[position.y][position.x] = true; 
 		maze[position.y][position.x]= '+'; 
 		pathHistory.push(position);
-		boolean hasMoved;
 
 		while(!pathHistory.isEmpty()) {
 			direction = getValidRandomDirection(position);
-			hasMoved = false;
 
 			if(direction == null)
-				hasMoved = false;
+				position = pathHistory.pop();
 			else {
 				switch(direction){
 				case UP:
@@ -123,7 +113,6 @@ public class RandomMazeGenerator {
 					maze[position.y - 1][position.x] = ' ';
 					maze[position.y - 2][position.x] = '+';
 					visitedCells[position.y - 2][position.x] = true;
-					hasMoved = true;
 					position = new Point(position.x, position.y - 2);
 					break;
 				case DOWN:
@@ -131,7 +120,6 @@ public class RandomMazeGenerator {
 					maze[position.y + 1][position.x] = ' ';
 					maze[position.y + 2][position.x] = '+';
 					visitedCells[position.y + 2][position.x] = true;
-					hasMoved = true;				
 					position = new Point(position.x, position.y + 2);
 					break;
 				case RIGHT:
@@ -139,26 +127,20 @@ public class RandomMazeGenerator {
 					maze[position.y][position.x + 1] = ' ';
 					maze[position.y][position.x + 2] = '+';
 					visitedCells[position.y][position.x + 2] = true;
-					hasMoved = true;		
 					position = new Point(position.x + 2, position.y);
 					break;
 				case LEFT:
 					maze[position.y][position.x] = ' ';
 					maze[position.y][position.x - 1] = ' ';
 					maze[position.y][position.x - 2] = '+';
-					visitedCells[position.y][position.x - 2] = true;
-					hasMoved = true;	
+					visitedCells[position.y][position.x - 2] = true;	
 					position = new Point(position.x - 2, position.y);
 					break;
 				default:
 					break;
 				}
-			}
-			
-			if(hasMoved)
 				pathHistory.push(position);
-			else
-				position = pathHistory.pop();
+			}
 		}
 
 		mazeCleanup();

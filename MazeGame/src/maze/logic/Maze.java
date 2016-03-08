@@ -48,9 +48,6 @@ public class Maze {
 					exit = new Exit(new Point(i, j));
 					setChar(new Point(i, j), ' ');
 					break;
-				case '+':
-					setChar(new Point(i, j), ' ');
-					break;
 				}
 			}
 		}
@@ -69,22 +66,19 @@ public class Maze {
 	}
 
 	public boolean moveHero(Direction direction) {
-		boolean successfulMove = false;
-
 		if (canMove(hero.getPosition(), direction)) {
 			unsetChar(hero.getPosition());
 			hero.move(direction);
 			update();
 			setChar(hero.getPosition(), hero.getChar());
-			successfulMove = true;
+			return true;
 		}
 
-		return successfulMove;
+		return false;
 	}
 
 
-
-	public void updateDragon(){
+	public void updateDragons(){
 		switch (gameMode){
 		case STATIONARY:
 			for(int i = 0; i < dragons.size(); i++){
@@ -205,16 +199,10 @@ public class Maze {
 	private ArrayList<Integer> getAdjacentDragons(Point position) {
 		ArrayList<Integer> adjacentDragons = new ArrayList<Integer>();
 
-		for (int i=0; i < dragons.size(); i++){
+		for (int i = 0; i < dragons.size(); i++){
 			// Checks if there is a dragon adjacent to the position given in the arguments
-			if (position.distance(dragons.get(i).getPosition()) <= 1){
+			if (position.distance(dragons.get(i).getPosition()) <= 1)
 				adjacentDragons.add(i);
-			}
-			
-			/*if ((Math.abs(position.x - dragons.get(i).getX()) <= 1 && Math.abs(position.x - dragons.get(i).getY()) == 0)
-			 || (Math.abs(position.x - dragons.get(i).getX()) == 0 && Math.abs(position.y - dragons.get(i).getY()) == 1)) {
-				adjacentDragons.add(i);
-			}*/
 		}
 		return adjacentDragons;
 	}

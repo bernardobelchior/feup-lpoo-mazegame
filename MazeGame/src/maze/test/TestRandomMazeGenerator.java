@@ -21,7 +21,7 @@ public class TestRandomMazeGenerator {
 	@Test
 	public void printRandomMaze(){
 		RandomMazeGenerator rmg = new RandomMazeGenerator(21);
-		printMaze(rmg.getMaze());
+		//printMaze(rmg.getMaze());
 		assertEquals(true, true);
 	}
 }

@@ -154,19 +154,17 @@ public class RandomMazeGenerator {
 	private void placeSword() {
 		Random random = new Random();
 		int x, y;
-		Point position;
 		
 		do {
 			x = random.nextInt(size);
 			y = random.nextInt(size);
-			position = new Point(x, y);
 		} while(maze[y][x] != ' ');
 		
 		maze[y][x] = 'E';
 	}
 
 	private void placeDragons() {
-				
+			//Maybe place them in the '+' sign before the cleanup
 	}
 
 	private void placeHero() {

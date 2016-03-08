@@ -120,11 +120,10 @@ public class Maze {
 	}
 
 	public void moveDragon(int i, Direction direction) {
-		if(i > dragons.size())
-			return; 
-
-		dragons.get(i).move(direction);
-		update();
+		if(i < dragons.size() && canMove(dragons.get(i).getPosition(), direction)){
+			dragons.get(i).move(direction);
+			update();
+		}
 	}
 
 	private boolean canMove(Point position, Direction direction) {

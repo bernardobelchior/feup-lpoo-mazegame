@@ -4,8 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
 
-import maze.cli.Game;
-import maze.cli.Game.*;
+import maze.logic.Game.*;
 
 public class Maze {
 	private Hero hero;

@@ -1,6 +1,8 @@
-package maze.cli;
+package maze.logic;
 
 import java.util.Random;
+
+import maze.cli.GameInterface;
 
 public class Game {
 	public enum Direction { UP, DOWN, RIGHT, LEFT, STAY };

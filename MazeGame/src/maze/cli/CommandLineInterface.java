@@ -2,7 +2,7 @@ package maze.cli;
 
 import java.util.Scanner;
 
-import maze.cli.Game.*;
+import maze.logic.Game.*;
 
 import java.lang.Character;
 

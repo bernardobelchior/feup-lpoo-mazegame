@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 
-import maze.cli.Game.Direction;
+import maze.logic.Game.Direction;
 
 public class RandomMazeGenerator {
 	boolean[][] visitedCells;
@@ -13,9 +13,11 @@ public class RandomMazeGenerator {
 	Stack<Point> pathHistory;
 	Point exit;
 	int size;
+	int dragonNumber;
 
-	public RandomMazeGenerator(int size){
+	public RandomMazeGenerator(int size, int dragonNumber){
 		this.size = size;
+		this.dragonNumber = dragonNumber;
 		if(this.size % 2 == 0)
 			this.size++;
 	}
@@ -164,13 +166,28 @@ public class RandomMazeGenerator {
 	}
 
 	private void placeDragons() {
-			//Maybe place them in the '+' sign before the cleanup
-		for(int i = 0; i < maze.length; i++){
+		Random random = new Random();
+		int i, x, y;
+		i = 0;
+		//TODO Make a better check to see if the dragons dont end up adjacent to a hero
+		//or the path to the sword is inaccessible
+		while(i < dragonNumber) {
+			x = random.nextInt(size);
+			y = random.nextInt(size);
+			if(!(maze[y][x] == 'X' || maze[y][x] == 'S' || maze[y][x] == 'H')) {
+				i++;
+				maze[y][x] = 'D';
+			}
+		}
+		
+		//May be useful in the future to ensure dragon don't leave
+		//the hero in an accessible path to the sword
+		/*for(int i = 0; i < maze.length; i++){
 			for(int j = 0; j < maze[i].length; j++){
 				if(maze[j][i] == '+')
 					maze[j][i] = 'D';
 			}
-		}
+		}*/
 	}
 
 	private void placeHero() {

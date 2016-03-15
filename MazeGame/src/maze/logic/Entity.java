@@ -2,7 +2,7 @@ package maze.logic;
 
 import java.awt.Point;
 
-import maze.cli.Game.*;
+import maze.logic.Game.*;
 
 public class Entity {
 	private Point position;

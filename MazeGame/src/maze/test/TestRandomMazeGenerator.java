@@ -30,7 +30,7 @@ public class TestRandomMazeGenerator {
 	@Test
 	public void testGenerateExit() {
 		int size = 21;
-		RandomMazeGenerator rmg = new RandomMazeGenerator(size);
+		RandomMazeGenerator rmg = new RandomMazeGenerator(size, 1);
 		Point exit;
 		//100 attempts
 		for(int i = 0; i < 100; i++) {
@@ -45,7 +45,7 @@ public class TestRandomMazeGenerator {
 	@Test
 	public void testGetValidStartingPosition() {
 		int size = 21;
-		RandomMazeGenerator rmg = new RandomMazeGenerator(size);
+		RandomMazeGenerator rmg = new RandomMazeGenerator(size, 1);
 		Point exit;
 		for(int i = 0; i < 100; i++) {
 			rmg.initializeVariables();
@@ -58,7 +58,7 @@ public class TestRandomMazeGenerator {
 	@Test
 	public void testPlaceHero() {
 		int size = 21;
-		RandomMazeGenerator rmg = new RandomMazeGenerator(size);
+		RandomMazeGenerator rmg = new RandomMazeGenerator(size, 1);
 		Point exit, hero;
 		for(int i = 0; i < 10; i++) {
 			hero = null;

@@ -98,17 +98,16 @@ public class TestMazeWithStationaryDragon {
 		Maze maze = new Maze(m1, GameMode.STATIONARY);
 		assertEquals(false, maze.getHero().getSwordEquipped());
 		assertEquals(1, maze.getDragons().size());
-		maze.moveHero(Direction.LEFT);
-		maze.moveHero(Direction.LEFT);
-		maze.moveHero(Direction.DOWN);
-		maze.moveHero(Direction.DOWN);
+		maze.nextTurn(Direction.LEFT);
+		maze.nextTurn(Direction.LEFT);
+		maze.nextTurn(Direction.DOWN);
+		maze.nextTurn(Direction.DOWN);
 		assertEquals(true, maze.getHero().getSwordEquipped());
-		maze.moveHero(Direction.UP);
-		maze.moveHero(Direction.UP);
-		maze.moveHero(Direction.RIGHT);
-		maze.moveHero(Direction.RIGHT);
-		maze.moveHero(Direction.RIGHT);
-		maze.updateDragons();
+		maze.nextTurn(Direction.UP);
+		maze.nextTurn(Direction.UP);
+		maze.nextTurn(Direction.RIGHT);
+		maze.nextTurn(Direction.RIGHT);
+		maze.nextTurn(Direction.RIGHT);
 		assertEquals(GameState.RUNNING, maze.getGameState());
 	}
 }

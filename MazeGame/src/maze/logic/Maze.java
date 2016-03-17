@@ -69,7 +69,6 @@ public class Maze {
 		if (canMove(hero.getPosition(), direction)) {
 			unsetChar(hero.getPosition());
 			hero.move(direction);
-			update();
 			setChar(hero.getPosition(), hero.getChar());
 			return true;
 		}
@@ -77,6 +76,12 @@ public class Maze {
 		return false;
 	}
 
+	public boolean nextTurn(Direction heroDirection) {
+		boolean heroHasMoved = moveHero(heroDirection);
+		updateDragons();
+		update();
+		return heroHasMoved;
+	}
 
 	public void updateDragons(){
 		switch (gameMode){
@@ -156,8 +161,10 @@ public class Maze {
 
 	public void update() {
 		//Checks if the hero is able to pick up the sword and picks it up
+		//If it does pick it up, update the hero character
 		if (!sword.getPickedUp() && sword.getPosition().equals(hero.getPosition())) {
 			pickUpSword();
+			setChar(hero.getPosition(), hero.getChar());
 		}
 		
 		//Returns an ArrayList of indexes of dragons adjacent to the hero

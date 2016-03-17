@@ -50,8 +50,7 @@ public class GameInterface {
 	}
 
 	private void nextTurn(){
-		if(!maze.moveHero(cli.getHeroDirection()))
+		if(!maze.nextTurn(cli.getHeroDirection()))
 			cli.print("You cannot move in this direction");
-		maze.updateDragons();
 	}
 }

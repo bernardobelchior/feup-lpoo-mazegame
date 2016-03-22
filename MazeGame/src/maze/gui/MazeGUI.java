@@ -7,6 +7,7 @@ import javax.swing.JTextField;
 
 import maze.logic.Game.Direction;
 import maze.logic.Game.GameMode;
+import maze.logic.Game.GameState;
 import maze.logic.Maze;
 import maze.logic.RandomMazeGenerator;
 
@@ -26,6 +27,11 @@ public class MazeGUI {
 	private JFrame mazeGameMenu;
 	private JTextField mazeDimensionTextField;
 	private JTextField dragonNumberTextField;
+	private JButton upButton;
+	private JButton downButton;
+	private JButton rightButton;
+	private JButton leftButton;
+	private JLabel instructionsLabel;
 	private static final String STATIONARY_DRAGON_TEXT = "Stationary";
 	private static final String RANDOM_DRAGON_TEXT = "Random";
 	private static final String SLEEPING_DRAGON_TEXT = "Sleeping";
@@ -103,7 +109,7 @@ public class MazeGUI {
 		gameModeComboBox.addItem(RANDOM_DRAGON_TEXT);
 		gameModeComboBox.addItem(SLEEPING_DRAGON_TEXT);
 		
-		JButton upButton = new JButton("UP");
+		upButton = new JButton("UP");
 		upButton.setEnabled(false);
 		upButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -113,16 +119,7 @@ public class MazeGUI {
 		upButton.setBounds(285, 124, 71, 23);
 		mazeGameMenu.getContentPane().add(upButton);
 
-		JButton finishGameButton = new JButton("Finish Game");
-		finishGameButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);
-			}
-		});
-		finishGameButton.setBounds(247, 45, 137, 23);
-		mazeGameMenu.getContentPane().add(finishGameButton);
-
-		JButton downButton = new JButton("DOWN");
+		downButton = new JButton("DOWN");
 		downButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				nextTurnAndPrint(mazeTextArea, Direction.DOWN);
@@ -132,7 +129,7 @@ public class MazeGUI {
 		downButton.setBounds(285, 191, 71, 23);
 		mazeGameMenu.getContentPane().add(downButton);
 
-		JButton leftButton = new JButton("LEFT");
+		leftButton = new JButton("LEFT");
 		leftButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				nextTurnAndPrint(mazeTextArea, Direction.LEFT);
@@ -142,7 +139,7 @@ public class MazeGUI {
 		leftButton.setBounds(243, 158, 55, 23);
 		mazeGameMenu.getContentPane().add(leftButton);
 
-		JButton rightButton = new JButton("RIGHT");
+		rightButton = new JButton("RIGHT");
 		rightButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				nextTurnAndPrint(mazeTextArea, Direction.RIGHT);
@@ -152,7 +149,16 @@ public class MazeGUI {
 		rightButton.setBounds(336, 157, 63, 23);
 		mazeGameMenu.getContentPane().add(rightButton);
 
-		JLabel instructionsLabel = new JLabel("");
+		JButton finishGameButton = new JButton("Finish Game");
+		finishGameButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
+		finishGameButton.setBounds(247, 45, 137, 23);
+		mazeGameMenu.getContentPane().add(finishGameButton);
+		
+		instructionsLabel = new JLabel("");
 		instructionsLabel.setBounds(230, 247, 169, 14);
 		mazeGameMenu.getContentPane().add(instructionsLabel);
 
@@ -196,26 +202,44 @@ public class MazeGUI {
 
 				maze = new Maze(rmg.getMaze(), gameMode);
 				mazeTextArea.setText(maze.toString());
-				
-				upButton.setEnabled(true);
-				downButton.setEnabled(true);
-				rightButton.setEnabled(true);
-				leftButton.setEnabled(true);
-				
+
 				instructionsLabel.setText("Ready to play!");
+				
+				enableMovementButtons();
 			}
 		});
-
-
+		
 		generateNewMazeButton.setBounds(247, 10, 137, 23);
 		mazeGameMenu.getContentPane().add(generateNewMazeButton);
 	}
 	
+	//FIXME: Change the method name to a more mnemonic one.
 	private void nextTurnAndPrint(JTextArea mazeTextArea, Direction direction){
 		maze.nextTurn(direction);
 		mazeTextArea.setText(maze.toString());
+		checkGameState();
 	}
 	
-	//TODO create method to disable buttons (and create array of buttons)
+	private void checkGameState() {
+		if(maze.getGameState() != GameState.RUNNING) {
+			disableMovementButtons();
+			instructionsLabel.setText("Game over.");
+		}
+	}
+	
+	private void enableMovementButtons() {
+		upButton.setEnabled(true);
+		downButton.setEnabled(true);
+		rightButton.setEnabled(true);
+		leftButton.setEnabled(true);
+	}
+	
+	private void disableMovementButtons() {
+		upButton.setEnabled(false);
+		downButton.setEnabled(false);
+		rightButton.setEnabled(false);
+		leftButton.setEnabled(false);
+	}
+
 	//TODO acabar 3.4 e fazer 3.5
 }

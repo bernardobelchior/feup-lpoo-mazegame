@@ -21,6 +21,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.UIManager;
 import java.awt.Font;
+import javax.swing.JSeparator;
+import javax.swing.JPanel;
 
 public class MazeGUI {
 
@@ -32,6 +34,8 @@ public class MazeGUI {
 	private JButton rightButton;
 	private JButton leftButton;
 	private JLabel instructionsLabel;
+	private JTextArea mazeTextArea;
+	private JPanel mazeImagePanel;
 	private static final String STATIONARY_DRAGON_TEXT = "Stationary";
 	private static final String RANDOM_DRAGON_TEXT = "Random";
 	private static final String SLEEPING_DRAGON_TEXT = "Sleeping";
@@ -72,10 +76,11 @@ public class MazeGUI {
 		mazeGameMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mazeGameMenu.getContentPane().setLayout(null);
 
-		JTextArea mazeTextArea = new JTextArea();
+		mazeTextArea = new JTextArea();
 		mazeTextArea.setFont(new Font("Courier New", Font.PLAIN, 13));
 		mazeTextArea.setEditable(false);
 		mazeTextArea.setBounds(10, 98, 210, 163);
+		mazeTextArea.setVisible(false);
 		mazeGameMenu.getContentPane().add(mazeTextArea);
 		
 		mazeDimensionTextField = new JTextField();
@@ -113,7 +118,7 @@ public class MazeGUI {
 		upButton.setEnabled(false);
 		upButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				nextTurnAndPrint(mazeTextArea, Direction.UP);		
+				nextTurn(Direction.UP);		
 			}
 		});
 		upButton.setBounds(285, 124, 71, 23);
@@ -122,7 +127,7 @@ public class MazeGUI {
 		downButton = new JButton("DOWN");
 		downButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				nextTurnAndPrint(mazeTextArea, Direction.DOWN);
+				nextTurn(Direction.DOWN);
 			}
 		});
 		downButton.setEnabled(false);
@@ -132,7 +137,7 @@ public class MazeGUI {
 		leftButton = new JButton("LEFT");
 		leftButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				nextTurnAndPrint(mazeTextArea, Direction.LEFT);
+				nextTurn(Direction.LEFT);
 			}
 		});
 		leftButton.setEnabled(false);
@@ -142,7 +147,7 @@ public class MazeGUI {
 		rightButton = new JButton("RIGHT");
 		rightButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				nextTurnAndPrint(mazeTextArea, Direction.RIGHT);
+				nextTurn(Direction.RIGHT);
 			}
 		});
 		rightButton.setEnabled(false);
@@ -211,17 +216,19 @@ public class MazeGUI {
 		
 		generateNewMazeButton.setBounds(247, 10, 137, 23);
 		mazeGameMenu.getContentPane().add(generateNewMazeButton);
+		
+		mazeImagePanel = new GraphicsDemo(maze);
+		mazeImagePanel.setBounds(10, 98, 210, 153);
+		mazeGameMenu.getContentPane().add(mazeImagePanel);
 	}
 	
-	//FIXME: Change the method name to a more mnemonic one.
-	private void nextTurnAndPrint(JTextArea mazeTextArea, Direction direction){
+	private void nextTurn(Direction direction){
 		maze.nextTurn(direction);
 		mazeTextArea.setText(maze.toString());
-		checkGameState();
-	}
-	
-	private void checkGameState() {
-		if(maze.getGameState() != GameState.RUNNING) {
+
+		if(maze.getGameState() == GameState.RUNNING) {
+			instructionsLabel.setText("Ready to play!");
+		} else {
 			disableMovementButtons();
 			instructionsLabel.setText("Game over.");
 		}
@@ -240,6 +247,4 @@ public class MazeGUI {
 		rightButton.setEnabled(false);
 		leftButton.setEnabled(false);
 	}
-
-	//TODO acabar 3.4 e fazer 3.5
 }

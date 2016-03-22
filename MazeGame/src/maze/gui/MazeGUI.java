@@ -70,8 +70,8 @@ public class MazeGUI {
 	
 	private void initialize() {
 		mazeGameMenu = new JFrame();
-		mazeGameMenu.setTitle("Maze Game");
 		mazeGameMenu.setResizable(false);
+		mazeGameMenu.setTitle("Maze Game");
 		mazeGameMenu.setBounds(100, 100, 450, 300);
 		mazeGameMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mazeGameMenu.getContentPane().setLayout(null);
@@ -207,7 +207,9 @@ public class MazeGUI {
 
 				maze = new Maze(rmg.getMaze(), gameMode);
 				mazeTextArea.setText(maze.toString());
-
+				((GraphicsDemo) mazeImagePanel).setMaze(maze);
+				mazeImagePanel.repaint();
+				
 				instructionsLabel.setText("Ready to play!");
 				
 				enableMovementButtons();
@@ -217,7 +219,7 @@ public class MazeGUI {
 		generateNewMazeButton.setBounds(247, 10, 137, 23);
 		mazeGameMenu.getContentPane().add(generateNewMazeButton);
 		
-		mazeImagePanel = new GraphicsDemo(maze);
+		mazeImagePanel = new GraphicsDemo();
 		mazeImagePanel.setBounds(10, 98, 210, 153);
 		mazeGameMenu.getContentPane().add(mazeImagePanel);
 	}
@@ -225,6 +227,7 @@ public class MazeGUI {
 	private void nextTurn(Direction direction){
 		maze.nextTurn(direction);
 		mazeTextArea.setText(maze.toString());
+		mazeImagePanel.repaint();
 
 		if(maze.getGameState() == GameState.RUNNING) {
 			instructionsLabel.setText("Ready to play!");

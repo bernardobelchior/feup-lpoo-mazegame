@@ -259,5 +259,9 @@ public class Maze {
 	public ArrayList<Dragon> getDragons() {
 		return dragons;
 	}
+	
+	public char[][] getMazeArray() {
+		return maze;
+	}
 
 }

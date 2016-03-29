@@ -10,9 +10,9 @@ import javax.swing.JPanel;
 import maze.logic.Game.GameState;
 
 public class MazeStateGraphics extends JPanel {
-	private static final String HERO_WIN_PATH = "res/hero_win.jpg";
-	private static final String RUNNING_PATH = "res/hero.png";
-	private static final String DRAGON_WIN_PATH = "res/dragon_win.png"; 
+	private static final String HERO_WIN_PATH = "res/hero_armed.png";
+	private static final String RUNNING_PATH = "res/wall.png";
+	private static final String DRAGON_WIN_PATH = "res/dragon_awaken.png"; 
 	
 	private BufferedImage hero_win = null;
 	private BufferedImage running = null;

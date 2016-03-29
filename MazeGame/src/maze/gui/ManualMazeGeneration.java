@@ -6,12 +6,24 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.JLabel;
+import javax.swing.event.ChangeListener;
+
+import maze.logic.Game.EntityType;
+
+import javax.swing.event.ChangeEvent;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ManualMazeGeneration extends JFrame {
 
 	private JPanel contentPane;
 	private char[][] maze;
 	private int size;
+	private EntityType selectedEntity;
 
 	/**
 	 * Launch the application.
@@ -42,21 +54,47 @@ public class ManualMazeGeneration extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JPanel mazePanel = new JPanel();
-		mazePanel.setBounds(84, 11, 359, 285);
+		JPanel mazePanel = new ManualMazeGeneratorPanel(this);
+		mazePanel.setBounds(100, 11, 343, 285);
 		contentPane.add(mazePanel);
 		
-		JPanel elementsPanel = new ElementPanel();
-		elementsPanel.setBounds(10, 11, 64, 285);
+		JPanel elementsPanel = new ElementPanel(this);
+		elementsPanel.setBounds(10, 123, 80, 173);
 		contentPane.add(elementsPanel);
+		
+		SpinnerNumberModel model = new SpinnerNumberModel(11, 5, 50, 1);
+		JSpinner mazeDimensionSpinner = new JSpinner(model);
+		mazeDimensionSpinner.setBounds(31, 30, 39, 20);
+		contentPane.add(mazeDimensionSpinner);
+		
+		JLabel mazeDimensionLabel = new JLabel("Dimension:");
+		mazeDimensionLabel.setBounds(10, 11, 80, 14);
+		contentPane.add(mazeDimensionLabel);
+		
+		JButton createMazeButton = new JButton("Generate Maze");
+		createMazeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				((ManualMazeGeneratorPanel) mazePanel).generateMaze(((Integer)mazeDimensionSpinner.getValue()).intValue());
+				mazePanel.repaint();
+			}
+		});
+		createMazeButton.setBounds(10, 61, 80, 51);
+		contentPane.add(createMazeButton);
 		this.maze = null;
 		this.size = 11;
+		this.selectedEntity = null;
 	}
 	
 	public void setSize(int size) {
 		if(size > 4)
 			this.size = size;
 	}
-
 	
+	public void setSelectedEntity(EntityType entityType) {
+		this.selectedEntity = entityType;
+	}
+	
+	public EntityType getSelectedEntity() {
+		return selectedEntity;
+	}
 }

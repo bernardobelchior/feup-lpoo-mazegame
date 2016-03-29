@@ -219,9 +219,9 @@ public class MazeGUI {
 				
 				enableMovementButtons();
 				mazeImagePanel.setBounds(mazeImagePanel.getX(), mazeImagePanel.getY(),
-						(maze.getMazeDimension()+1)*MazeGraphics.TEXTURE_SIZE, (maze.getMazeDimension()+1)*MazeGraphics.TEXTURE_SIZE);
+						maze.getMazeDimension()*MazeGraphics.TEXTURE_SIZE, maze.getMazeDimension()*MazeGraphics.TEXTURE_SIZE);
 				mazeGameMenu.setBounds(0, 0,
-						mazeImagePanel.getX() + mazeImagePanel.getWidth(), mazeImagePanel.getY() + mazeImagePanel.getHeight());
+						mazeImagePanel.getX() + mazeImagePanel.getWidth() + 30, mazeImagePanel.getY() + mazeImagePanel.getHeight() + 50);
 			}
 		});
 		

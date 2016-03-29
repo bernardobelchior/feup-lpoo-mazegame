@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 import maze.logic.Maze;
 
 public class MazeGraphics extends JPanel {
-	public static final int TEXTURE_SIZE = 64;
+	public static final int TEXTURE_SIZE = 32;
 
 	private static final String BUSH_PATH = "res/bush.png";
 	private static final String HERO_PATH = "res/hero.png";
@@ -44,7 +44,6 @@ public class MazeGraphics extends JPanel {
 			e.printStackTrace();
 		}
 
-		
 		try {
 			dragon = ImageIO.read(new File(DRAGON_PATH));
 		} catch (Exception e) {

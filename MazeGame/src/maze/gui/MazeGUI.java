@@ -23,8 +23,13 @@ import javax.swing.UIManager;
 import java.awt.Font;
 import javax.swing.JSeparator;
 import javax.swing.JPanel;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class MazeGUI {
+	private static final String STATIONARY_DRAGON_TEXT = "Stationary";
+	private static final String RANDOM_DRAGON_TEXT = "Random";
+	private static final String SLEEPING_DRAGON_TEXT = "Sleeping";
 
 	private JFrame mazeGameMenu;
 	private JTextField mazeDimensionTextField;
@@ -36,9 +41,9 @@ public class MazeGUI {
 	private JLabel instructionsLabel;
 	private JTextArea mazeTextArea;
 	private JPanel mazeImagePanel;
-	private static final String STATIONARY_DRAGON_TEXT = "Stationary";
-	private static final String RANDOM_DRAGON_TEXT = "Random";
-	private static final String SLEEPING_DRAGON_TEXT = "Sleeping";
+	private JPanel mazeStatePanel;
+	private static MazeGUI mazeWindow;
+	
 	private Maze maze;
 
 	/**
@@ -48,8 +53,8 @@ public class MazeGUI {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MazeGUI window = new MazeGUI();
-					window.mazeGameMenu.setVisible(true);
+					mazeWindow = new MazeGUI();
+					mazeWindow.mazeGameMenu.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -70,16 +75,15 @@ public class MazeGUI {
 	
 	private void initialize() {
 		mazeGameMenu = new JFrame();
-		mazeGameMenu.setResizable(false);
 		mazeGameMenu.setTitle("Maze Game");
-		mazeGameMenu.setBounds(100, 100, 450, 300);
+		mazeGameMenu.setBounds(100, 100, 450, 493);
 		mazeGameMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mazeGameMenu.getContentPane().setLayout(null);
 
 		mazeTextArea = new JTextArea();
 		mazeTextArea.setFont(new Font("Courier New", Font.PLAIN, 13));
 		mazeTextArea.setEditable(false);
-		mazeTextArea.setBounds(10, 98, 210, 163);
+		mazeTextArea.setBounds(224, 12, 210, 163);
 		mazeTextArea.setVisible(false);
 		mazeGameMenu.getContentPane().add(mazeTextArea);
 		
@@ -121,7 +125,7 @@ public class MazeGUI {
 				nextTurn(Direction.UP);		
 			}
 		});
-		upButton.setBounds(285, 124, 71, 23);
+		upButton.setBounds(65, 214, 71, 23);
 		mazeGameMenu.getContentPane().add(upButton);
 
 		downButton = new JButton("DOWN");
@@ -131,7 +135,7 @@ public class MazeGUI {
 			}
 		});
 		downButton.setEnabled(false);
-		downButton.setBounds(285, 191, 71, 23);
+		downButton.setBounds(65, 281, 71, 23);
 		mazeGameMenu.getContentPane().add(downButton);
 
 		leftButton = new JButton("LEFT");
@@ -141,7 +145,7 @@ public class MazeGUI {
 			}
 		});
 		leftButton.setEnabled(false);
-		leftButton.setBounds(243, 158, 55, 23);
+		leftButton.setBounds(23, 248, 55, 23);
 		mazeGameMenu.getContentPane().add(leftButton);
 
 		rightButton = new JButton("RIGHT");
@@ -151,7 +155,7 @@ public class MazeGUI {
 			}
 		});
 		rightButton.setEnabled(false);
-		rightButton.setBounds(336, 157, 63, 23);
+		rightButton.setBounds(116, 247, 63, 23);
 		mazeGameMenu.getContentPane().add(rightButton);
 
 		JButton finishGameButton = new JButton("Finish Game");
@@ -160,11 +164,12 @@ public class MazeGUI {
 				System.exit(0);
 			}
 		});
-		finishGameButton.setBounds(247, 45, 137, 23);
+		finishGameButton.setBounds(35, 153, 137, 23);
 		mazeGameMenu.getContentPane().add(finishGameButton);
 		
 		instructionsLabel = new JLabel("");
-		instructionsLabel.setBounds(230, 247, 169, 14);
+		instructionsLabel.setVisible(false);
+		instructionsLabel.setBounds(10, 315, 169, 14);
 		mazeGameMenu.getContentPane().add(instructionsLabel);
 
 		JButton generateNewMazeButton = new JButton("Create New Maze");
@@ -207,21 +212,30 @@ public class MazeGUI {
 
 				maze = new Maze(rmg.getMaze(), gameMode);
 				mazeTextArea.setText(maze.toString());
-				((GraphicsDemo) mazeImagePanel).setMaze(maze);
+				((MazeGraphics) mazeImagePanel).setMaze(maze);
 				mazeImagePanel.repaint();
 				
 				instructionsLabel.setText("Ready to play!");
 				
 				enableMovementButtons();
+				mazeImagePanel.setBounds(mazeImagePanel.getX(), mazeImagePanel.getY(),
+						(maze.getMazeDimension()+1)*MazeGraphics.TEXTURE_SIZE, (maze.getMazeDimension()+1)*MazeGraphics.TEXTURE_SIZE);
+				mazeGameMenu.setBounds(0, 0,
+						mazeImagePanel.getX() + mazeImagePanel.getWidth(), mazeImagePanel.getY() + mazeImagePanel.getHeight());
 			}
 		});
 		
-		generateNewMazeButton.setBounds(247, 10, 137, 23);
+		generateNewMazeButton.setBounds(35, 118, 137, 23);
 		mazeGameMenu.getContentPane().add(generateNewMazeButton);
 		
-		mazeImagePanel = new GraphicsDemo();
-		mazeImagePanel.setBounds(10, 98, 210, 153);
+		mazeImagePanel = new MazeGraphics();
+		mazeImagePanel.setBounds(224, 12, 210, 153);
+		
 		mazeGameMenu.getContentPane().add(mazeImagePanel);
+		
+		mazeStatePanel = new MazeStateGraphics();
+		mazeStatePanel.setBounds(23, 315, 156, 128);
+		mazeGameMenu.getContentPane().add(mazeStatePanel);
 	}
 	
 	private void nextTurn(Direction direction){
@@ -229,6 +243,9 @@ public class MazeGUI {
 		mazeTextArea.setText(maze.toString());
 		mazeImagePanel.repaint();
 
+		((MazeStateGraphics) mazeStatePanel).updateState(maze.getGameState());
+		mazeStatePanel.repaint();
+		
 		if(maze.getGameState() == GameState.RUNNING) {
 			instructionsLabel.setText("Ready to play!");
 		} else {

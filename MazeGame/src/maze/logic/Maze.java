@@ -264,4 +264,7 @@ public class Maze {
 		return maze;
 	}
 
+	public int getMazeDimension() {
+		return maze.length;
+	}
 }

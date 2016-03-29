@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 import maze.logic.Maze;
 
 public class MazeGraphics extends JPanel {
-	public static final int TEXTURE_SIZE = 643;
+	public static final int TEXTURE_SIZE = 64;
 
 	//Images path
 	private static final String WALL_PATH = "res/wall.png";

@@ -1,6 +1,8 @@
 package maze.gui;
 
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
@@ -8,8 +10,9 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import maze.logic.Maze;
+import maze.logic.Game.Direction;
 
-public class MazeGraphics extends JPanel {
+public class MazeGraphics extends JPanel implements KeyListener {
 	public static final int TEXTURE_SIZE = 64;
 
 	//Images path
@@ -34,6 +37,7 @@ public class MazeGraphics extends JPanel {
 
 	public MazeGraphics() {
 		this.maze = null;
+		addKeyListener(this);
 
 		try {
 			wall = ImageIO.read(new File(WALL_PATH));
@@ -119,5 +123,39 @@ public class MazeGraphics extends JPanel {
 				}	
 			}
 		}
+	}
+	
+	public void keyPressed(KeyEvent keyEvent) {
+		switch (keyEvent.getKeyCode()){
+		case KeyEvent.VK_UP:
+		case KeyEvent.VK_W:
+			MazeGUI.mazeWindow.nextTurn(Direction.UP); 
+			break;
+		case KeyEvent.VK_DOWN:
+		case KeyEvent.VK_S:	
+			MazeGUI.mazeWindow.nextTurn(Direction.DOWN);
+			break;
+		case KeyEvent.VK_RIGHT:
+		case KeyEvent.VK_D:
+			MazeGUI.mazeWindow.nextTurn(Direction.RIGHT);
+			break;
+		case KeyEvent.VK_LEFT:
+		case KeyEvent.VK_A:
+			MazeGUI.mazeWindow.nextTurn(Direction.LEFT);
+			break;
+		}
+
+	}
+
+
+	public void keyReleased(KeyEvent arg0) {
+
+
+	}
+
+
+	public void keyTyped(KeyEvent arg0) {
+
+
 	}
 }

@@ -28,7 +28,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class MazeGUI implements KeyListener{
+public class MazeGUI {
 	private static final String STATIONARY_DRAGON_TEXT = "Stationary";
 	private static final String RANDOM_DRAGON_TEXT = "Random";
 	private static final String SLEEPING_DRAGON_TEXT = "Sleeping";
@@ -44,7 +44,7 @@ public class MazeGUI implements KeyListener{
 	private JTextArea mazeTextArea;
 	private JPanel mazeImagePanel;
 	private JPanel mazeStatePanel;
-	private static MazeGUI mazeWindow;
+	public static MazeGUI mazeWindow;
 
 	private Maze maze;
 
@@ -216,6 +216,7 @@ public class MazeGUI implements KeyListener{
 				mazeTextArea.setText(maze.toString());
 				((MazeGraphics) mazeImagePanel).setMaze(maze);
 				mazeImagePanel.repaint();
+				mazeStatePanel.repaint();
 
 				instructionsLabel.setText("Ready to play!");
 
@@ -224,6 +225,7 @@ public class MazeGUI implements KeyListener{
 						maze.getMazeDimension()*MazeGraphics.TEXTURE_SIZE, maze.getMazeDimension()*MazeGraphics.TEXTURE_SIZE);
 				mazeGameMenu.setBounds(0, 0,
 						mazeImagePanel.getX() + mazeImagePanel.getWidth() + 30, mazeImagePanel.getY() + mazeImagePanel.getHeight() + 50);
+				mazeImagePanel.requestFocus();
 			}
 		});
 
@@ -240,7 +242,7 @@ public class MazeGUI implements KeyListener{
 		mazeGameMenu.getContentPane().add(mazeStatePanel);
 	}
 
-	private void nextTurn(Direction direction){
+	public void nextTurn(Direction direction){
 		maze.nextTurn(direction);
 		mazeTextArea.setText(maze.toString());
 		mazeImagePanel.repaint();
@@ -254,6 +256,8 @@ public class MazeGUI implements KeyListener{
 			disableMovementButtons();
 			instructionsLabel.setText("Game over.");
 		}
+		
+		mazeImagePanel.requestFocus();
 	}
 
 	private void enableMovementButtons() {
@@ -270,38 +274,6 @@ public class MazeGUI implements KeyListener{
 		leftButton.setEnabled(false);
 	}
 
+	
 
-	public void keyPressed(KeyEvent keyEvent) {
-		switch (keyEvent.getKeyCode()){
-		case KeyEvent.VK_UP:
-		case KeyEvent.VK_W:
-			nextTurn(Direction.UP); 
-			break;
-		case KeyEvent.VK_DOWN:
-		case KeyEvent.VK_S:	
-			nextTurn(Direction.DOWN);
-			break;
-		case KeyEvent.VK_RIGHT:
-		case KeyEvent.VK_D:
-			nextTurn(Direction.RIGHT);
-			break;
-		case KeyEvent.VK_LEFT:
-		case KeyEvent.VK_A:
-			nextTurn(Direction.LEFT);
-			break;
-		}
-
-	}
-
-
-	public void keyReleased(KeyEvent arg0) {
-
-
-	}
-
-
-	public void keyTyped(KeyEvent arg0) {
-
-
-	}
 }

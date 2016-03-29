@@ -25,8 +25,10 @@ import javax.swing.JSeparator;
 import javax.swing.JPanel;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class MazeGUI {
+public class MazeGUI implements KeyListener{
 	private static final String STATIONARY_DRAGON_TEXT = "Stationary";
 	private static final String RANDOM_DRAGON_TEXT = "Random";
 	private static final String SLEEPING_DRAGON_TEXT = "Sleeping";
@@ -43,7 +45,7 @@ public class MazeGUI {
 	private JPanel mazeImagePanel;
 	private JPanel mazeStatePanel;
 	private static MazeGUI mazeWindow;
-	
+
 	private Maze maze;
 
 	/**
@@ -72,7 +74,7 @@ public class MazeGUI {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	
+
 	private void initialize() {
 		mazeGameMenu = new JFrame();
 		mazeGameMenu.setTitle("Maze Game");
@@ -86,7 +88,7 @@ public class MazeGUI {
 		mazeTextArea.setBounds(224, 12, 210, 163);
 		mazeTextArea.setVisible(false);
 		mazeGameMenu.getContentPane().add(mazeTextArea);
-		
+
 		mazeDimensionTextField = new JTextField();
 		mazeDimensionTextField.setText("11");
 		mazeDimensionTextField.setBounds(114, 14, 93, 14);
@@ -117,7 +119,7 @@ public class MazeGUI {
 		gameModeComboBox.addItem(STATIONARY_DRAGON_TEXT);
 		gameModeComboBox.addItem(RANDOM_DRAGON_TEXT);
 		gameModeComboBox.addItem(SLEEPING_DRAGON_TEXT);
-		
+
 		upButton = new JButton("UP");
 		upButton.setEnabled(false);
 		upButton.addActionListener(new ActionListener() {
@@ -166,7 +168,7 @@ public class MazeGUI {
 		});
 		finishGameButton.setBounds(35, 153, 137, 23);
 		mazeGameMenu.getContentPane().add(finishGameButton);
-		
+
 		instructionsLabel = new JLabel("");
 		instructionsLabel.setVisible(false);
 		instructionsLabel.setBounds(10, 315, 169, 14);
@@ -197,7 +199,7 @@ public class MazeGUI {
 
 				RandomMazeGenerator rmg = new RandomMazeGenerator(size, dragonNumber);
 				GameMode gameMode = GameMode.STATIONARY;
-				
+
 				switch ((String) gameModeComboBox.getSelectedItem()){
 				case MazeGUI.STATIONARY_DRAGON_TEXT :
 					gameMode = GameMode.STATIONARY;
@@ -214,9 +216,9 @@ public class MazeGUI {
 				mazeTextArea.setText(maze.toString());
 				((MazeGraphics) mazeImagePanel).setMaze(maze);
 				mazeImagePanel.repaint();
-				
+
 				instructionsLabel.setText("Ready to play!");
-				
+
 				enableMovementButtons();
 				mazeImagePanel.setBounds(mazeImagePanel.getX(), mazeImagePanel.getY(),
 						maze.getMazeDimension()*MazeGraphics.TEXTURE_SIZE, maze.getMazeDimension()*MazeGraphics.TEXTURE_SIZE);
@@ -224,20 +226,20 @@ public class MazeGUI {
 						mazeImagePanel.getX() + mazeImagePanel.getWidth() + 30, mazeImagePanel.getY() + mazeImagePanel.getHeight() + 50);
 			}
 		});
-		
+
 		generateNewMazeButton.setBounds(35, 118, 137, 23);
 		mazeGameMenu.getContentPane().add(generateNewMazeButton);
-		
+
 		mazeImagePanel = new MazeGraphics();
 		mazeImagePanel.setBounds(224, 12, 210, 153);
-		
+
 		mazeGameMenu.getContentPane().add(mazeImagePanel);
-		
+
 		mazeStatePanel = new MazeStateGraphics();
 		mazeStatePanel.setBounds(23, 315, 156, 128);
 		mazeGameMenu.getContentPane().add(mazeStatePanel);
 	}
-	
+
 	private void nextTurn(Direction direction){
 		maze.nextTurn(direction);
 		mazeTextArea.setText(maze.toString());
@@ -245,7 +247,7 @@ public class MazeGUI {
 
 		((MazeStateGraphics) mazeStatePanel).updateState(maze.getGameState());
 		mazeStatePanel.repaint();
-		
+
 		if(maze.getGameState() == GameState.RUNNING) {
 			instructionsLabel.setText("Ready to play!");
 		} else {
@@ -253,18 +255,53 @@ public class MazeGUI {
 			instructionsLabel.setText("Game over.");
 		}
 	}
-	
+
 	private void enableMovementButtons() {
 		upButton.setEnabled(true);
 		downButton.setEnabled(true);
 		rightButton.setEnabled(true);
 		leftButton.setEnabled(true);
 	}
-	
+
 	private void disableMovementButtons() {
 		upButton.setEnabled(false);
 		downButton.setEnabled(false);
 		rightButton.setEnabled(false);
 		leftButton.setEnabled(false);
+	}
+
+
+	public void keyPressed(KeyEvent keyEvent) {
+		switch (keyEvent.getKeyCode()){
+		case KeyEvent.VK_UP:
+		case KeyEvent.VK_W:
+			nextTurn(Direction.UP); 
+			break;
+		case KeyEvent.VK_DOWN:
+		case KeyEvent.VK_S:	
+			nextTurn(Direction.DOWN);
+			break;
+		case KeyEvent.VK_RIGHT:
+		case KeyEvent.VK_D:
+			nextTurn(Direction.RIGHT);
+			break;
+		case KeyEvent.VK_LEFT:
+		case KeyEvent.VK_A:
+			nextTurn(Direction.LEFT);
+			break;
+		}
+
+	}
+
+
+	public void keyReleased(KeyEvent arg0) {
+
+
+	}
+
+
+	public void keyTyped(KeyEvent arg0) {
+
+
 	}
 }

@@ -77,6 +77,7 @@ public class MazeGUI {
 
 	private void initialize() {
 		mazeGameMenu = new JFrame();
+		mazeGameMenu.setResizable(false);
 		mazeGameMenu.setTitle("Maze Game");
 		mazeGameMenu.setBounds(100, 100, 450, 493);
 		mazeGameMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -224,7 +225,8 @@ public class MazeGUI {
 				mazeImagePanel.setBounds(mazeImagePanel.getX(), mazeImagePanel.getY(),
 						maze.getMazeDimension()*MazeGraphics.TEXTURE_SIZE, maze.getMazeDimension()*MazeGraphics.TEXTURE_SIZE);
 				mazeGameMenu.setBounds(0, 0,
-						mazeImagePanel.getX() + mazeImagePanel.getWidth() + 30, mazeImagePanel.getY() + mazeImagePanel.getHeight() + 50);
+						mazeImagePanel.getX() + mazeImagePanel.getWidth() + 30,
+						Math.max(mazeImagePanel.getY() + mazeImagePanel.getHeight() + 50, mazeStatePanel.getX() + mazeStatePanel.getHeight()));
 				mazeImagePanel.requestFocus();
 			}
 		});

@@ -49,6 +49,7 @@ public class ManualMazeGeneration extends JFrame {
 		setTitle("Manual Generation");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 459, 336);
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -59,7 +60,7 @@ public class ManualMazeGeneration extends JFrame {
 		contentPane.add(mazePanel);
 		
 		JPanel elementsPanel = new ElementPanel(this);
-		elementsPanel.setBounds(10, 123, 80, 173);
+		elementsPanel.setBounds(10, 123, 80, ((ElementPanel) elementsPanel).getElementNumber()*MazeGraphics.TEXTURE_SIZE);
 		contentPane.add(elementsPanel);
 		
 		SpinnerNumberModel model = new SpinnerNumberModel(11, 5, 50, 1);
@@ -74,8 +75,15 @@ public class ManualMazeGeneration extends JFrame {
 		JButton createMazeButton = new JButton("Generate Maze");
 		createMazeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				((ManualMazeGeneratorPanel) mazePanel).generateMaze(((Integer)mazeDimensionSpinner.getValue()).intValue());
+				((ManualMazeGeneratorPanel) mazePanel).generateMaze(((Integer) mazeDimensionSpinner.getValue()).intValue());
 				mazePanel.repaint();
+				
+				mazePanel.setBounds(mazePanel.getX(), mazePanel.getY(),
+						((ManualMazeGeneratorPanel) mazePanel).getMaze().length*MazeGraphics.TEXTURE_SIZE,
+						((ManualMazeGeneratorPanel) mazePanel).getMaze().length*MazeGraphics.TEXTURE_SIZE);
+				setBounds(0, 0, 
+						mazePanel.getX() + mazePanel.getWidth() + 30,
+						Math.min(mazePanel.getY() + mazePanel.getHeight() + 50, elementsPanel.getHeight()));
 			}
 		});
 		createMazeButton.setBounds(10, 61, 80, 51);

@@ -34,7 +34,6 @@ public class ElementPanel extends JPanel{
 		super();
 		this.parent = parent;
 		
-		this.setBounds(10, 11, 80, 285);
 		elements = new ArrayList<JButton>();
 		
 		for(int i = 0; i < 6; i++) {
@@ -85,4 +84,7 @@ public class ElementPanel extends JPanel{
 		});
 	}
 	
+	public int getElementNumber() {
+		return elements.size();
+	}
 }

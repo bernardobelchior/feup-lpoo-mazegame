@@ -194,4 +194,8 @@ public class ManualMazeGeneratorPanel extends JPanel implements MouseListener {
 		
 		 repaint();
 	}
+	
+	public char[][] getMaze() {
+		return maze;
+	}
 }

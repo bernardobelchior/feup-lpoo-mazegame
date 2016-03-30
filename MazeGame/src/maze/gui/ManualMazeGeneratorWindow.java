@@ -76,8 +76,8 @@ public class ManualMazeGeneratorWindow extends JFrame {
 				mazePanel.repaint();
 				
 				mazePanel.setBounds(mazePanel.getX(), mazePanel.getY(),
-						((MazeDrawingPanel) mazePanel).getMaze().length*MazeGraphics.TEXTURE_SIZE,
-						((MazeDrawingPanel) mazePanel).getMaze().length*MazeGraphics.TEXTURE_SIZE);
+						((MazeDrawingPanel) mazePanel).getMazeSize()*MazeGraphics.TEXTURE_SIZE,
+						((MazeDrawingPanel) mazePanel).getMazeSize()*MazeGraphics.TEXTURE_SIZE);
 				setBounds(0, 0, 
 						mazePanel.getX() + mazePanel.getWidth() + 30,
 						Math.max(mazePanel.getY() + mazePanel.getHeight() + 50, elementsPanel.getHeight()));

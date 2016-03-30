@@ -111,12 +111,13 @@ public class MazeDrawingPanel extends JPanel implements MouseListener {
 
 		switch (parent.getSelectedEntity()) {
 		case BLANK:
-			if(maze[e.getY()/MazeGraphics.TEXTURE_SIZE][e.getX()/MazeGraphics.TEXTURE_SIZE] == 'A' ||
-			   maze[e.getY()/MazeGraphics.TEXTURE_SIZE][e.getX()/MazeGraphics.TEXTURE_SIZE] == 'H')
+			if(isHeroOnPosition(e.getX()/MazeGraphics.TEXTURE_SIZE, e.getY()/MazeGraphics.TEXTURE_SIZE))
 				heroPlaced = false;
 			maze[e.getY()/MazeGraphics.TEXTURE_SIZE][e.getX()/MazeGraphics.TEXTURE_SIZE] = ' ';
 			break;
 		case WALL:
+			if(isHeroOnPosition(e.getX()/MazeGraphics.TEXTURE_SIZE, e.getY()/MazeGraphics.TEXTURE_SIZE))
+				heroPlaced = false;
 			maze[e.getY()/MazeGraphics.TEXTURE_SIZE][e.getX()/MazeGraphics.TEXTURE_SIZE] = 'X';
 			break;
 		case HERO_ARMED:
@@ -136,12 +137,18 @@ public class MazeDrawingPanel extends JPanel implements MouseListener {
 			}
 			break;
 		case DRAGON_AWAKEN:
+			if(isHeroOnPosition(e.getX()/MazeGraphics.TEXTURE_SIZE, e.getY()/MazeGraphics.TEXTURE_SIZE))
+				heroPlaced = false;
 			maze[e.getY()/MazeGraphics.TEXTURE_SIZE][e.getX()/MazeGraphics.TEXTURE_SIZE] = 'D';
 			break;
 		case DRAGON_SLEEPING:
+			if(isHeroOnPosition(e.getX()/MazeGraphics.TEXTURE_SIZE, e.getY()/MazeGraphics.TEXTURE_SIZE))
+				heroPlaced = false;
 			maze[e.getY()/MazeGraphics.TEXTURE_SIZE][e.getX()/MazeGraphics.TEXTURE_SIZE] = 'd';
 			break;
 		case SWORD: 
+			if(isHeroOnPosition(e.getX()/MazeGraphics.TEXTURE_SIZE, e.getY()/MazeGraphics.TEXTURE_SIZE))
+				heroPlaced = false;
 			maze[e.getY()/MazeGraphics.TEXTURE_SIZE][e.getX()/MazeGraphics.TEXTURE_SIZE] = 'E';
 			break;
 		default:
@@ -151,7 +158,15 @@ public class MazeDrawingPanel extends JPanel implements MouseListener {
 		repaint();
 	}
 
+	public int getMazeSize() {
+		return maze.length;
+	}
+
 	public char[][] getMaze() {
 		return maze;
+	}
+
+	private boolean isHeroOnPosition(int x, int y) {
+		return (maze[y][x] == 'A' || maze[y][x] == 'H');
 	}
 }

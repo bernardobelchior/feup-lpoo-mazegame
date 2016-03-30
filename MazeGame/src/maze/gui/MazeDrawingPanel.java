@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
@@ -32,18 +33,19 @@ public class MazeDrawingPanel extends JPanel implements MouseListener {
 	public void generateMaze(int size) {
 		setSize(size);
 		maze = new char[size][size];
+		heroPlaced = false;
 
 		//Sets walls all around the maze.
 		for(int y = 0; y < size; y++){
 			maze[y][0] = 'X';
 			maze[y][size-1] = 'X';
 		}
-			
+
 		for(int x = 1; x < size - 1; x++){
 			maze[0][x] = 'X';
 			maze[size-1][x] = 'X';
 		}
-			
+
 		//Sets the rest of the maze as blank spaces.
 		for(int x = 1; x < size - 1; x++) {
 			for(int y = 1; y < size - 1; y++) {
@@ -66,7 +68,6 @@ public class MazeDrawingPanel extends JPanel implements MouseListener {
 				switch (maze[y][x]) {
 				case 'X':
 					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.wall, x, y);
-					System.out.println("X!");
 					break;
 				case 'A':
 					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.heroArmed, x, y);
@@ -109,14 +110,30 @@ public class MazeDrawingPanel extends JPanel implements MouseListener {
 			return;
 
 		switch (parent.getSelectedEntity()) {
+		case BLANK:
+			if(maze[e.getY()/MazeGraphics.TEXTURE_SIZE][e.getX()/MazeGraphics.TEXTURE_SIZE] == 'A' ||
+			   maze[e.getY()/MazeGraphics.TEXTURE_SIZE][e.getX()/MazeGraphics.TEXTURE_SIZE] == 'H')
+				heroPlaced = false;
+			maze[e.getY()/MazeGraphics.TEXTURE_SIZE][e.getX()/MazeGraphics.TEXTURE_SIZE] = ' ';
+			break;
 		case WALL:
 			maze[e.getY()/MazeGraphics.TEXTURE_SIZE][e.getX()/MazeGraphics.TEXTURE_SIZE] = 'X';
 			break;
 		case HERO_ARMED:
-			maze[e.getY()/MazeGraphics.TEXTURE_SIZE][e.getX()/MazeGraphics.TEXTURE_SIZE] = 'A';
+			if(!heroPlaced) {
+				maze[e.getY()/MazeGraphics.TEXTURE_SIZE][e.getX()/MazeGraphics.TEXTURE_SIZE] = 'A';
+				heroPlaced = true;
+			} else {
+				JOptionPane.showMessageDialog(parent, "An hero has already been placed.");
+			}
 			break;
 		case HERO_UNARMED:
-			maze[e.getY()/MazeGraphics.TEXTURE_SIZE][e.getX()/MazeGraphics.TEXTURE_SIZE] = 'H';
+			if(!heroPlaced) {
+				maze[e.getY()/MazeGraphics.TEXTURE_SIZE][e.getX()/MazeGraphics.TEXTURE_SIZE] = 'H';
+				heroPlaced = true;
+			} else {
+				JOptionPane.showMessageDialog(parent, "An hero has already been placed.");
+			}
 			break;
 		case DRAGON_AWAKEN:
 			maze[e.getY()/MazeGraphics.TEXTURE_SIZE][e.getX()/MazeGraphics.TEXTURE_SIZE] = 'D';

@@ -69,6 +69,7 @@ public class MazeGUI {
 	 */
 
 	private void initialize() {
+		MazeGraphics.loadImages();
 		mazeGameMenu = new JFrame();
 		mazeGameMenu.setResizable(false);
 		mazeGameMenu.setTitle("Maze Game");
@@ -107,7 +108,7 @@ public class MazeGUI {
 		dragonModeLabel.setBounds(10, 73, 84, 14);
 		mazeGameMenu.getContentPane().add(dragonModeLabel);
 
-		JComboBox gameModeComboBox = new JComboBox();
+		JComboBox<String> gameModeComboBox = new JComboBox<String>();
 		gameModeComboBox.setBounds(114, 73, 93, 20);
 		mazeGameMenu.getContentPane().add(gameModeComboBox);
 		gameModeComboBox.addItem(STATIONARY_DRAGON_TEXT);

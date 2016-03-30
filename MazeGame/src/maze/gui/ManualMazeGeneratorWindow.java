@@ -19,8 +19,6 @@ import java.awt.event.ActionEvent;
 public class ManualMazeGeneratorWindow extends JFrame {
 
 	private JPanel contentPane;
-	private char[][] maze;
-	private int size;
 	private EntityType selectedEntity;
 
 	/**
@@ -43,6 +41,7 @@ public class ManualMazeGeneratorWindow extends JFrame {
 	 * Create the frame.
 	 */
 	public ManualMazeGeneratorWindow() {
+		MazeGraphics.loadImages();
 		setResizable(false);
 		setTitle("Manual Generation");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -81,19 +80,12 @@ public class ManualMazeGeneratorWindow extends JFrame {
 						((MazeDrawingPanel) mazePanel).getMaze().length*MazeGraphics.TEXTURE_SIZE);
 				setBounds(0, 0, 
 						mazePanel.getX() + mazePanel.getWidth() + 30,
-						Math.min(mazePanel.getY() + mazePanel.getHeight() + 50, elementsPanel.getHeight()));
+						Math.max(mazePanel.getY() + mazePanel.getHeight() + 50, elementsPanel.getHeight()));
 			}
 		});
 		createMazeButton.setBounds(10, 61, 80, 51);
 		contentPane.add(createMazeButton);
-		this.maze = null;
-		this.size = 11;
 		this.selectedEntity = null;
-	}
-	
-	public void setSize(int size) {
-		if(size > 4)
-			this.size = size;
 	}
 	
 	public void setSelectedEntity(EntityType entityType) {

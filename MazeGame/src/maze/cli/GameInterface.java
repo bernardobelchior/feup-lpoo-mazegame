@@ -1,7 +1,6 @@
 package maze.cli;
 
 import maze.logic.Maze;
-import maze.logic.RandomMazeGenerator;
 import maze.logic.Game.*;
 
 public class GameInterface {
@@ -22,16 +21,13 @@ public class GameInterface {
 				{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' } };
 		
 			cli.print("How long do you want the maze to be? (Odd numbers only)");
-			
-			RandomMazeGenerator rmg = new RandomMazeGenerator(cli.getInt(), 1);
-			
+						
 			cli.print("What mode would you like to play in?");
 			cli.print("S for Stationary Dragons.");
 			cli.print("R for Random Movement");
 			cli.print("Everything else for Sleeping and Random Movement");
 
 			maze = new Maze(grid, cli.getGameMode());
-			//maze = new Maze(rmg.getMaze(), cli.getGameMode());
 	}
 
 	public void play(){	

@@ -3,23 +3,26 @@ package maze.gui;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class MazeDrawingPanel extends JPanel implements MouseListener {
 	private char[][] maze;
 	private int size;
+	private boolean heroPlaced = false;
 	private ManualMazeGeneratorWindow parent;
 
 	public MazeDrawingPanel(ManualMazeGeneratorWindow parent) {
 		this.maze = null;
 		this.parent = parent;
+		this.size = 11;
 		addMouseListener(this);
-		MazeGraphics.loadImages();
 	}
 
 	public void setSize(int size) {
-		this.size = size;
+		//Make sure the size is between 5 and 50.
+		this.size = Math.min(50, Math.max(5, size));
 	}
 
 	public void generateMaze() {
@@ -27,16 +30,26 @@ public class MazeDrawingPanel extends JPanel implements MouseListener {
 	}
 
 	public void generateMaze(int size) {
-		this.size = size;
+		setSize(size);
 		maze = new char[size][size];
-		
-		for(int x = 0; x < maze.length; x++) {
-			for(int y = 0; y < maze[x].length; y++) {
+
+		//Sets walls all around the maze.
+		for(int y = 0; y < size; y++){
+			maze[y][0] = 'X';
+			maze[y][size-1] = 'X';
+		}
+			
+		for(int x = 1; x < size - 1; x++){
+			maze[0][x] = 'X';
+			maze[size-1][x] = 'X';
+		}
+			
+		//Sets the rest of the maze as blank spaces.
+		for(int x = 1; x < size - 1; x++) {
+			for(int y = 1; y < size - 1; y++) {
 				maze[y][x] = ' ';
 			}
 		}
-		
-		repaint();
 	}
 
 	public void paintComponent(Graphics g) {
@@ -47,69 +60,54 @@ public class MazeDrawingPanel extends JPanel implements MouseListener {
 	private void drawMaze(Graphics g) {
 		if(maze == null)
 			return;
-		
+
 		for(int x = 0; x < maze.length; x++) {
 			for(int y = 0; y < maze[x].length; y++) {
 				switch (maze[y][x]) {
 				case 'X':
-					g.drawImage(MazeGraphics.wall, x*MazeGraphics.TEXTURE_SIZE, y*MazeGraphics.TEXTURE_SIZE, null);
+					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.wall, x, y);
+					System.out.println("X!");
 					break;
 				case 'A':
-					g.drawImage(MazeGraphics.heroArmed, x*MazeGraphics.TEXTURE_SIZE, y*MazeGraphics.TEXTURE_SIZE, null);
+					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.heroArmed, x, y);
 					break;
 				case 'H':
-					g.drawImage(MazeGraphics.heroUnarmed, x*MazeGraphics.TEXTURE_SIZE, y*MazeGraphics.TEXTURE_SIZE, null);
+					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.heroUnarmed, x, y);
 					break;
 				case 'D':
-					g.drawImage(MazeGraphics.dragonAwaken, x*MazeGraphics.TEXTURE_SIZE, y*MazeGraphics.TEXTURE_SIZE, null);
+					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.dragonAwaken, x, y);
 					break;
 				case 'd':
-					g.drawImage(MazeGraphics.dragonSleeping, x*MazeGraphics.TEXTURE_SIZE, y*MazeGraphics.TEXTURE_SIZE, null);
+					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.dragonSleeping, x, y);
 					break;
 				case 'E':
-					g.drawImage(MazeGraphics.sword, x*MazeGraphics.TEXTURE_SIZE, y*MazeGraphics.TEXTURE_SIZE, null);
+					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.sword, x, y);
 					break;
 				default:
-
 					break;
 				}
-				g.drawImage(MazeGraphics.frame, x*MazeGraphics.TEXTURE_SIZE, y*MazeGraphics.TEXTURE_SIZE, null);
-				if(MazeGraphics.frame == null)
-					System.out.println("sou nulo");
-				System.out.println(MazeGraphics.frame.getHeight());
+				MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.frame, x, y);
 			}
 		}
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseClicked(MouseEvent e) { }
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseEntered(MouseEvent e) { }
 
 	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseExited(MouseEvent e) {	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mousePressed(MouseEvent e) { }
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if(maze == null || parent.getSelectedEntity() == null)
 			return;
-		
+
 		switch (parent.getSelectedEntity()) {
 		case WALL:
 			maze[e.getY()/MazeGraphics.TEXTURE_SIZE][e.getX()/MazeGraphics.TEXTURE_SIZE] = 'X';
@@ -132,10 +130,10 @@ public class MazeDrawingPanel extends JPanel implements MouseListener {
 		default:
 			break;
 		}
-		
-		 repaint();
+
+		repaint();
 	}
-	
+
 	public char[][] getMaze() {
 		return maze;
 	}

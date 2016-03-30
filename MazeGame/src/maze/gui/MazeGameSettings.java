@@ -21,12 +21,12 @@ import java.awt.event.ActionEvent;
 import java.awt.Font;
 import javax.swing.JPanel;
 
-public class MazeGUI {
+public class MazeGameSettings {
 	private static final String STATIONARY_DRAGON_TEXT = "Stationary";
 	private static final String RANDOM_DRAGON_TEXT = "Random";
 	private static final String SLEEPING_DRAGON_TEXT = "Sleeping";
 
-	private JFrame mazeGameMenu;
+	private JFrame mazeGameSettings;
 	private JTextField mazeDimensionTextField;
 	private JTextField dragonNumberTextField;
 	private JButton upButton;
@@ -37,7 +37,7 @@ public class MazeGUI {
 	private JTextArea mazeTextArea;
 	private JPanel mazeImagePanel;
 	private JPanel mazeStatePanel;
-	public static MazeGUI mazeWindow;
+	public static MazeGameSettings mazeWindow;
 
 	private Maze maze;
 
@@ -48,8 +48,8 @@ public class MazeGUI {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					mazeWindow = new MazeGUI();
-					mazeWindow.mazeGameMenu.setVisible(true);
+					mazeWindow = new MazeGameSettings();
+					mazeWindow.mazeGameSettings.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -60,7 +60,7 @@ public class MazeGUI {
 	/**
 	 * Create the application.
 	 */
-	public MazeGUI() {
+	public MazeGameSettings() {
 		initialize();
 	}
 
@@ -70,47 +70,47 @@ public class MazeGUI {
 
 	private void initialize() {
 		MazeGraphics.loadImages();
-		mazeGameMenu = new JFrame();
-		mazeGameMenu.setResizable(false);
-		mazeGameMenu.setTitle("Maze Game");
-		mazeGameMenu.setBounds(100, 100, 450, 493);
-		mazeGameMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mazeGameMenu.getContentPane().setLayout(null);
+		mazeGameSettings = new JFrame();
+		mazeGameSettings.setResizable(false);
+		mazeGameSettings.setTitle("Game Settings");
+		mazeGameSettings.setBounds(100, 100, 450, 493);
+		mazeGameSettings.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mazeGameSettings.getContentPane().setLayout(null);
 
 		mazeTextArea = new JTextArea();
 		mazeTextArea.setFont(new Font("Courier New", Font.PLAIN, 13));
 		mazeTextArea.setEditable(false);
 		mazeTextArea.setBounds(224, 12, 210, 163);
 		mazeTextArea.setVisible(false);
-		mazeGameMenu.getContentPane().add(mazeTextArea);
+		mazeGameSettings.getContentPane().add(mazeTextArea);
 
 		mazeDimensionTextField = new JTextField();
 		mazeDimensionTextField.setText("11");
 		mazeDimensionTextField.setBounds(114, 14, 93, 14);
-		mazeGameMenu.getContentPane().add(mazeDimensionTextField);
+		mazeGameSettings.getContentPane().add(mazeDimensionTextField);
 		mazeDimensionTextField.setColumns(10);
 
 		JLabel mazeDimensionLabel = new JLabel("Maze Dimension:");
 		mazeDimensionLabel.setBounds(10, 11, 84, 20);
-		mazeGameMenu.getContentPane().add(mazeDimensionLabel);
+		mazeGameSettings.getContentPane().add(mazeDimensionLabel);
 
 		JLabel dragonNumberLabel = new JLabel("Number of Dragons:");
 		dragonNumberLabel.setBounds(10, 42, 108, 20);
-		mazeGameMenu.getContentPane().add(dragonNumberLabel);
+		mazeGameSettings.getContentPane().add(dragonNumberLabel);
 
 		dragonNumberTextField = new JTextField();
 		dragonNumberTextField.setText("1");
 		dragonNumberTextField.setColumns(10);
 		dragonNumberTextField.setBounds(114, 45, 93, 14);
-		mazeGameMenu.getContentPane().add(dragonNumberTextField);
+		mazeGameSettings.getContentPane().add(dragonNumberTextField);
 
 		JLabel dragonModeLabel = new JLabel("Dragon Mode:");
 		dragonModeLabel.setBounds(10, 73, 84, 14);
-		mazeGameMenu.getContentPane().add(dragonModeLabel);
+		mazeGameSettings.getContentPane().add(dragonModeLabel);
 
 		JComboBox<String> gameModeComboBox = new JComboBox<String>();
 		gameModeComboBox.setBounds(114, 73, 93, 20);
-		mazeGameMenu.getContentPane().add(gameModeComboBox);
+		mazeGameSettings.getContentPane().add(gameModeComboBox);
 		gameModeComboBox.addItem(STATIONARY_DRAGON_TEXT);
 		gameModeComboBox.addItem(RANDOM_DRAGON_TEXT);
 		gameModeComboBox.addItem(SLEEPING_DRAGON_TEXT);
@@ -123,7 +123,7 @@ public class MazeGUI {
 			}
 		});
 		upButton.setBounds(65, 214, 71, 23);
-		mazeGameMenu.getContentPane().add(upButton);
+		mazeGameSettings.getContentPane().add(upButton);
 
 		downButton = new JButton("DOWN");
 		downButton.addActionListener(new ActionListener() {
@@ -133,7 +133,7 @@ public class MazeGUI {
 		});
 		downButton.setEnabled(false);
 		downButton.setBounds(65, 281, 71, 23);
-		mazeGameMenu.getContentPane().add(downButton);
+		mazeGameSettings.getContentPane().add(downButton);
 
 		leftButton = new JButton("LEFT");
 		leftButton.addActionListener(new ActionListener() {
@@ -143,7 +143,7 @@ public class MazeGUI {
 		});
 		leftButton.setEnabled(false);
 		leftButton.setBounds(23, 248, 55, 23);
-		mazeGameMenu.getContentPane().add(leftButton);
+		mazeGameSettings.getContentPane().add(leftButton);
 
 		rightButton = new JButton("RIGHT");
 		rightButton.addActionListener(new ActionListener() {
@@ -153,7 +153,7 @@ public class MazeGUI {
 		});
 		rightButton.setEnabled(false);
 		rightButton.setBounds(116, 247, 63, 23);
-		mazeGameMenu.getContentPane().add(rightButton);
+		mazeGameSettings.getContentPane().add(rightButton);
 
 		JButton finishGameButton = new JButton("Finish Game");
 		finishGameButton.addActionListener(new ActionListener() {
@@ -162,12 +162,12 @@ public class MazeGUI {
 			}
 		});
 		finishGameButton.setBounds(35, 153, 137, 23);
-		mazeGameMenu.getContentPane().add(finishGameButton);
+		mazeGameSettings.getContentPane().add(finishGameButton);
 
 		instructionsLabel = new JLabel("");
 		instructionsLabel.setVisible(false);
 		instructionsLabel.setBounds(10, 315, 169, 14);
-		mazeGameMenu.getContentPane().add(instructionsLabel);
+		mazeGameSettings.getContentPane().add(instructionsLabel);
 
 		JButton generateNewMazeButton = new JButton("Create New Maze");
 		generateNewMazeButton.addActionListener(new ActionListener() {
@@ -178,7 +178,7 @@ public class MazeGUI {
 					size = Integer.parseInt(mazeDimensionTextField.getText());
 				}
 				catch (NumberFormatException e){
-					JOptionPane.showMessageDialog(mazeGameMenu, "Invalid maze dimension!\nPlease insert a valid integer.");
+					JOptionPane.showMessageDialog(mazeGameSettings, "Invalid maze dimension!\nPlease insert a valid integer.");
 					return;
 				}
 
@@ -188,7 +188,7 @@ public class MazeGUI {
 					dragonNumber= Integer.parseInt(dragonNumberTextField.getText());
 				}
 				catch (NumberFormatException e){
-					JOptionPane.showMessageDialog(mazeGameMenu, "Invalid number of dragons!\nPlease insert a valid integer.");
+					JOptionPane.showMessageDialog(mazeGameSettings, "Invalid number of dragons!\nPlease insert a valid integer.");
 					return;
 				}
 
@@ -196,13 +196,13 @@ public class MazeGUI {
 				GameMode gameMode = GameMode.STATIONARY;
 
 				switch ((String) gameModeComboBox.getSelectedItem()){
-				case MazeGUI.STATIONARY_DRAGON_TEXT :
+				case MazeGameSettings.STATIONARY_DRAGON_TEXT :
 					gameMode = GameMode.STATIONARY;
 					break;
-				case MazeGUI.RANDOM_DRAGON_TEXT :
+				case MazeGameSettings.RANDOM_DRAGON_TEXT :
 					gameMode = GameMode.RANDOM_MOVEMENT;
 					break;
-				case MazeGUI.SLEEPING_DRAGON_TEXT :
+				case MazeGameSettings.SLEEPING_DRAGON_TEXT :
 					gameMode = GameMode.SLEEP_RANDOM_MOVEMENT;
 					break;
 				}
@@ -218,7 +218,7 @@ public class MazeGUI {
 				enableMovementButtons();
 				mazeImagePanel.setBounds(mazeImagePanel.getX(), mazeImagePanel.getY(),
 						maze.getMazeDimension()*MazeGraphics.TEXTURE_SIZE, maze.getMazeDimension()*MazeGraphics.TEXTURE_SIZE);
-				mazeGameMenu.setBounds(0, 0,
+				mazeGameSettings.setBounds(0, 0,
 						mazeImagePanel.getX() + mazeImagePanel.getWidth() + 30,
 						Math.max(mazeImagePanel.getY() + mazeImagePanel.getHeight() + 50, mazeStatePanel.getX() + mazeStatePanel.getHeight()));
 				mazeImagePanel.requestFocus();
@@ -226,16 +226,16 @@ public class MazeGUI {
 		});
 
 		generateNewMazeButton.setBounds(35, 118, 137, 23);
-		mazeGameMenu.getContentPane().add(generateNewMazeButton);
+		mazeGameSettings.getContentPane().add(generateNewMazeButton);
 
 		mazeImagePanel = new MazeDisplayPanel();
 		mazeImagePanel.setBounds(224, 12, 210, 153);
 
-		mazeGameMenu.getContentPane().add(mazeImagePanel);
+		mazeGameSettings.getContentPane().add(mazeImagePanel);
 
 		mazeStatePanel = new MazeStateDisplayPanel();
 		mazeStatePanel.setBounds(23, 315, 156, 128);
-		mazeGameMenu.getContentPane().add(mazeStatePanel);
+		mazeGameSettings.getContentPane().add(mazeStatePanel);
 	}
 
 	public void nextTurn(Direction direction){

@@ -9,7 +9,8 @@ import javax.swing.JPanel;
 
 import maze.logic.Game.GameState;
 
-public class MazeStateGraphics extends JPanel {
+@SuppressWarnings("serial")
+public class MazeStateDisplayPanel extends JPanel {
 	private static final String HERO_WIN_PATH = "res/hero_armed.png";
 	private static final String RUNNING_PATH = "res/wall.png";
 	private static final String DRAGON_WIN_PATH = "res/dragon_awaken.png"; 
@@ -20,7 +21,7 @@ public class MazeStateGraphics extends JPanel {
 	
 	private GameState currentGameState;
 	
-	public MazeStateGraphics() {
+	public MazeStateDisplayPanel() {
 		currentGameState = null;
 		try {
 			hero_win = ImageIO.read(new File(HERO_WIN_PATH));

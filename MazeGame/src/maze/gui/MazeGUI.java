@@ -11,7 +11,6 @@ import maze.logic.Game.GameState;
 import maze.logic.Maze;
 import maze.logic.RandomMazeGenerator;
 
-import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
@@ -19,14 +18,8 @@ import javax.swing.JButton;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.UIManager;
 import java.awt.Font;
-import javax.swing.JSeparator;
 import javax.swing.JPanel;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 public class MazeGUI {
 	private static final String STATIONARY_DRAGON_TEXT = "Stationary";
@@ -215,7 +208,7 @@ public class MazeGUI {
 
 				maze = new Maze(rmg.getMaze(), gameMode);
 				mazeTextArea.setText(maze.toString());
-				((MazeGraphics) mazeImagePanel).setMaze(maze);
+				((MazeDisplayPanel) mazeImagePanel).setMaze(maze);
 				mazeImagePanel.repaint();
 				mazeStatePanel.repaint();
 
@@ -234,12 +227,12 @@ public class MazeGUI {
 		generateNewMazeButton.setBounds(35, 118, 137, 23);
 		mazeGameMenu.getContentPane().add(generateNewMazeButton);
 
-		mazeImagePanel = new MazeGraphics();
+		mazeImagePanel = new MazeDisplayPanel();
 		mazeImagePanel.setBounds(224, 12, 210, 153);
 
 		mazeGameMenu.getContentPane().add(mazeImagePanel);
 
-		mazeStatePanel = new MazeStateGraphics();
+		mazeStatePanel = new MazeStateDisplayPanel();
 		mazeStatePanel.setBounds(23, 315, 156, 128);
 		mazeGameMenu.getContentPane().add(mazeStatePanel);
 	}
@@ -249,7 +242,7 @@ public class MazeGUI {
 		mazeTextArea.setText(maze.toString());
 		mazeImagePanel.repaint();
 
-		((MazeStateGraphics) mazeStatePanel).updateState(maze.getGameState());
+		((MazeStateDisplayPanel) mazeStatePanel).updateState(maze.getGameState());
 		mazeStatePanel.repaint();
 
 		if(maze.getGameState() == GameState.RUNNING) {

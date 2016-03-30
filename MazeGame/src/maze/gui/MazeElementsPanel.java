@@ -2,19 +2,16 @@ package maze.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import maze.logic.Game.EntityType;
 
-public class ElementPanel extends JPanel{
+@SuppressWarnings("serial")
+public class MazeElementsPanel extends JPanel{
 
 
 	//FIXME: Duplicated code. Find a way to resolve the issue.
@@ -28,9 +25,9 @@ public class ElementPanel extends JPanel{
 	private static final String FRAME_PATH = "res/frame.png";
 	
 	private ArrayList<JButton> elements;
-	private ManualMazeGeneration parent;
+	private ManualMazeGeneratorWindow parent;
 	
-	public ElementPanel(ManualMazeGeneration parent) {
+	public MazeElementsPanel(ManualMazeGeneratorWindow parent) {
 		super();
 		this.parent = parent;
 		

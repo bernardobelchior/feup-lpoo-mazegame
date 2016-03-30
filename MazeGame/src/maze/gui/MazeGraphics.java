@@ -1,161 +1,66 @@
 package maze.gui;
 
-import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
 
-import maze.logic.Maze;
-import maze.logic.Game.Direction;
-
-public class MazeGraphics extends JPanel implements KeyListener {
+public class MazeGraphics {
 	public static final int TEXTURE_SIZE = 64;
 
 	//Images path
-	private static final String WALL_PATH = "res/wall.png";
-	private static final String HERO_UNARMED_PATH = "res/hero_unarmed.png";
-	private static final String HERO_ARMED_PATH = "res/hero_armed.png";
-	private static final String DRAGON_AWAKEN_PATH = "res/dragon_awaken.png";
-	private static final String DRAGON_SLEEPING_PATH = "res/dragon_sleeping.png";
-	private static final String SWORD_PATH = "res/sword.png";
+	public static final String WALL_PATH = "res/wall.png";
+	public static final String HERO_UNARMED_PATH = "res/hero_unarmed.png";
+	public static final String HERO_ARMED_PATH = "res/hero_armed.png";
+	public static final String DRAGON_AWAKEN_PATH = "res/dragon_awaken.png";
+	public static final String DRAGON_SLEEPING_PATH = "res/dragon_sleeping.png";
+	public static final String SWORD_PATH = "res/sword.png";
+	public static final String FRAME_PATH = "res/frame.png";
+	public static final String EXIT_PATH = "res/exit.png";
 
 	//Images 
-	private BufferedImage wall = null;		
-	private BufferedImage heroUnarmed = null;
-	private BufferedImage heroArmed = null;
-	private BufferedImage dragonAwaken = null;
-	private BufferedImage dragonSleeping = null;
-	private BufferedImage sword = null;
+	public static BufferedImage wall = null;		
+	public static BufferedImage heroUnarmed = null;
+	public static BufferedImage heroArmed = null;
+	public static BufferedImage dragonAwaken = null;
+	public static BufferedImage dragonSleeping = null;
+	public static BufferedImage sword = null;
+	public static BufferedImage exit = null;
+	public static BufferedImage frame = null;
 	//private BufferedImage deadDragon = null; Maybe?
 
-	private Maze maze;
-
-
-	public MazeGraphics() {
-		this.maze = null;
-		addKeyListener(this);
-
-		try {
-			wall = ImageIO.read(new File(WALL_PATH));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			heroUnarmed = ImageIO.read(new File(HERO_UNARMED_PATH));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			heroArmed = ImageIO.read(new File(HERO_ARMED_PATH));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		try {
-			dragonAwaken = ImageIO.read(new File(DRAGON_AWAKEN_PATH));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		try {
-			dragonSleeping = ImageIO.read(new File(DRAGON_SLEEPING_PATH));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		try {
-			sword = ImageIO.read(new File(SWORD_PATH));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public static void loadImages() {
+		loadImage(dragonAwaken, DRAGON_AWAKEN_PATH);
+		//loadImage(dragonSleeping, DRAGON_SLEEPING_PATH);
+		//loadImage(exit, EXIT_PATH);
+		loadImage(frame, FRAME_PATH);
+		loadImage(heroArmed, HERO_ARMED_PATH);
+		loadImage(heroUnarmed, HERO_UNARMED_PATH);
+		loadImage(sword, SWORD_PATH);
+		loadImage(wall, WALL_PATH);
 	}
+	
 
-	public void setMaze(Maze maze) {
-		this.maze = maze;
-	}
-
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		drawMaze(g);
-	}
-
-	private void drawMaze(Graphics g) {		
-		if(maze == null)
-			return;
-
-		char[][] mazeArray = maze.getMazeArray();
-
-		for(int x = 0; x < mazeArray.length; x++){
-			for(int y = 0; y < mazeArray[x].length; y++) {
-				switch (mazeArray[y][x]) {
-				case 'X':
-					if(wall != null)
-						g.drawImage(wall, x*MazeGraphics.TEXTURE_SIZE, y*MazeGraphics.TEXTURE_SIZE, null);
-					break;
-				case 'E':
-					if(sword != null) 
-						g.drawImage(sword, x*MazeGraphics.TEXTURE_SIZE, y*MazeGraphics.TEXTURE_SIZE, null);						
-					break;
-				case 'H':
-					if(heroUnarmed != null)
-						g.drawImage(heroUnarmed, x*MazeGraphics.TEXTURE_SIZE, y*MazeGraphics.TEXTURE_SIZE, null);
-					break;
-				case 'A':
-					if(heroArmed != null)
-						g.drawImage(heroArmed, x*MazeGraphics.TEXTURE_SIZE, y*MazeGraphics.TEXTURE_SIZE, null);
-					break;
-				case 'D':
-					if(dragonAwaken != null)
-						g.drawImage(dragonAwaken, x*MazeGraphics.TEXTURE_SIZE, y*MazeGraphics.TEXTURE_SIZE, null);
-					break;
-				case 'd':
-					if(dragonSleeping != null)
-						g.drawImage(dragonSleeping, x*MazeGraphics.TEXTURE_SIZE, y*MazeGraphics.TEXTURE_SIZE, null);
-					break;
-				default:
-					break;
-				}	
+	private static void loadImage(BufferedImage image, String path) {
+		if(image == null) {
+			try {
+				image = ImageIO.read(new File(path));
+			} catch (Exception e) {
+				e.printStackTrace();
+				image = null;
 			}
 		}
 	}
 	
-	public void keyPressed(KeyEvent keyEvent) {
-		switch (keyEvent.getKeyCode()){
-		case KeyEvent.VK_UP:
-		case KeyEvent.VK_W:
-			MazeGUI.mazeWindow.nextTurn(Direction.UP); 
-			break;
-		case KeyEvent.VK_DOWN:
-		case KeyEvent.VK_S:	
-			MazeGUI.mazeWindow.nextTurn(Direction.DOWN);
-			break;
-		case KeyEvent.VK_RIGHT:
-		case KeyEvent.VK_D:
-			MazeGUI.mazeWindow.nextTurn(Direction.RIGHT);
-			break;
-		case KeyEvent.VK_LEFT:
-		case KeyEvent.VK_A:
-			MazeGUI.mazeWindow.nextTurn(Direction.LEFT);
-			break;
-		}
-
+	public static void deleteImages() {
+		wall = null;		
+		heroUnarmed = null;
+		heroArmed = null;
+		dragonAwaken = null;
+		dragonSleeping = null;
+		sword = null;
+		exit = null;
+		frame = null;
 	}
 
-
-	public void keyReleased(KeyEvent arg0) {
-
-
-	}
-
-
-	public void keyTyped(KeyEvent arg0) {
-
-
-	}
 }

@@ -19,6 +19,7 @@ public class MazeElementsPanel extends JPanel{
 
 		elements = new ArrayList<JButton>();
 
+		//TODO: Create a derivative of JButton that handles this code better
 		for(int i = 0; i < 8; i++) {
 			JButton button = new JButton();
 			button.setEnabled(true);

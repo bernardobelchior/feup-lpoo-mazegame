@@ -18,6 +18,8 @@ import java.awt.event.ActionEvent;
 @SuppressWarnings("serial")
 public class ManualMazeGeneratorWindow extends JFrame {
 
+	//TODO check if the maze created by the player is valid
+	
 	private JPanel contentPane;
 	private EntityType selectedEntity;
 

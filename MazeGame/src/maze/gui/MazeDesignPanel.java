@@ -8,13 +8,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-public class MazeDrawingPanel extends JPanel implements MouseListener {
+public class MazeDesignPanel extends JPanel implements MouseListener {
 	private char[][] maze;
 	private int size;
 	private boolean heroPlaced = false;
 	private ManualMazeGeneratorWindow parent;
 
-	public MazeDrawingPanel(ManualMazeGeneratorWindow parent) {
+	public MazeDesignPanel(ManualMazeGeneratorWindow parent) {
 		this.maze = null;
 		this.parent = parent;
 		this.size = 11;

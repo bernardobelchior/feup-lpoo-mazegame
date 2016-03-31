@@ -72,19 +72,19 @@ public class MazeDisplayPanel extends JPanel implements KeyListener {
 		switch (keyEvent.getKeyCode()){
 		case KeyEvent.VK_UP:
 		case KeyEvent.VK_W:
-			MazeGameSettings.mazeWindow.getMaze().nextTurn(Direction.UP); 
+			GameSettingsWindow.mazeWindow.getMaze().nextTurn(Direction.UP); 
 			break;
 		case KeyEvent.VK_DOWN:
 		case KeyEvent.VK_S:	
-			MazeGameSettings.mazeWindow.getMaze().nextTurn(Direction.DOWN);
+			GameSettingsWindow.mazeWindow.getMaze().nextTurn(Direction.DOWN);
 			break;
 		case KeyEvent.VK_RIGHT:
 		case KeyEvent.VK_D:
-			MazeGameSettings.mazeWindow.getMaze().nextTurn(Direction.RIGHT);
+			GameSettingsWindow.mazeWindow.getMaze().nextTurn(Direction.RIGHT);
 			break;
 		case KeyEvent.VK_LEFT:
 		case KeyEvent.VK_A:
-			MazeGameSettings.mazeWindow.getMaze().nextTurn(Direction.LEFT);
+			GameSettingsWindow.mazeWindow.getMaze().nextTurn(Direction.LEFT);
 			break;
 		}
 

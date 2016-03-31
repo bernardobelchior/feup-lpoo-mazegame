@@ -11,10 +11,10 @@ import javax.swing.JPanel;
 import maze.logic.Game.EntityType;
 
 @SuppressWarnings("serial")
-public class MazeElementsPanel extends JPanel{
+public class ElementsPanel extends JPanel{
 	private ArrayList<JButton> elements;
 
-	public MazeElementsPanel(ManualMazeGeneratorWindow parent) {
+	public ElementsPanel(ManualMazeGeneratorWindow parent) {
 		super();
 
 		elements = new ArrayList<JButton>();

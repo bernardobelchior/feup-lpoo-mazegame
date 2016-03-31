@@ -1,7 +1,5 @@
 package maze.gui;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 
@@ -11,12 +9,11 @@ import maze.logic.Maze;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
-public class MazeGameTextMode {
+public class TextualGameWindow {
 
 	private JFrame MazeGameTextModeWindow;
 	private JTextArea mazeTextArea;
@@ -28,7 +25,7 @@ public class MazeGameTextMode {
 	private Maze maze;
 
 
-	public MazeGameTextMode(Maze maze) {
+	public TextualGameWindow(Maze maze) {
 		initialize();
 		this.maze = maze;
 		mazeTextArea.setText(maze.toString());

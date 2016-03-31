@@ -1,42 +1,26 @@
 package maze.gui;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
-import javax.swing.JTextArea;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import maze.logic.Maze;
+
 import java.awt.Color;
 import java.awt.Font;
 
-public class MazeGameGraphicalMode {
+public class GraphicalGameWindow {
 
 	private JFrame PlayWindowGraphicalMode;
-	public static MazeGameSettings mazeWindow=new MazeGameSettings();
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MazeGameGraphicalMode window = new MazeGameGraphicalMode(mazeWindow);
-					window.PlayWindowGraphicalMode.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private Maze maze;
 
 	/**
 	 * Create the application.
 	 */
-	public MazeGameGraphicalMode(MazeGameSettings mazeWindow) {
+	public GraphicalGameWindow(Maze maze) {
 		initialize();
+		this.maze = maze;
 	}
 
 	/**

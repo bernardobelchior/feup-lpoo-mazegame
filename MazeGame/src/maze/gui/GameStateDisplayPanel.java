@@ -7,10 +7,10 @@ import javax.swing.JPanel;
 import maze.logic.Game.GameState;
 
 @SuppressWarnings("serial")
-public class MazeStateDisplayPanel extends JPanel {
+public class GameStateDisplayPanel extends JPanel {
 	private GameState currentGameState;
 	
-	public MazeStateDisplayPanel() {
+	public GameStateDisplayPanel() {
 		currentGameState = null;
 	}
 	

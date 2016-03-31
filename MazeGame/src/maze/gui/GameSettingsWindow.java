@@ -5,9 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
-import maze.logic.Game.Direction;
+import maze.cli.GameInterface;
 import maze.logic.Game.GameMode;
-import maze.logic.Game.GameState;
 import maze.logic.Maze;
 import maze.logic.RandomMazeGenerator;
 
@@ -15,29 +14,24 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
-import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.Font;
-import javax.swing.JPanel;
 
 //TODO por esta janela a fechar e abrir as outras automaticamente
 //TODO mudar textbox de dimensaodo labirinto para combobox com limite de 50 e minimo de ? ver a outra
 
-public class MazeGameSettings {
+public class GameSettingsWindow {
 	private static final String STATIONARY_DRAGON_TEXT = "Stationary";
 	private static final String RANDOM_DRAGON_TEXT = "Random";
 	private static final String SLEEPING_DRAGON_TEXT = "Sleeping";
-	private static final String TEXT_MAZE="Text Maze";
-	private static final String GRAPHICAL_MAZE="Graphical Maze";
+	private static final String CONSOLE_MAZE = "Console Maze";
+	private static final String TEXT_MAZE = "Text Maze";
+	private static final String GRAPHICAL_MAZE = "Graphical Maze";
 
 	private JFrame mazeGameSettings;
 	private JTextField mazeDimensionTextField;
 	private JTextField dragonNumberTextField;
-	public static MazeGameSettings mazeWindow;
-	private MazeGameTextMode textMaze;
-	private MazeGameGraphicalMode graphicalMaze;
-
+	public static GameSettingsWindow mazeWindow;
 	private Maze maze;
 
 	/**
@@ -47,7 +41,7 @@ public class MazeGameSettings {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					mazeWindow = new MazeGameSettings();
+					mazeWindow = new GameSettingsWindow();
 					mazeWindow.mazeGameSettings.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -59,7 +53,7 @@ public class MazeGameSettings {
 	/**
 	 * Create the application.
 	 */
-	public MazeGameSettings() {
+	public GameSettingsWindow() {
 		initialize();
 	}
 
@@ -114,8 +108,9 @@ public class MazeGameSettings {
 		JComboBox<String> mazeTypeComboBox = new JComboBox<String>();
 		mazeTypeComboBox.setBounds(114, 111, 93, 20);
 		mazeGameSettings.getContentPane().add(mazeTypeComboBox);
-		mazeTypeComboBox.addItem(TEXT_MAZE);
 		mazeTypeComboBox.addItem(GRAPHICAL_MAZE);
+		mazeTypeComboBox.addItem(TEXT_MAZE);
+		mazeTypeComboBox.addItem(CONSOLE_MAZE);
 
 		JButton generateNewMazeButton = new JButton("Create New Maze");
 		generateNewMazeButton.addActionListener(new ActionListener() {
@@ -144,23 +139,26 @@ public class MazeGameSettings {
 				GameMode gameMode = GameMode.STATIONARY;
 				
 				switch ((String) gameModeComboBox.getSelectedItem()){
-				case MazeGameSettings.STATIONARY_DRAGON_TEXT :
+				case GameSettingsWindow.STATIONARY_DRAGON_TEXT :
 					gameMode = GameMode.STATIONARY;
 					break;
-				case MazeGameSettings.RANDOM_DRAGON_TEXT :
+				case GameSettingsWindow.RANDOM_DRAGON_TEXT :
 					gameMode = GameMode.RANDOM_MOVEMENT;
 					break;
-				case MazeGameSettings.SLEEPING_DRAGON_TEXT :
+				case GameSettingsWindow.SLEEPING_DRAGON_TEXT :
 					gameMode = GameMode.SLEEP_RANDOM_MOVEMENT;
 					break;
 				}
 
 				maze = new Maze(rmg.getMaze(), gameMode);
-
-				if ((String)mazeTypeComboBox.getSelectedItem()==TEXT_MAZE)
-					textMaze = new MazeGameTextMode(maze);
+			
+				if ((String)mazeTypeComboBox.getSelectedItem() == GRAPHICAL_MAZE)
+					new GraphicalGameWindow(maze);
+				else if((String)mazeTypeComboBox.getSelectedItem() == TEXT_MAZE)
+					new TextualGameWindow(maze);
 				else
-					graphicalMaze = new MazeGameGraphicalMode(mazeWindow);
+					new GameInterface(maze);
+					
 				
 				//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					

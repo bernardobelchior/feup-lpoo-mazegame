@@ -7,8 +7,13 @@ public class GameInterface {
 	private Maze maze;
 	private CommandLineInterface cli = new CommandLineInterface();
 
+	public GameInterface(Maze maze) {
+		this.maze = maze;
+		
+		play();
+	}
+	
 	public GameInterface(){
-		//TODO Grid is temporary until we figure out how to place dragons randomly
 			char[][] grid = new char[][] { { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 				{ 'X', 'H', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, 
 				{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
@@ -28,6 +33,7 @@ public class GameInterface {
 			cli.print("Everything else for Sleeping and Random Movement");
 
 			maze = new Maze(grid, cli.getGameMode());
+			play();
 	}
 
 	public void play(){	

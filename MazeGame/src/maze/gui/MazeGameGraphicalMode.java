@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -13,6 +14,7 @@ import java.awt.Font;
 public class MazeGameGraphicalMode {
 
 	private JFrame PlayWindowGraphicalMode;
+	public static MazeGameSettings mazeWindow=new MazeGameSettings();
 
 	/**
 	 * Launch the application.
@@ -21,7 +23,7 @@ public class MazeGameGraphicalMode {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MazeGameGraphicalMode window = new MazeGameGraphicalMode();
+					MazeGameGraphicalMode window = new MazeGameGraphicalMode(mazeWindow);
 					window.PlayWindowGraphicalMode.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -33,7 +35,7 @@ public class MazeGameGraphicalMode {
 	/**
 	 * Create the application.
 	 */
-	public MazeGameGraphicalMode() {
+	public MazeGameGraphicalMode(MazeGameSettings mazeWindow) {
 		initialize();
 	}
 
@@ -47,40 +49,39 @@ public class MazeGameGraphicalMode {
 		PlayWindowGraphicalMode.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		PlayWindowGraphicalMode.getContentPane().setLayout(null);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(273, 11, 275, 176);
-		PlayWindowGraphicalMode.getContentPane().add(textArea);
+		JButton finishGameButton = new JButton("Finish Game");
+		finishGameButton.setForeground(Color.RED);
+		finishGameButton.setFont(new Font("Stencil", Font.BOLD, 15));
+		finishGameButton.setBackground(Color.RED);
+		finishGameButton.setBounds(26, 345, 179, 44);
+		PlayWindowGraphicalMode.getContentPane().add(finishGameButton);
 		
-		JButton button = new JButton("Finish Game");
-		button.setForeground(Color.RED);
-		button.setFont(new Font("Stencil", Font.BOLD, 15));
-		button.setBackground(Color.RED);
-		button.setBounds(26, 345, 179, 44);
-		PlayWindowGraphicalMode.getContentPane().add(button);
+		JButton upButton = new JButton("UP");
+		upButton.setBounds(74, 19, 89, 37);
+		PlayWindowGraphicalMode.getContentPane().add(upButton);
 		
-		JButton button_1 = new JButton("UP");
-		button_1.setBounds(74, 19, 89, 37);
-		PlayWindowGraphicalMode.getContentPane().add(button_1);
+		JButton downButton = new JButton("DOWN");
+		downButton.setBounds(74, 102, 89, 37);
+		PlayWindowGraphicalMode.getContentPane().add(downButton);
 		
-		JButton button_2 = new JButton("DOWN");
-		button_2.setBounds(74, 102, 89, 37);
-		PlayWindowGraphicalMode.getContentPane().add(button_2);
+		JButton leftButton = new JButton("LEFT");
+		leftButton.setBounds(26, 60, 89, 37);
+		PlayWindowGraphicalMode.getContentPane().add(leftButton);
 		
-		JButton button_3 = new JButton("LEFT");
-		button_3.setBounds(26, 60, 89, 37);
-		PlayWindowGraphicalMode.getContentPane().add(button_3);
+		JButton rightButton = new JButton("RIGHT");
+		rightButton.setBounds(116, 60, 89, 37);
+		PlayWindowGraphicalMode.getContentPane().add(rightButton);
 		
-		JButton button_4 = new JButton("RIGHT");
-		button_4.setBounds(116, 60, 89, 37);
-		PlayWindowGraphicalMode.getContentPane().add(button_4);
-		
-		JLabel label = new JLabel("");
-		label.setBounds(26, 169, 179, 14);
-		PlayWindowGraphicalMode.getContentPane().add(label);
+		JLabel instructionsLabel = new JLabel("");
+		instructionsLabel.setBounds(26, 169, 179, 14);
+		PlayWindowGraphicalMode.getContentPane().add(instructionsLabel);
 		
 		JPanel mazeStatePanel = new JPanel();
 		mazeStatePanel.setBounds(26, 194, 179, 140);
 		PlayWindowGraphicalMode.getContentPane().add(mazeStatePanel);
+		
+		JPanel mazeImagePanel = new JPanel();
+		mazeImagePanel.setBounds(236, 19, 203, 167);
+		PlayWindowGraphicalMode.getContentPane().add(mazeImagePanel);
 	}
-
 }

@@ -1,4 +1,4 @@
-package maze.logic;		//TODO explicar margarida os packages
+package maze.logic;		
 
 import java.awt.Point;
 

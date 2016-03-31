@@ -21,10 +21,15 @@ import java.awt.event.ActionEvent;
 import java.awt.Font;
 import javax.swing.JPanel;
 
+//TODO apagar tudo o que está nesta classe que já nao devia estar
+//TODO por esta janela a fechar e abrir as outras automaticamente
+
 public class MazeGameSettings {
 	private static final String STATIONARY_DRAGON_TEXT = "Stationary";
 	private static final String RANDOM_DRAGON_TEXT = "Random";
 	private static final String SLEEPING_DRAGON_TEXT = "Sleeping";
+	private static final String TEXT_MAZE="Text Maze";
+	private static final String GRAPHICAL_MAZE="Graphical Maze";
 
 	private JFrame mazeGameSettings;
 	private JTextField mazeDimensionTextField;
@@ -38,6 +43,8 @@ public class MazeGameSettings {
 	private JPanel mazeImagePanel;
 	private JPanel mazeStatePanel;
 	public static MazeGameSettings mazeWindow;
+	private MazeGameTextMode textMaze;
+	private MazeGameGraphicalMode graphicalMaze;
 
 	private Maze maze;
 
@@ -114,6 +121,16 @@ public class MazeGameSettings {
 		gameModeComboBox.addItem(STATIONARY_DRAGON_TEXT);
 		gameModeComboBox.addItem(RANDOM_DRAGON_TEXT);
 		gameModeComboBox.addItem(SLEEPING_DRAGON_TEXT);
+		
+		JLabel mazeTypeLabel = new JLabel("Maze Type:");
+		mazeTypeLabel.setBounds(10, 114, 68, 14);
+		mazeGameSettings.getContentPane().add(mazeTypeLabel);
+
+		JComboBox<String> mazeTypeComboBox = new JComboBox<String>();
+		mazeTypeComboBox.setBounds(114, 111, 93, 20);
+		mazeGameSettings.getContentPane().add(mazeTypeComboBox);
+		mazeTypeComboBox.addItem(TEXT_MAZE);
+		mazeTypeComboBox.addItem(GRAPHICAL_MAZE);
 
 		upButton = new JButton("UP");
 		upButton.setEnabled(false);
@@ -155,15 +172,6 @@ public class MazeGameSettings {
 		rightButton.setBounds(116, 247, 63, 23);
 		mazeGameSettings.getContentPane().add(rightButton);
 
-		JButton finishGameButton = new JButton("Finish Game");
-		finishGameButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);
-			}
-		});
-		finishGameButton.setBounds(35, 153, 137, 23);
-		mazeGameSettings.getContentPane().add(finishGameButton);
-
 		instructionsLabel = new JLabel("");
 		instructionsLabel.setVisible(false);
 		instructionsLabel.setBounds(10, 315, 169, 14);
@@ -194,7 +202,7 @@ public class MazeGameSettings {
 
 				RandomMazeGenerator rmg = new RandomMazeGenerator(size, dragonNumber);
 				GameMode gameMode = GameMode.STATIONARY;
-
+				
 				switch ((String) gameModeComboBox.getSelectedItem()){
 				case MazeGameSettings.STATIONARY_DRAGON_TEXT :
 					gameMode = GameMode.STATIONARY;
@@ -208,6 +216,17 @@ public class MazeGameSettings {
 				}
 
 				maze = new Maze(rmg.getMaze(), gameMode);
+
+				if ((String)mazeTypeComboBox.getSelectedItem()==TEXT_MAZE)
+					textMaze = new MazeGameTextMode(mazeWindow);
+				else
+					graphicalMaze = new MazeGameGraphicalMode(mazeWindow);
+					
+					
+
+
+				//apartir daqui tem de ir para as outras duas janelas para os construtores
+				
 				mazeTextArea.setText(maze.toString());
 				((MazeDisplayPanel) mazeImagePanel).setMaze(maze);
 				mazeImagePanel.repaint();
@@ -225,7 +244,7 @@ public class MazeGameSettings {
 			}
 		});
 
-		generateNewMazeButton.setBounds(35, 118, 137, 23);
+		generateNewMazeButton.setBounds(42, 152, 137, 23);
 		mazeGameSettings.getContentPane().add(generateNewMazeButton);
 
 		mazeImagePanel = new MazeDisplayPanel();
@@ -236,6 +255,7 @@ public class MazeGameSettings {
 		mazeStatePanel = new MazeStateDisplayPanel();
 		mazeStatePanel.setBounds(23, 315, 156, 128);
 		mazeGameSettings.getContentPane().add(mazeStatePanel);
+
 	}
 
 	public void nextTurn(Direction direction){
@@ -252,7 +272,7 @@ public class MazeGameSettings {
 			disableMovementButtons();
 			instructionsLabel.setText("Game over.");
 		}
-		
+
 		mazeImagePanel.requestFocus();
 	}
 
@@ -270,6 +290,7 @@ public class MazeGameSettings {
 		leftButton.setEnabled(false);
 	}
 
-	
-
+	public Maze getMaze(){
+		return maze;
+	}
 }

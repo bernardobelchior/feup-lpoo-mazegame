@@ -26,8 +26,8 @@ public class MazeGameTextMode {
 	private JButton rightButton;
 	private JButton leftButton;
 	private Maze maze;
-	
-	
+
+
 	public MazeGameTextMode(Maze maze) {
 		initialize();
 		this.maze = maze;
@@ -45,76 +45,83 @@ public class MazeGameTextMode {
 		MazeGameTextModeWindow.setTitle("Play Window");
 		MazeGameTextModeWindow.setBounds(100, 100, 398, 268);
 		MazeGameTextModeWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		MazeGameTextModeWindow.getContentPane().setLayout(null);
 		MazeGameTextModeWindow.setVisible(true);
 		MazeGameTextModeWindow.setEnabled(true);
-		MazeGameTextModeWindow.getContentPane().setLayout(null);
+
+
+		int charWidth =	mazeTextArea.getFontMetrics(mazeTextArea.getFont()).stringWidth(" ");
+		int charHeight = mazeTextArea.getFontMetrics(mazeTextArea.getFont()).getHeight();
+		MazeGameTextModeWindow.setSize(mazeTextArea.getColumns()*charWidth+50,mazeTextArea.getLineCount()*charHeight+50);
 
 		mazeTextArea = new JTextArea();
+		mazeTextArea.setBounds(211, 28, 150, 105);
 		mazeTextArea.setFont(new Font("Courier New", Font.PLAIN, 13));
 		mazeTextArea.setText(maze.toString());
 		mazeTextArea.setVisible(true);
 		mazeTextArea.setEnabled(true);
-		int charWidth =	mazeTextArea.getFontMetrics(mazeTextArea.getFont()).stringWidth(" ");
-		int charHeight = mazeTextArea.getFontMetrics(mazeTextArea.getFont()).getHeight();
-		mazeTextArea.setBounds(211, 28, mazeTextArea.getColumns()*charWidth, mazeTextArea.getLineCount()*charHeight);
 		MazeGameTextModeWindow.getContentPane().add(mazeTextArea);
-		MazeGameTextModeWindow.setSize(mazeTextArea.getX() + mazeTextArea.getWidth(), 
-				mazeTextArea.getY() + mazeTextArea.getHeight());
-		
+
 		JButton finishGameButton = new JButton("Finish Game");
-		
+		finishGameButton.setBounds(22, 26, 89, 23);
+
 		finishGameButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.exit(0);
 			}
 		});
-		finishGameButton.setBounds(22, 26, 89, 23);
 		finishGameButton.setVisible(true);
+		finishGameButton.setEnabled(true);
 		MazeGameTextModeWindow.getContentPane().add(finishGameButton);
 
 		JButton upButton = new JButton("UP");
+		upButton.setBounds(50, 98, 89, 23);
 		upButton.setVisible(true);
+		upButton.setEnabled(true);
 		upButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				nextTurn(Direction.UP);
 			}
 		});
-		upButton.setBounds(50, 98, 89, 23);
 		MazeGameTextModeWindow.getContentPane().add(upButton);
 
 		JButton downButton = new JButton("DOWN");
+		downButton.setBounds(50, 164, 89, 23);
 		downButton.setVisible(true);
+		downButton.setEnabled(true);
 		downButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				nextTurn(Direction.DOWN);
 			}
 		});
-		downButton.setBounds(50, 164, 89, 23);
 		MazeGameTextModeWindow.getContentPane().add(downButton);
 
 		JButton leftButton = new JButton("LEFT");
+		leftButton.setBounds(0, 130, 89, 23);
 		leftButton.setVisible(true);
+		leftButton.setEnabled(true);
 		leftButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				nextTurn(Direction.LEFT);
 			}
 		});
-		leftButton.setBounds(0, 130, 89, 23);
 		MazeGameTextModeWindow.getContentPane().add(leftButton);
 
 		JButton rightButton = new JButton("RIGHT");
+		rightButton.setBounds(99, 130, 89, 23);
 		rightButton.setVisible(true);
+		rightButton.setEnabled(true);
 		rightButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				nextTurn(Direction.RIGHT);
 			}
 		});
-		rightButton.setBounds(99, 130, 89, 23);
 		MazeGameTextModeWindow.getContentPane().add(rightButton);
 
 		JLabel mazeGameStateLabel = new JLabel("");
-		mazeGameStateLabel.setVisible(true);
 		mazeGameStateLabel.setBounds(50, 207, 46, 14);
+		mazeGameStateLabel.setVisible(true);
+		mazeGameStateLabel.setEnabled(true);
 		MazeGameTextModeWindow.getContentPane().add(mazeGameStateLabel);
 	}
 
@@ -123,7 +130,7 @@ public class MazeGameTextMode {
 		maze.nextTurn(direction);
 		mazeTextArea.setText(maze.toString());
 		mazeGameStateLabel.setText("Moves: " + maze.getNumMoves() + "\n");
-		
+
 		if (maze.nextTurn(direction)==false){
 			if (maze.getObstacle()=='X')
 				mazeGameStateLabel.setText("You cannot move into a wall. Try another direction!");
@@ -132,14 +139,14 @@ public class MazeGameTextMode {
 		}
 		else
 			if(maze.getGameState() == GameState.RUNNING) {
-			mazeGameStateLabel.setText("Next move?\n");
-		} else if (maze.getGameState() == GameState.DRAGON_WIN) {
-			disableMovementButtons();
-			mazeGameStateLabel.setText("Game over! Dragon won.\n");
-		}else {
-			disableMovementButtons();
-			mazeGameStateLabel.setText("Game over! You won.\n");
-		}
+				mazeGameStateLabel.setText("Next move?\n");
+			} else if (maze.getGameState() == GameState.DRAGON_WIN) {
+				disableMovementButtons();
+				mazeGameStateLabel.setText("Game over! Dragon won.\n");
+			}else {
+				disableMovementButtons();
+				mazeGameStateLabel.setText("Game over! You won.\n");
+			}
 		mazeTextArea.requestFocus();
 	}
 
@@ -149,7 +156,7 @@ public class MazeGameTextMode {
 		rightButton.setEnabled(true);
 		leftButton.setEnabled(true);
 	}
-	
+
 	private void disableMovementButtons() {
 		upButton.setEnabled(false);
 		downButton.setEnabled(false);

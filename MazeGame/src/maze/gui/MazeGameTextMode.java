@@ -19,7 +19,7 @@ public class MazeGameTextMode {
 	private JFrame PlayWindowTextMode;
 	private JTextArea mazeTextArea;
 	public static MazeGameSettings mazeWindow=new MazeGameSettings();
-	private JLabel instructionsLabel;
+	private JLabel mazeGameStateLabel;
 	private JButton upButton;
 	private JButton downButton;
 	private JButton rightButton;
@@ -50,15 +50,15 @@ public class MazeGameTextMode {
 		
 		mazeTextArea.setText(mazeWindow.getMaze().toString());
 
-		instructionsLabel.setText("Ready to play!");
+		mazeGameStateLabel.setText("Ready to play!");
 
 		enableMovementButtons();
 		
 		//TODO tirar estes comentários depois de ter feito o design da janela
-		/*PlayWindowTextMode.setBounds(0, 0,
+		PlayWindowTextMode.setBounds(0, 0,
 				mazeTextArea.getX() + mazeTextArea.getWidth() + 30,
-				Math.max(mazeTextArea.getY() + mazeTextArea.getHeight() + 50, instructionsLabel.getY() + instructionsLabel.getHeight()+50));
-		mazeTextArea.requestFocus();*/
+				Math.max(mazeTextArea.getY() + mazeTextArea.getHeight() + 50, mazeGameStateLabel.getX() + mazeGameStateLabel.getHeight()));
+		mazeTextArea.requestFocus();
 	}
 
 	/**
@@ -121,27 +121,33 @@ public class MazeGameTextMode {
 		rightButton.setBounds(99, 130, 89, 23);
 		PlayWindowTextMode.getContentPane().add(rightButton);
 
-		JLabel instructionsLabel = new JLabel("");
-		instructionsLabel.setBounds(50, 207, 46, 14);
-		PlayWindowTextMode.getContentPane().add(instructionsLabel);
+		JLabel mazeGameStateLabel = new JLabel("");
+		mazeGameStateLabel.setBounds(50, 207, 46, 14);
+		PlayWindowTextMode.getContentPane().add(mazeGameStateLabel);
 	}
 
 	public void nextTurn(Direction direction){
 
 		mazeWindow.getMaze().nextTurn(direction);
 		mazeTextArea.setText(mazeWindow.getMaze().toString());
+		mazeGameStateLabel.setText("Moves: " + mazeWindow.getMaze().getNumMoves() + "\n");
 		
-		//TODO fazer update de estados na etiqueta de instruçoes e nao no painel de estado
-		/*((MazeStateDisplayPanel) mazeStatePanel).updateState(maze.getGameState());
-		mazeStatePanel.repaint();*/
-		
-		if(mazeWindow.getMaze().getGameState() == GameState.RUNNING) {
-			instructionsLabel.setText("Ready to play!");
-		} else {
-			disableMovementButtons();
-			instructionsLabel.setText("Game over.");
+		if (mazeWindow.getMaze().nextTurn(direction)==false){
+			if (mazeWindow.getMaze().getObstacle()=='X')
+				mazeGameStateLabel.setText("You cannot move into a wall. Try another direction!");
+			else
+				mazeGameStateLabel.setText("You cannot pass the exit until you kil all the dragons");
 		}
-
+		else
+			if(mazeWindow.getMaze().getGameState() == GameState.RUNNING) {
+			mazeGameStateLabel.setText("Next move?\n");
+		} else if (mazeWindow.getMaze().getGameState() == GameState.DRAGON_WIN) {
+			disableMovementButtons();
+			mazeGameStateLabel.setText("Game over! Dragon won.\n");
+		}else {
+			disableMovementButtons();
+			mazeGameStateLabel.setText("Game over! You won.\n");
+		}
 		mazeTextArea.requestFocus();
 	}
 

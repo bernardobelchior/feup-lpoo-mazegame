@@ -158,7 +158,7 @@ public class MazeGameSettings {
 				maze = new Maze(rmg.getMaze(), gameMode);
 
 				if ((String)mazeTypeComboBox.getSelectedItem()==TEXT_MAZE)
-					textMaze = new MazeGameTextMode(mazeWindow);
+					textMaze = new MazeGameTextMode(maze);
 				else
 					graphicalMaze = new MazeGameGraphicalMode(mazeWindow);
 				

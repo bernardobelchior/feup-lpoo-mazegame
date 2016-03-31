@@ -31,6 +31,7 @@ public class MazeGameTextMode {
 	public MazeGameTextMode(Maze maze) {
 		initialize();
 		this.maze = maze;
+		mazeTextArea.setText(maze.toString());
 		mazeGameStateLabel.setText("Ready to play!");
 
 		enableMovementButtons();
@@ -44,20 +45,14 @@ public class MazeGameTextMode {
 		MazeGameTextModeWindow.setResizable(false);
 		MazeGameTextModeWindow.setTitle("Play Window");
 		MazeGameTextModeWindow.setBounds(100, 100, 398, 268);
-		MazeGameTextModeWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		MazeGameTextModeWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		MazeGameTextModeWindow.getContentPane().setLayout(null);
-		MazeGameTextModeWindow.setVisible(true);
 		MazeGameTextModeWindow.setEnabled(true);
-
-
-		int charWidth =	mazeTextArea.getFontMetrics(mazeTextArea.getFont()).stringWidth(" ");
-		int charHeight = mazeTextArea.getFontMetrics(mazeTextArea.getFont()).getHeight();
-		MazeGameTextModeWindow.setSize(mazeTextArea.getColumns()*charWidth+50,mazeTextArea.getLineCount()*charHeight+50);
-
+		MazeGameTextModeWindow.setVisible(true);
+		
 		mazeTextArea = new JTextArea();
 		mazeTextArea.setBounds(211, 28, 150, 105);
 		mazeTextArea.setFont(new Font("Courier New", Font.PLAIN, 13));
-		mazeTextArea.setText(maze.toString());
 		mazeTextArea.setVisible(true);
 		mazeTextArea.setEnabled(true);
 		MazeGameTextModeWindow.getContentPane().add(mazeTextArea);
@@ -123,6 +118,14 @@ public class MazeGameTextMode {
 		mazeGameStateLabel.setVisible(true);
 		mazeGameStateLabel.setEnabled(true);
 		MazeGameTextModeWindow.getContentPane().add(mazeGameStateLabel);
+
+		//FIXME: Dynamic sizing not working properly.
+		int charWidth =	mazeTextArea.getFontMetrics(mazeTextArea.getFont()).stringWidth(" ");
+		int charHeight = mazeTextArea.getFontMetrics(mazeTextArea.getFont()).getHeight();
+		int minY = Math.min(downButton.getY() + downButton.getHeight(), 
+				mazeTextArea.getX() + mazeTextArea.getLineCount()*charHeight+50);
+		MazeGameTextModeWindow.setSize(mazeTextArea.getX() + mazeTextArea.getColumns()*charWidth+50, minY);
+		MazeGameTextModeWindow.setResizable(true);
 	}
 
 	public void nextTurn(Direction direction){

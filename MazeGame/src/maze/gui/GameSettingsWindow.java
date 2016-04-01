@@ -28,6 +28,7 @@ public class GameSettingsWindow {
 	private static final String CONSOLE_MAZE = "Console Maze";
 	private static final String TEXT_MAZE = "Text Maze";
 	private static final String GRAPHICAL_MAZE = "Graphical Maze";
+	private static final String MANUAL_MAZE = "Manual Maze";
 
 	public JFrame mazeGameSettings;
 	public static GameSettingsWindow mazeWindow;
@@ -98,6 +99,7 @@ public class GameSettingsWindow {
 		mazeTypeComboBox.addItem(GRAPHICAL_MAZE);
 		mazeTypeComboBox.addItem(TEXT_MAZE);
 		mazeTypeComboBox.addItem(CONSOLE_MAZE);
+		mazeTypeComboBox.addItem(MANUAL_MAZE);
 		
 		SpinnerNumberModel model = new SpinnerNumberModel(11, 5, 50, 1);
 		JSpinner mazeDimensionSpinner = new JSpinner(model);
@@ -154,8 +156,11 @@ public class GameSettingsWindow {
 				}else if((String)mazeTypeComboBox.getSelectedItem() == TEXT_MAZE){
 					new TextualGameWindow(maze, mazeGameSettings);
 				}
-				else{
+				else if ((String)mazeTypeComboBox.getSelectedItem()==CONSOLE_MAZE){
 					new GameInterface(maze);
+				}
+				else {
+					new ManualMazeGeneratorWindow();
 				}
 					
 			}

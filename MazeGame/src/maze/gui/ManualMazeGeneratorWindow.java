@@ -20,12 +20,13 @@ public class ManualMazeGeneratorWindow extends JFrame {
 
 	//TODO check if the maze created by the player is valid
 	
-	private JPanel contentPane;
+	private JFrame ManualMazeGameWindow;
+	private JPanel manualMazeGameWindow;
 	private EntityType selectedEntity;
 
-	/**
+	/*/**
 	 * Launch the application.
-	 */
+	 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -42,34 +43,36 @@ public class ManualMazeGeneratorWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	
 	public ManualMazeGeneratorWindow() {
 		MazeGraphics.loadImages();
-		setResizable(false);
-		setTitle("Manual Generation");
+		setTitle("Manual Maze Play Window");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 459, 336);
+		setBounds(100, 100, 412, 305);
 		
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		manualMazeGameWindow = new JPanel();
+		manualMazeGameWindow.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(manualMazeGameWindow);
+		manualMazeGameWindow.setLayout(null);
+		manualMazeGameWindow.setEnabled(true);
+		manualMazeGameWindow.setVisible(true);
 		
 		JPanel mazePanel = new MazeDesignPanel(this);
 		mazePanel.setBounds(100, 11, 343, 285);
-		contentPane.add(mazePanel);
+		manualMazeGameWindow.add(mazePanel);
 		
 		JPanel elementsPanel = new ElementsPanel(this);
 		elementsPanel.setBounds(10, 123, 80, ((ElementsPanel) elementsPanel).getElementNumber()*MazeGraphics.TEXTURE_SIZE);
-		contentPane.add(elementsPanel);
+		manualMazeGameWindow.add(elementsPanel);
 		
 		SpinnerNumberModel model = new SpinnerNumberModel(11, 5, 50, 1);
 		JSpinner mazeDimensionSpinner = new JSpinner(model);
 		mazeDimensionSpinner.setBounds(31, 30, 39, 20);
-		contentPane.add(mazeDimensionSpinner);
+		manualMazeGameWindow.add(mazeDimensionSpinner);
 		
 		JLabel mazeDimensionLabel = new JLabel("Dimension:");
 		mazeDimensionLabel.setBounds(10, 11, 80, 14);
-		contentPane.add(mazeDimensionLabel);
+		manualMazeGameWindow.add(mazeDimensionLabel);
 		
 		JButton createMazeButton = new JButton("Generate Maze");
 		createMazeButton.addActionListener(new ActionListener() {
@@ -86,7 +89,7 @@ public class ManualMazeGeneratorWindow extends JFrame {
 			}
 		});
 		createMazeButton.setBounds(10, 61, 80, 51);
-		contentPane.add(createMazeButton);
+		manualMazeGameWindow.add(createMazeButton);
 		this.selectedEntity = null;
 	}
 	

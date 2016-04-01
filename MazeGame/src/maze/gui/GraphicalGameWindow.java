@@ -30,7 +30,12 @@ public class GraphicalGameWindow {
 	 */
 	public GraphicalGameWindow(Maze maze) {
 		initialize();
+		
+		//TODO depois de por isto a funcionar testar movimento com teclas
+		//depois de tudo funcionar tratar da parte visual
+		
 		// TODO por janela dos settings a fechar quando esta abre mazeGameSettings.dispatchEvent(new WindowEvent(mazeGameSettings, WindowEvent.WINDOW_CLOSING));
+		//eventulmente por um botao back  para voltar aos settings
 		this.maze = maze;
 		mazeDisplayPanel=new MazeDisplayPanel();
 		mazeDisplayPanel.setMaze(maze);

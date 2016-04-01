@@ -126,14 +126,15 @@ public class GraphicalGameWindow {
 		}
 
 		mazeDisplayPanel.requestFocus();
-		
-		/*maze.nextTurn(direction);
-		mazeTextArea.setText(maze.toString());
-		mazeGameStateTextArea.setText("Moves: " + maze.getNumMoves() + "\n");
 
 		if (maze.nextTurn(direction)==false){
 			if (maze.getObstacle()=='X')
-				mazeGameStateTextArea.setText("You cannot move into a wall. Try another direction!");
+				if(MazeGraphics.wall != null)
+					g.drawImage(MazeGraphics.wall, 0, 0, null);
+				
+					
+				break;
+				
 			else
 				mazeGameStateTextArea.setText("You cannot pass the exit until you kil all the dragons");
 		}

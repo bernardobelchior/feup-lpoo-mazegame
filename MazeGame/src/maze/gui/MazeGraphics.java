@@ -13,6 +13,7 @@ public class MazeGraphics {
 	private static final String DRAGON_AWAKEN_PATH = "res/dragon_awaken.png";
 	private static final String DRAGON_SLEEPING_PATH = "res/dragon_asleep.png";
 	private static final String EXIT_PATH = "res/exit.jpg";
+	private static final String NO_EXIT = "res/no_exit.jpg";
 	private static final String FRAME_PATH = "res/frame.png";
 	private static final String FLOOR_PATH = "res/floor.jpg";
 	private static final String GAME_RUNNING_PATH = "res/wall.jpg";
@@ -25,6 +26,7 @@ public class MazeGraphics {
 	public static BufferedImage dragonAwaken = null;
 	public static BufferedImage dragonSleeping = null;
 	public static BufferedImage exit = null;
+	public static BufferedImage noExit = null;
 	public static BufferedImage frame = null;
 	public static BufferedImage floor = null;
 	public static BufferedImage gameRunning = null;
@@ -38,6 +40,7 @@ public class MazeGraphics {
 		dragonAwaken = (dragonAwaken == null) ? loadImage(DRAGON_AWAKEN_PATH) : dragonAwaken;
 		dragonSleeping = (dragonSleeping == null) ? loadImage(DRAGON_SLEEPING_PATH) : dragonSleeping;
 		exit = (exit == null) ? loadImage(EXIT_PATH) : exit;
+		noExit = (noExit == null) ? loadImage (NO_EXIT) : noExit;
 		frame = (frame == null) ? loadImage(FRAME_PATH) : frame;
 		floor = (floor == null) ? loadImage(FLOOR_PATH) : floor;
 		gameRunning = (gameRunning == null) ? loadImage(GAME_RUNNING_PATH) : gameRunning;

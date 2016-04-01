@@ -23,6 +23,7 @@ public class GraphicalGameWindow {
 	private JLabel instructionsLabel;
 	private JButton upButton, downButton, leftButton, rightButton;
 	private MazeDisplayPanel mazeDisplayPanel;
+	private GameStateDisplayPanel gameStatePanel = new GameStateDisplayPanel();
 
 	/**
 	 * Create the application.
@@ -35,7 +36,7 @@ public class GraphicalGameWindow {
 		mazeDisplayPanel.setMaze(maze);
 		mazeImagePanel.repaint();
 		mazeStatePanel.repaint();
-		enableMovementButtons();
+	
 	}
 
 	/**
@@ -111,15 +112,15 @@ public class GraphicalGameWindow {
 		mazeImagePanel = new JPanel();
 		mazeImagePanel.setBounds(236, 19, 203, 167);
 		PlayWindowGraphicalMode.getContentPane().add(mazeImagePanel);
-		mazeImagePanel.setEnabled(true);
 		mazeImagePanel.setVisible(true);
+		mazeImagePanel.setEnabled(true);
 	}
 	
 	public void nextTurn(Direction direction){
 		maze.nextTurn(direction);
 		mazeImagePanel.repaint();
 
-	/*	((GameStateDisplayPanel) mazeStatePanel).updateState(maze.getGameState());
+		gameStatePanel.updateState(maze.getGameState());
 		mazeStatePanel.repaint();
 
 		if(maze.getGameState() == GameState.RUNNING) {
@@ -127,7 +128,7 @@ public class GraphicalGameWindow {
 		} else {
 			disableMovementButtons();
 			instructionsLabel.setText("Game over.");
-		}*/
+		}
 
 		mazeImagePanel.requestFocus();
 		
@@ -154,12 +155,6 @@ public class GraphicalGameWindow {
 		mazeTextArea.requestFocus(); */
 	}
 
-	private void enableMovementButtons() {
-		upButton.setEnabled(true);
-		downButton.setEnabled(true);
-		rightButton.setEnabled(true);
-		leftButton.setEnabled(true);
-	}
 
 	private void disableMovementButtons() {
 		upButton.setEnabled(false);

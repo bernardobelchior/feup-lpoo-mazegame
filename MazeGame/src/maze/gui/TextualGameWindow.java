@@ -36,7 +36,6 @@ public class TextualGameWindow {
 		
 		mazeGameStateTextArea.setText("Ready to play!\n");
 
-		enableMovementButtons();
 	}
 
 	/**
@@ -153,13 +152,6 @@ public class TextualGameWindow {
 				mazeGameStateTextArea.setText("Game over! You won.\n");
 			}
 		mazeTextArea.requestFocus();
-	}
-
-	private void enableMovementButtons() {
-		upButton.setEnabled(true);
-		downButton.setEnabled(true);
-		rightButton.setEnabled(true);
-		leftButton.setEnabled(true);
 	}
 
 	private void disableMovementButtons() {

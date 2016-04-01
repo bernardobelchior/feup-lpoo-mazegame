@@ -149,6 +149,8 @@ public class GameSettingsWindow {
 					break;
 				}
 
+				//FIXME: This must be either a random maze
+				//		 or a manually generated one.
 				maze = new Maze(rmg.getMaze(), gameMode);
 			
 				if ((String)mazeTypeComboBox.getSelectedItem() == GRAPHICAL_MAZE){
@@ -159,7 +161,7 @@ public class GameSettingsWindow {
 				else if ((String)mazeTypeComboBox.getSelectedItem()==CONSOLE_MAZE){
 					new GameInterface(maze);
 				}
-				else {
+				else { //Isto não faz sentido... 
 					new ManualMazeGeneratorWindow();
 				}
 					

@@ -18,8 +18,6 @@ public class GraphicalGameWindow {
 
 	private JFrame PlayWindowGraphicalMode;
 	private Maze maze;
-	private JPanel mazeImagePanel;
-	private JPanel mazeStatePanel;
 	private JLabel instructionsLabel;
 	private JButton upButton, downButton, leftButton, rightButton;
 	private MazeDisplayPanel mazeDisplayPanel;
@@ -37,11 +35,8 @@ public class GraphicalGameWindow {
 		// TODO por janela dos settings a fechar quando esta abre mazeGameSettings.dispatchEvent(new WindowEvent(mazeGameSettings, WindowEvent.WINDOW_CLOSING));
 		//eventulmente por um botao back  para voltar aos settings
 		this.maze = maze;
-		mazeDisplayPanel=new MazeDisplayPanel();
 		mazeDisplayPanel.setMaze(maze);
-		mazeImagePanel.repaint();
-		mazeStatePanel.repaint();
-	
+		gameStatePanel.updateState(maze.getGameState());
 	}
 
 	/**
@@ -108,25 +103,20 @@ public class GraphicalGameWindow {
 		instructionsLabel.setBounds(26, 169, 179, 14);
 		PlayWindowGraphicalMode.getContentPane().add(instructionsLabel);
 		
-		mazeStatePanel = new JPanel();
-		mazeStatePanel.setBounds(26, 194, 179, 140);
-		PlayWindowGraphicalMode.getContentPane().add(mazeStatePanel);
-		mazeStatePanel.setEnabled(true);
-		mazeStatePanel.setVisible(true);
+		gameStatePanel = new GameStateDisplayPanel();
+		gameStatePanel.setBounds(26, 194, 179, 140);
+		PlayWindowGraphicalMode.getContentPane().add(gameStatePanel);
 		
-		mazeImagePanel = new JPanel();
-		mazeImagePanel.setBounds(236, 19, 203, 167);
-		PlayWindowGraphicalMode.getContentPane().add(mazeImagePanel);
-		mazeImagePanel.setVisible(true);
-		mazeImagePanel.setEnabled(true);
+		mazeDisplayPanel = new MazeDisplayPanel();
+		mazeDisplayPanel.setBounds(236, 19, 203, 167);
+		PlayWindowGraphicalMode.getContentPane().add(mazeDisplayPanel);
 	}
 	
 	public void nextTurn(Direction direction){
 		maze.nextTurn(direction);
-		mazeImagePanel.repaint();
+		mazeDisplayPanel.repaint();
 
 		gameStatePanel.updateState(maze.getGameState());
-		mazeStatePanel.repaint();
 
 		if(maze.getGameState() == GameState.RUNNING) {
 			instructionsLabel.setText("Ready to play!");
@@ -135,7 +125,7 @@ public class GraphicalGameWindow {
 			instructionsLabel.setText("Game over.");
 		}
 
-		mazeImagePanel.requestFocus();
+		mazeDisplayPanel.requestFocus();
 		
 		/*maze.nextTurn(direction);
 		mazeTextArea.setText(maze.toString());

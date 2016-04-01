@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 
 import maze.cli.GameInterface;
 import maze.logic.Game.GameMode;
@@ -15,10 +16,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
+import javax.swing.JSpinner;
 
-//TODO por esta janela a fechar e abrir as outras automaticamente
-//TODO mudar textbox de dimensaodo labirinto para combobox com limite de 50 e minimo de ? ver a outra
 
 public class GameSettingsWindow {
 	private static final String STATIONARY_DRAGON_TEXT = "Stationary";
@@ -28,9 +29,7 @@ public class GameSettingsWindow {
 	private static final String TEXT_MAZE = "Text Maze";
 	private static final String GRAPHICAL_MAZE = "Graphical Maze";
 
-	private JFrame mazeGameSettings;
-	private JTextField mazeDimensionTextField;
-	private JTextField dragonNumberTextField;
+	public JFrame mazeGameSettings;
 	public static GameSettingsWindow mazeWindow;
 	private Maze maze;
 
@@ -70,12 +69,6 @@ public class GameSettingsWindow {
 		mazeGameSettings.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mazeGameSettings.getContentPane().setLayout(null);
 
-		mazeDimensionTextField = new JTextField();
-		mazeDimensionTextField.setText("11");
-		mazeDimensionTextField.setBounds(114, 14, 93, 14);
-		mazeGameSettings.getContentPane().add(mazeDimensionTextField);
-		mazeDimensionTextField.setColumns(10);
-
 		JLabel mazeDimensionLabel = new JLabel("Maze Dimension:");
 		mazeDimensionLabel.setBounds(10, 11, 84, 20);
 		mazeGameSettings.getContentPane().add(mazeDimensionLabel);
@@ -83,12 +76,6 @@ public class GameSettingsWindow {
 		JLabel dragonNumberLabel = new JLabel("Number of Dragons:");
 		dragonNumberLabel.setBounds(10, 42, 108, 20);
 		mazeGameSettings.getContentPane().add(dragonNumberLabel);
-
-		dragonNumberTextField = new JTextField();
-		dragonNumberTextField.setText("1");
-		dragonNumberTextField.setColumns(10);
-		dragonNumberTextField.setBounds(114, 45, 93, 14);
-		mazeGameSettings.getContentPane().add(dragonNumberTextField);
 
 		JLabel dragonModeLabel = new JLabel("Dragon Mode:");
 		dragonModeLabel.setBounds(10, 73, 84, 14);
@@ -111,24 +98,34 @@ public class GameSettingsWindow {
 		mazeTypeComboBox.addItem(GRAPHICAL_MAZE);
 		mazeTypeComboBox.addItem(TEXT_MAZE);
 		mazeTypeComboBox.addItem(CONSOLE_MAZE);
-
+		
+		SpinnerNumberModel model = new SpinnerNumberModel(11, 5, 50, 1);
+		JSpinner mazeDimensionSpinner = new JSpinner(model);
+		mazeDimensionSpinner.setBounds(114, 11, 50, 20);
+		mazeGameSettings.getContentPane().add(mazeDimensionSpinner);
+		
+		SpinnerNumberModel model1 = new SpinnerNumberModel(1, 1, 10, 1);
+		JSpinner dragonNumberSpinner = new JSpinner(model1);
+		dragonNumberSpinner.setBounds(114, 42, 50, 20);
+		mazeGameSettings.getContentPane().add(dragonNumberSpinner);
+		
 		JButton generateNewMazeButton = new JButton("Create New Maze");
 		generateNewMazeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int size = 11;
+				int size;
 
 				try{
-					size = Integer.parseInt(mazeDimensionTextField.getText());
+					size = ((Integer)mazeDimensionSpinner.getValue()).intValue();
 				}
 				catch (NumberFormatException e){
 					JOptionPane.showMessageDialog(mazeGameSettings, "Invalid maze dimension!\nPlease insert a valid integer.");
 					return;
 				}
 
-				int dragonNumber=1;
+				int dragonNumber;
 
 				try{
-					dragonNumber= Integer.parseInt(dragonNumberTextField.getText());
+					dragonNumber= ((Integer)dragonNumberSpinner.getValue()).intValue();
 				}
 				catch (NumberFormatException e){
 					JOptionPane.showMessageDialog(mazeGameSettings, "Invalid number of dragons!\nPlease insert a valid integer.");
@@ -152,15 +149,14 @@ public class GameSettingsWindow {
 
 				maze = new Maze(rmg.getMaze(), gameMode);
 			
-				if ((String)mazeTypeComboBox.getSelectedItem() == GRAPHICAL_MAZE)
+				if ((String)mazeTypeComboBox.getSelectedItem() == GRAPHICAL_MAZE){
 					new GraphicalGameWindow(maze);
-				else if((String)mazeTypeComboBox.getSelectedItem() == TEXT_MAZE)
+				}else if((String)mazeTypeComboBox.getSelectedItem() == TEXT_MAZE){
 					new TextualGameWindow(maze);
-				else
+				}
+				else{
 					new GameInterface(maze);
-					
-				
-				//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				}
 					
 			}
 		});

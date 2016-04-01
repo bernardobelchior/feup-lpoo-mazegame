@@ -10,6 +10,7 @@ import maze.logic.Maze;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
@@ -17,19 +18,22 @@ public class TextualGameWindow {
 
 	private JFrame MazeGameTextModeWindow;
 	private JTextArea mazeTextArea;
-	private JLabel mazeGameStateLabel;
+	private JTextArea mazeGameStateTextArea;
 	private JButton upButton;
 	private JButton downButton;
 	private JButton rightButton;
 	private JButton leftButton;
 	private Maze maze;
-
+	
+//TODO fix game because the hero is not being killed by the dragon
 
 	public TextualGameWindow(Maze maze) {
+		JFrame.mazeGameSettings.dispatchEvent(new WindowEvent(mazeGameSettings, WindowEvent.WINDOW_CLOSING));
 		initialize();
 		this.maze = maze;
 		mazeTextArea.setText(maze.toString());
-		mazeGameStateLabel.setText("Ready to play!");
+		
+		mazeGameStateTextArea.setText("Ready to play!\n");
 
 		enableMovementButtons();
 	}
@@ -53,6 +57,10 @@ public class TextualGameWindow {
 		mazeTextArea.setVisible(true);
 		mazeTextArea.setEnabled(true);
 		MazeGameTextModeWindow.getContentPane().add(mazeTextArea);
+		
+		mazeGameStateTextArea = new JTextArea();
+		mazeGameStateTextArea.setBounds(213, 163, 148, 79);
+		MazeGameTextModeWindow.getContentPane().add(mazeGameStateTextArea);
 
 		JButton finishGameButton = new JButton("Finish Game");
 		finishGameButton.setBounds(22, 26, 89, 23);
@@ -110,42 +118,38 @@ public class TextualGameWindow {
 		});
 		MazeGameTextModeWindow.getContentPane().add(rightButton);
 
-		JLabel mazeGameStateLabel = new JLabel("");
-		mazeGameStateLabel.setBounds(50, 207, 46, 14);
-		mazeGameStateLabel.setVisible(true);
-		mazeGameStateLabel.setEnabled(true);
-		MazeGameTextModeWindow.getContentPane().add(mazeGameStateLabel);
-
 		//FIXME: Dynamic sizing not working properly.
 		int charWidth =	mazeTextArea.getFontMetrics(mazeTextArea.getFont()).stringWidth(" ");
 		int charHeight = mazeTextArea.getFontMetrics(mazeTextArea.getFont()).getHeight();
 		int minY = Math.min(downButton.getY() + downButton.getHeight(), 
 				mazeTextArea.getX() + mazeTextArea.getLineCount()*charHeight+50);
-		MazeGameTextModeWindow.setSize(mazeTextArea.getX() + mazeTextArea.getColumns()*charWidth+50, minY);
+		MazeGameTextModeWindow.setSize(412, 292);
 		MazeGameTextModeWindow.setResizable(true);
 	}
 
 	public void nextTurn(Direction direction){
 
+		//TODO corrigir contador de moves, statetextarea e movimentaçoes estranhas do heroi
+		
 		maze.nextTurn(direction);
 		mazeTextArea.setText(maze.toString());
-		mazeGameStateLabel.setText("Moves: " + maze.getNumMoves() + "\n");
+		mazeGameStateTextArea.setText("Moves: " + maze.getNumMoves() + "\n");
 
 		if (maze.nextTurn(direction)==false){
 			if (maze.getObstacle()=='X')
-				mazeGameStateLabel.setText("You cannot move into a wall. Try another direction!");
+				mazeGameStateTextArea.setText("You cannot move into a wall. Try another direction!");
 			else
-				mazeGameStateLabel.setText("You cannot pass the exit until you kil all the dragons");
+				mazeGameStateTextArea.setText("You cannot pass the exit until you kil all the dragons");
 		}
 		else
 			if(maze.getGameState() == GameState.RUNNING) {
-				mazeGameStateLabel.setText("Next move?\n");
+				mazeGameStateTextArea.setText("Next move?\n");
 			} else if (maze.getGameState() == GameState.DRAGON_WIN) {
 				disableMovementButtons();
-				mazeGameStateLabel.setText("Game over! Dragon won.\n");
+				mazeGameStateTextArea.setText("Game over! Dragon won.\n");
 			}else {
 				disableMovementButtons();
-				mazeGameStateLabel.setText("Game over! You won.\n");
+				mazeGameStateTextArea.setText("Game over! You won.\n");
 			}
 		mazeTextArea.requestFocus();
 	}

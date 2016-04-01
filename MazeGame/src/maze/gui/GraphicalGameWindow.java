@@ -63,7 +63,7 @@ public class GraphicalGameWindow {
 		finishGameButton.setBounds(26, 345, 179, 44);
 		PlayWindowGraphicalMode.getContentPane().add(finishGameButton);
 		
-		JButton upButton = new JButton("UP");
+		upButton = new JButton("UP");
 		upButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				nextTurn(Direction.UP);
@@ -72,7 +72,7 @@ public class GraphicalGameWindow {
 		upButton.setBounds(74, 19, 89, 37);
 		PlayWindowGraphicalMode.getContentPane().add(upButton);
 		
-		JButton downButton = new JButton("DOWN");
+		downButton = new JButton("DOWN");
 		downButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				nextTurn(Direction.DOWN);
@@ -81,7 +81,7 @@ public class GraphicalGameWindow {
 		downButton.setBounds(74, 102, 89, 37);
 		PlayWindowGraphicalMode.getContentPane().add(downButton);
 		
-		JButton leftButton = new JButton("LEFT");
+		leftButton = new JButton("LEFT");
 		leftButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				nextTurn(Direction.LEFT);
@@ -90,7 +90,7 @@ public class GraphicalGameWindow {
 		leftButton.setBounds(26, 60, 89, 37);
 		PlayWindowGraphicalMode.getContentPane().add(leftButton);
 		
-		JButton rightButton = new JButton("RIGHT");
+		rightButton = new JButton("RIGHT");
 		rightButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				nextTurn(Direction.RIGHT);
@@ -99,7 +99,7 @@ public class GraphicalGameWindow {
 		rightButton.setBounds(116, 60, 89, 37);
 		PlayWindowGraphicalMode.getContentPane().add(rightButton);
 		
-		JLabel instructionsLabel = new JLabel("");
+		instructionsLabel = new JLabel("");
 		instructionsLabel.setBounds(26, 169, 179, 14);
 		PlayWindowGraphicalMode.getContentPane().add(instructionsLabel);
 		

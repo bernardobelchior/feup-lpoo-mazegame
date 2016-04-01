@@ -74,7 +74,7 @@ public class TextualGameWindow {
 		finishGameButton.setEnabled(true);
 		MazeGameTextModeWindow.getContentPane().add(finishGameButton);
 
-		JButton upButton = new JButton("UP");
+		upButton = new JButton("UP");
 		upButton.setBounds(50, 98, 89, 23);
 		upButton.setVisible(true);
 		upButton.setEnabled(true);
@@ -85,7 +85,7 @@ public class TextualGameWindow {
 		});
 		MazeGameTextModeWindow.getContentPane().add(upButton);
 
-		JButton downButton = new JButton("DOWN");
+		downButton = new JButton("DOWN");
 		downButton.setBounds(50, 164, 89, 23);
 		downButton.setVisible(true);
 		downButton.setEnabled(true);
@@ -96,7 +96,7 @@ public class TextualGameWindow {
 		});
 		MazeGameTextModeWindow.getContentPane().add(downButton);
 
-		JButton leftButton = new JButton("LEFT");
+		leftButton = new JButton("LEFT");
 		leftButton.setBounds(0, 130, 89, 23);
 		leftButton.setVisible(true);
 		leftButton.setEnabled(true);
@@ -107,7 +107,7 @@ public class TextualGameWindow {
 		});
 		MazeGameTextModeWindow.getContentPane().add(leftButton);
 
-		JButton rightButton = new JButton("RIGHT");
+		rightButton = new JButton("RIGHT");
 		rightButton.setBounds(99, 130, 89, 23);
 		rightButton.setVisible(true);
 		rightButton.setEnabled(true);

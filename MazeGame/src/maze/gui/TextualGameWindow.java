@@ -25,11 +25,12 @@ public class TextualGameWindow {
 	private JButton leftButton;
 	private Maze maze;
 	
+	
 //TODO fix game because the hero is not being killed by the dragon
 
-	public TextualGameWindow(Maze maze) {
-		JFrame.mazeGameSettings.dispatchEvent(new WindowEvent(mazeGameSettings, WindowEvent.WINDOW_CLOSING));
+	public TextualGameWindow(Maze maze, JFrame mazeGameSettings) {
 		initialize();
+		// TODO por janela dos settings a fechar quando esta abre mazeGameSettings.dispatchEvent(new WindowEvent(mazeGameSettings, WindowEvent.WINDOW_CLOSING));
 		this.maze = maze;
 		mazeTextArea.setText(maze.toString());
 		

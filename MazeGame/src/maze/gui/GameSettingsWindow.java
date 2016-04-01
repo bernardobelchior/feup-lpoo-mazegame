@@ -152,7 +152,7 @@ public class GameSettingsWindow {
 				if ((String)mazeTypeComboBox.getSelectedItem() == GRAPHICAL_MAZE){
 					new GraphicalGameWindow(maze);
 				}else if((String)mazeTypeComboBox.getSelectedItem() == TEXT_MAZE){
-					new TextualGameWindow(maze);
+					new TextualGameWindow(maze, mazeGameSettings);
 				}
 				else{
 					new GameInterface(maze);
@@ -165,7 +165,6 @@ public class GameSettingsWindow {
 		mazeGameSettings.getContentPane().add(generateNewMazeButton);
 
 	}
-
 
 	public Maze getMaze(){
 		return maze;

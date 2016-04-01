@@ -11,15 +11,15 @@ public class MazeGraphics {
 
 	//Images path
 	private static final String DRAGON_AWAKEN_PATH = "res/dragon_awaken.png";
-	private static final String DRAGON_SLEEPING_PATH = "res/dragon_sleeping.png";
-	private static final String EXIT_PATH = "res/exit.png";
+	private static final String DRAGON_SLEEPING_PATH = "res/dragon_asleep.png";
+	private static final String EXIT_PATH = "res/exit.jpg";
 	private static final String FRAME_PATH = "res/frame.png";
-	private static final String FLOOR_PATH = "res/floor.png";
-	private static final String GAME_RUNNING_PATH = "res/wall.png";
+	private static final String FLOOR_PATH = "res/floor.jpg";
+	private static final String GAME_RUNNING_PATH = "res/wall.jpg";
 	private static final String HERO_ARMED_PATH = "res/hero_armed.png";
 	private static final String HERO_UNARMED_PATH = "res/hero_unarmed.png";
 	private static final String SWORD_PATH = "res/sword.png";
-	private static final String WALL_PATH = "res/wall.png";
+	private static final String WALL_PATH = "res/wall.jpg";
 	
 	//Images 	
 	public static BufferedImage dragonAwaken = null;

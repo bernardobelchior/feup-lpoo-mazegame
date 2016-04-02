@@ -2,31 +2,32 @@ package maze.gui;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+
 import maze.logic.Maze;
 import maze.logic.Game.Direction;
 import maze.logic.Game.GameState;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 
 public class GraphicalGameWindow {
-
 	private JFrame graphicalGameFrame;
-	private Maze maze;
 	private JLabel instructionsLabel;
-	//private JButton upButton, downButton, leftButton, rightButton;
 	private MazeDisplayPanel mazeDisplayPanel;
+	private JScrollPane mazeDisplayScrollPane;
 	private GameStateDisplayPanel gameStatePanel = new GameStateDisplayPanel();
+
+	private Maze maze;
 
 	/**
 	 * Create the application.
 	 */
 	public GraphicalGameWindow(Maze maze) {
-		initialize();
 		this.maze = maze;
-		prepareComponents();
-		
+		initialize();
+
 		gameStatePanel.updateState(maze.getGameState());
 		mazeDisplayPanel.requestFocusInWindow();
 	}
@@ -38,37 +39,24 @@ public class GraphicalGameWindow {
 		graphicalGameFrame = new JFrame();
 		graphicalGameFrame.setTitle("Play Window");
 		graphicalGameFrame.setBounds(100, 100, 622, 482);
+		graphicalGameFrame.setLayout(new BorderLayout());
 		graphicalGameFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		graphicalGameFrame.getContentPane().setLayout(null);
+		graphicalGameFrame.getContentPane().setLayout(new BorderLayout());	
 		graphicalGameFrame.setEnabled(true);
-		graphicalGameFrame.setResizable(false);
+		graphicalGameFrame.setResizable(true);
 		graphicalGameFrame.setVisible(true);
-				
-		instructionsLabel = new JLabel("");
-		instructionsLabel.setBounds(26, 169, 179, 14);
-		graphicalGameFrame.getContentPane().add(instructionsLabel);
-		
-	/*	gameStatePanel = new GameStateDisplayPanel();
-		gameStatePanel.setBounds(26, 194, 179, 140);
-		graphicalGameFrame.getContentPane().add(gameStatePanel);*/
-		
+			
 		mazeDisplayPanel = new MazeDisplayPanel(this);
-		mazeDisplayPanel.setBounds(0, 0, 203, 167);
-		graphicalGameFrame.getContentPane().add(mazeDisplayPanel);
+		mazeDisplayPanel.setPreferredSize(new Dimension (maze.getMazeDimension()*MazeGraphics.TEXTURE_SIZE, maze.getMazeDimension()*MazeGraphics.TEXTURE_SIZE));
+
+		mazeDisplayScrollPane = new JScrollPane(mazeDisplayPanel);
+		mazeDisplayScrollPane.setBounds(0, 0, 300, 300);
+		graphicalGameFrame.getContentPane().add(mazeDisplayScrollPane, BorderLayout.CENTER);
+
+		instructionsLabel = new JLabel("");
+		graphicalGameFrame.getContentPane().add(instructionsLabel, BorderLayout.PAGE_END);		
 	}
-	
-	private void prepareComponents() {
-		mazeDisplayPanel.setSize(maze.getMazeDimension()*MazeGraphics.TEXTURE_SIZE, maze.getMazeDimension()*MazeGraphics.TEXTURE_SIZE);
-		graphicalGameFrame.setSize(mazeDisplayPanel.getX() + mazeDisplayPanel.getWidth(),
-										mazeDisplayPanel.getY() + mazeDisplayPanel.getHeight() + 45);
-		instructionsLabel.setBounds(0, graphicalGameFrame.getHeight() - 20, graphicalGameFrame.getWidth(), 20);
-		
-		//Gets the screenSize to center the window
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		graphicalGameFrame.setLocation((screenSize.width - graphicalGameFrame.getWidth())/2,
-											(screenSize.height - graphicalGameFrame.getHeight())/2);
-	}
-	
+
 	public void nextTurn(Direction direction){
 		maze.nextTurn(direction);
 		mazeDisplayPanel.repaint();
@@ -86,10 +74,10 @@ public class GraphicalGameWindow {
 			if (maze.getObstacle()=='X')
 				if(MazeGraphics.wall != null)
 					g.drawImage(MazeGraphics.wall, 0, 0, null);
-				
-					
+
+
 				break;
-				
+
 			else
 				instructionsLabel.setText("You cannot pass the exit until you kil all the dragons");
 		}

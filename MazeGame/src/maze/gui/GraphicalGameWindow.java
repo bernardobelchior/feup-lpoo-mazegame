@@ -1,25 +1,21 @@
 package maze.gui;
 
 import javax.swing.JFrame;
-import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 import maze.logic.Maze;
 import maze.logic.Game.Direction;
 import maze.logic.Game.GameState;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
 
 public class GraphicalGameWindow {
 
-	private JFrame PlayWindowGraphicalMode;
+	private JFrame graphicalGameFrame;
 	private Maze maze;
 	private JLabel instructionsLabel;
-	private JButton upButton, downButton, leftButton, rightButton;
+	//private JButton upButton, downButton, leftButton, rightButton;
 	private MazeDisplayPanel mazeDisplayPanel;
 	private GameStateDisplayPanel gameStatePanel = new GameStateDisplayPanel();
 
@@ -28,88 +24,49 @@ public class GraphicalGameWindow {
 	 */
 	public GraphicalGameWindow(Maze maze) {
 		initialize();
-		
-		//TODO depois de por isto a funcionar testar movimento com teclas
-		//depois de tudo funcionar tratar da parte visual
-		
-		// TODO por janela dos settings a fechar quando esta abre mazeGameSettings.dispatchEvent(new WindowEvent(mazeGameSettings, WindowEvent.WINDOW_CLOSING));
-		//eventulmente por um botao back  para voltar aos settings
 		this.maze = maze;
-		mazeDisplayPanel.setMaze(maze);
+		prepareComponents();
+		
 		gameStatePanel.updateState(maze.getGameState());
+		mazeDisplayPanel.requestFocusInWindow();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		PlayWindowGraphicalMode = new JFrame();
-		PlayWindowGraphicalMode.setTitle("Play Window");
-		PlayWindowGraphicalMode.setBounds(100, 100, 622, 482);
-		PlayWindowGraphicalMode.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		PlayWindowGraphicalMode.getContentPane().setLayout(null);
-		PlayWindowGraphicalMode.setEnabled(true);
-		PlayWindowGraphicalMode.setVisible(true);
-		
-		JButton finishGameButton = new JButton("Finish Game");
-		finishGameButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-			}
-		});
-		finishGameButton.setForeground(Color.RED);
-		finishGameButton.setFont(new Font("Stencil", Font.BOLD, 15));
-		finishGameButton.setBackground(Color.RED);
-		finishGameButton.setBounds(26, 345, 179, 44);
-		PlayWindowGraphicalMode.getContentPane().add(finishGameButton);
-		
-		upButton = new JButton("UP");
-		upButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				nextTurn(Direction.UP);
-			}
-		});
-		upButton.setBounds(74, 19, 89, 37);
-		PlayWindowGraphicalMode.getContentPane().add(upButton);
-		
-		downButton = new JButton("DOWN");
-		downButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				nextTurn(Direction.DOWN);
-			}
-		});
-		downButton.setBounds(74, 102, 89, 37);
-		PlayWindowGraphicalMode.getContentPane().add(downButton);
-		
-		leftButton = new JButton("LEFT");
-		leftButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				nextTurn(Direction.LEFT);
-			}
-		});
-		leftButton.setBounds(26, 60, 89, 37);
-		PlayWindowGraphicalMode.getContentPane().add(leftButton);
-		
-		rightButton = new JButton("RIGHT");
-		rightButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				nextTurn(Direction.RIGHT);
-			}
-		});
-		rightButton.setBounds(116, 60, 89, 37);
-		PlayWindowGraphicalMode.getContentPane().add(rightButton);
-		
+		graphicalGameFrame = new JFrame();
+		graphicalGameFrame.setTitle("Play Window");
+		graphicalGameFrame.setBounds(100, 100, 622, 482);
+		graphicalGameFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		graphicalGameFrame.getContentPane().setLayout(null);
+		graphicalGameFrame.setEnabled(true);
+		graphicalGameFrame.setResizable(false);
+		graphicalGameFrame.setVisible(true);
+				
 		instructionsLabel = new JLabel("");
 		instructionsLabel.setBounds(26, 169, 179, 14);
-		PlayWindowGraphicalMode.getContentPane().add(instructionsLabel);
+		graphicalGameFrame.getContentPane().add(instructionsLabel);
 		
-		gameStatePanel = new GameStateDisplayPanel();
+	/*	gameStatePanel = new GameStateDisplayPanel();
 		gameStatePanel.setBounds(26, 194, 179, 140);
-		PlayWindowGraphicalMode.getContentPane().add(gameStatePanel);
+		graphicalGameFrame.getContentPane().add(gameStatePanel);*/
 		
-		mazeDisplayPanel = new MazeDisplayPanel();
-		mazeDisplayPanel.setBounds(236, 19, 203, 167);
-		PlayWindowGraphicalMode.getContentPane().add(mazeDisplayPanel);
+		mazeDisplayPanel = new MazeDisplayPanel(this);
+		mazeDisplayPanel.setBounds(0, 0, 203, 167);
+		graphicalGameFrame.getContentPane().add(mazeDisplayPanel);
+	}
+	
+	private void prepareComponents() {
+		mazeDisplayPanel.setSize(maze.getMazeDimension()*MazeGraphics.TEXTURE_SIZE, maze.getMazeDimension()*MazeGraphics.TEXTURE_SIZE);
+		graphicalGameFrame.setSize(mazeDisplayPanel.getX() + mazeDisplayPanel.getWidth(),
+										mazeDisplayPanel.getY() + mazeDisplayPanel.getHeight() + 45);
+		instructionsLabel.setBounds(0, graphicalGameFrame.getHeight() - 20, graphicalGameFrame.getWidth(), 20);
+		
+		//Gets the screenSize to center the window
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		graphicalGameFrame.setLocation((screenSize.width - graphicalGameFrame.getWidth())/2,
+											(screenSize.height - graphicalGameFrame.getHeight())/2);
 	}
 	
 	public void nextTurn(Direction direction){
@@ -125,9 +82,7 @@ public class GraphicalGameWindow {
 			instructionsLabel.setText("Game over.");
 		}
 
-		mazeDisplayPanel.requestFocus();
-
-		if (maze.nextTurn(direction)==false){
+		/*if (maze.nextTurn(direction)==false){
 			if (maze.getObstacle()=='X')
 				if(MazeGraphics.wall != null)
 					g.drawImage(MazeGraphics.wall, 0, 0, null);
@@ -136,27 +91,34 @@ public class GraphicalGameWindow {
 				break;
 				
 			else
-				mazeGameStateTextArea.setText("You cannot pass the exit until you kil all the dragons");
+				instructionsLabel.setText("You cannot pass the exit until you kil all the dragons");
 		}
 		else
 			if(maze.getGameState() == GameState.RUNNING) {
-				mazeGameStateTextArea.setText("Next move?\n");
+				instructionsLabel.setText("Next move?\n");
 			} else if (maze.getGameState() == GameState.DRAGON_WIN) {
 				disableMovementButtons();
-				mazeGameStateTextArea.setText("Game over! Dragon won.\n");
+				instructionsLabel.setText("Game over! Dragon won.\n");
 			}else {
 				disableMovementButtons();
-				mazeGameStateTextArea.setText("Game over! You won.\n");
-			}
-		mazeTextArea.requestFocus(); */
+				instructionsLabel.setText("Game over! You won.\n");
+			}*/
 	}
-
 
 	private void disableMovementButtons() {
-		upButton.setEnabled(false);
+		/*upButton.setEnabled(false);
 		downButton.setEnabled(false);
 		rightButton.setEnabled(false);
-		leftButton.setEnabled(false);
+		leftButton.setEnabled(false);*/
 	}
 
+	public Maze getMaze() {
+		return maze;
+	}
+
+	//Closes the window.
+	public void close() {
+		graphicalGameFrame.setVisible(false);
+		graphicalGameFrame.dispatchEvent(new WindowEvent(graphicalGameFrame, WindowEvent.WINDOW_CLOSING));
+	}
 }

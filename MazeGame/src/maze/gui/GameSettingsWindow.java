@@ -1,9 +1,10 @@
 package maze.gui;
 
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
-import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 
 import maze.cli.GameInterface;
@@ -16,7 +17,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.JSpinner;
 
@@ -30,8 +30,9 @@ public class GameSettingsWindow {
 	private static final String GRAPHICAL_MAZE = "Graphical Maze";
 	private static final String MANUAL_MAZE = "Manual Maze";
 
-	public JFrame mazeGameSettings;
 	public static GameSettingsWindow mazeWindow;
+	
+	private JFrame gameSettingsFrame;
 	private Maze maze;
 
 	/**
@@ -42,7 +43,7 @@ public class GameSettingsWindow {
 			public void run() {
 				try {
 					mazeWindow = new GameSettingsWindow();
-					mazeWindow.mazeGameSettings.setVisible(true);
+					mazeWindow.gameSettingsFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -55,6 +56,11 @@ public class GameSettingsWindow {
 	 */
 	public GameSettingsWindow() {
 		initialize();
+		
+		//Gets the screenSize to center the window
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		gameSettingsFrame.setLocation((screenSize.width - gameSettingsFrame.getWidth())/2,
+									 (screenSize.height - gameSettingsFrame.getHeight())/2);
 	}
 
 	/**
@@ -63,39 +69,39 @@ public class GameSettingsWindow {
 
 	private void initialize() {
 		MazeGraphics.loadImages();
-		mazeGameSettings = new JFrame();
-		mazeGameSettings.setResizable(false);
-		mazeGameSettings.setTitle("Game Settings");
-		mazeGameSettings.setBounds(100, 100, 450, 493);
-		mazeGameSettings.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mazeGameSettings.getContentPane().setLayout(null);
+		gameSettingsFrame = new JFrame();
+		gameSettingsFrame.setResizable(false);
+		gameSettingsFrame.setTitle("Game Settings");
+		gameSettingsFrame.setBounds(100, 100, 450, 493);
+		gameSettingsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		gameSettingsFrame.getContentPane().setLayout(null);
 
 		JLabel mazeDimensionLabel = new JLabel("Maze Dimension:");
 		mazeDimensionLabel.setBounds(10, 11, 84, 20);
-		mazeGameSettings.getContentPane().add(mazeDimensionLabel);
+		gameSettingsFrame.getContentPane().add(mazeDimensionLabel);
 
 		JLabel dragonNumberLabel = new JLabel("Number of Dragons:");
 		dragonNumberLabel.setBounds(10, 42, 108, 20);
-		mazeGameSettings.getContentPane().add(dragonNumberLabel);
+		gameSettingsFrame.getContentPane().add(dragonNumberLabel);
 
 		JLabel dragonModeLabel = new JLabel("Dragon Mode:");
 		dragonModeLabel.setBounds(10, 73, 84, 14);
-		mazeGameSettings.getContentPane().add(dragonModeLabel);
+		gameSettingsFrame.getContentPane().add(dragonModeLabel);
 
 		JComboBox<String> gameModeComboBox = new JComboBox<String>();
 		gameModeComboBox.setBounds(114, 73, 93, 20);
-		mazeGameSettings.getContentPane().add(gameModeComboBox);
+		gameSettingsFrame.getContentPane().add(gameModeComboBox);
 		gameModeComboBox.addItem(STATIONARY_DRAGON_TEXT);
 		gameModeComboBox.addItem(RANDOM_DRAGON_TEXT);
 		gameModeComboBox.addItem(SLEEPING_DRAGON_TEXT);
 		
 		JLabel mazeTypeLabel = new JLabel("Maze Type:");
 		mazeTypeLabel.setBounds(10, 114, 68, 14);
-		mazeGameSettings.getContentPane().add(mazeTypeLabel);
+		gameSettingsFrame.getContentPane().add(mazeTypeLabel);
 
 		JComboBox<String> mazeTypeComboBox = new JComboBox<String>();
 		mazeTypeComboBox.setBounds(114, 111, 93, 20);
-		mazeGameSettings.getContentPane().add(mazeTypeComboBox);
+		gameSettingsFrame.getContentPane().add(mazeTypeComboBox);
 		mazeTypeComboBox.addItem(GRAPHICAL_MAZE);
 		mazeTypeComboBox.addItem(TEXT_MAZE);
 		mazeTypeComboBox.addItem(CONSOLE_MAZE);
@@ -104,12 +110,12 @@ public class GameSettingsWindow {
 		SpinnerNumberModel model = new SpinnerNumberModel(11, 5, 50, 1);
 		JSpinner mazeDimensionSpinner = new JSpinner(model);
 		mazeDimensionSpinner.setBounds(114, 11, 50, 20);
-		mazeGameSettings.getContentPane().add(mazeDimensionSpinner);
+		gameSettingsFrame.getContentPane().add(mazeDimensionSpinner);
 		
 		SpinnerNumberModel model1 = new SpinnerNumberModel(1, 1, 10, 1);
 		JSpinner dragonNumberSpinner = new JSpinner(model1);
 		dragonNumberSpinner.setBounds(114, 42, 50, 20);
-		mazeGameSettings.getContentPane().add(dragonNumberSpinner);
+		gameSettingsFrame.getContentPane().add(dragonNumberSpinner);
 		
 		JButton generateNewMazeButton = new JButton("Create New Maze");
 		generateNewMazeButton.addActionListener(new ActionListener() {
@@ -120,7 +126,7 @@ public class GameSettingsWindow {
 					size = ((Integer)mazeDimensionSpinner.getValue()).intValue();
 				}
 				catch (NumberFormatException e){
-					JOptionPane.showMessageDialog(mazeGameSettings, "Invalid maze dimension!\nPlease insert a valid integer.");
+					JOptionPane.showMessageDialog(gameSettingsFrame, "Invalid maze dimension!\nPlease insert a valid integer.");
 					return;
 				}
 
@@ -130,7 +136,7 @@ public class GameSettingsWindow {
 					dragonNumber= ((Integer)dragonNumberSpinner.getValue()).intValue();
 				}
 				catch (NumberFormatException e){
-					JOptionPane.showMessageDialog(mazeGameSettings, "Invalid number of dragons!\nPlease insert a valid integer.");
+					JOptionPane.showMessageDialog(gameSettingsFrame, "Invalid number of dragons!\nPlease insert a valid integer.");
 					return;
 				}
 
@@ -156,7 +162,7 @@ public class GameSettingsWindow {
 				if ((String)mazeTypeComboBox.getSelectedItem() == GRAPHICAL_MAZE){
 					new GraphicalGameWindow(maze);
 				}else if((String)mazeTypeComboBox.getSelectedItem() == TEXT_MAZE){
-					new TextualGameWindow(maze, mazeGameSettings);
+					new TextualGameWindow(maze, gameSettingsFrame);
 				}
 				else if ((String)mazeTypeComboBox.getSelectedItem()==CONSOLE_MAZE){
 					new GameInterface(maze);
@@ -169,7 +175,7 @@ public class GameSettingsWindow {
 		});
 
 		generateNewMazeButton.setBounds(42, 152, 137, 23);
-		mazeGameSettings.getContentPane().add(generateNewMazeButton);
+		gameSettingsFrame.getContentPane().add(generateNewMazeButton);
 
 	}
 

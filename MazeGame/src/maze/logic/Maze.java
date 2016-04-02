@@ -14,13 +14,10 @@ public class Maze {
 	private GameState gameState = GameState.RUNNING;
 	private GameMode gameMode;
 	private char[][] maze;
-	private int numMoves;
-	private char obstacle;
 
 	public Maze(char[][] maze, GameMode gameMode) {
 		this.gameMode = gameMode;
 		this.maze = maze.clone(); 
-		this.numMoves=0;
 		readMaze();
 
 		setChar(hero.getPosition(), hero.getChar());
@@ -70,7 +67,6 @@ public class Maze {
 
 	public boolean moveHero(Direction direction) {
 		if (canMove(hero.getPosition(), direction)) {
-			numMoves=numMoves+1;
 			unsetChar(hero.getPosition());
 			hero.move(direction);
 			setChar(hero.getPosition(), hero.getChar());
@@ -81,6 +77,9 @@ public class Maze {
 	}
 
 	public boolean nextTurn(Direction heroDirection) {
+		if(gameState != GameState.RUNNING)
+			return false;
+		
 		boolean heroHasMoved = moveHero(heroDirection);
 		updateDragons();
 		update();
@@ -138,40 +137,24 @@ public class Maze {
 	private boolean canMove(Point position, Direction direction) {
 		switch (direction) {
 		case UP:
-			if (getChar(new Point(position.x, position.y -1)) == 'X' ){
-				obstacle='X';
-			return false;
-			} else if (getChar(new Point(position.x, position.y -1)) == 'S' && dragons.size() > 0){
-				obstacle='S';
+			if (getChar(new Point(position.x, position.y -1)) == 'X' 
+			|| (getChar(new Point(position.x, position.y -1)) == 'S' && dragons.size() > 0))
 				return false;
-			}
 			break;
 		case DOWN:
-			if (getChar(new Point(position.x, position.y + 1)) == 'X' ){
-				obstacle='X';
-			return false;
-			} else if (getChar(new Point(position.x, position.y + 1)) == 'S' && dragons.size() > 0){
-				obstacle='S';
+			if (getChar(new Point(position.x, position.y +1)) == 'X' 
+			|| (getChar(new Point(position.x, position.y +1)) == 'S' && dragons.size() > 0))
 				return false;
-			}
 			break;
 		case RIGHT:
-			if (getChar(new Point(position.x + 1, position.y)) == 'X' ){
-				obstacle='X';
-			return false;
-			} else if (getChar(new Point(position.x + 1, position.y)) == 'S' && dragons.size() > 0){
-				obstacle='S';
+			if (getChar(new Point(position.x+1, position.y)) == 'X' 
+			|| (getChar(new Point(position.x+1, position.y)) == 'S' && dragons.size() > 0))
 				return false;
-			}
 			break;
 		case LEFT:
-			if (getChar(new Point(position.x - 1, position.y)) == 'X' ){
-				obstacle='X';
-			return false;
-			} else if (getChar(new Point(position.x - 1, position.y)) == 'S' && dragons.size() > 0){
-				obstacle='S';
+			if (getChar(new Point(position.x-1, position.y)) == 'X' 
+			|| (getChar(new Point(position.x-1, position.y)) == 'S' && dragons.size() > 0))
 				return false;
-			}
 			break;
 		case STAY:
 			return true;
@@ -286,15 +269,5 @@ public class Maze {
 
 	public int getMazeDimension() {
 		return maze.length;
-	}
-
-	public int getNumMoves() {
-		return numMoves;
-	}
-	
-	
-	
-	public char getObstacle(){
-		return obstacle;
 	}
 }

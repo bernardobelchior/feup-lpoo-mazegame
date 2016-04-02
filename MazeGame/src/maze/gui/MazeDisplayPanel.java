@@ -5,22 +5,17 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 
-import maze.logic.Maze;
 import maze.logic.Game.Direction;
 
 @SuppressWarnings("serial")
 public class MazeDisplayPanel extends JPanel implements KeyListener {
-	private Maze maze;
+	private GraphicalGameWindow parent;
 
-
-	public MazeDisplayPanel() {
-		this.maze = null;
+	public MazeDisplayPanel(GraphicalGameWindow parent) {
+		this.parent = parent;
 		addKeyListener(this);
+		this.requestFocus();
 		MazeGraphics.loadImages();
-	}
-	
-	public void setMaze(Maze maze) {
-		this.maze = maze;
 	}
 
 	public void paintComponent(Graphics g) {
@@ -29,37 +24,31 @@ public class MazeDisplayPanel extends JPanel implements KeyListener {
 	}
 
 	private void drawMaze(Graphics g) {		
-		if(maze == null)
+		if(parent.getMaze() == null)
 			return;
 
-		char[][] mazeArray = maze.getMazeArray();
+		char[][] mazeArray = parent.getMaze().getMazeArray();
 
 		for(int x = 0; x < mazeArray.length; x++){
 			for(int y = 0; y < mazeArray[x].length; y++) {
 				switch (mazeArray[y][x]) {
 				case 'X':
-					if(MazeGraphics.wall != null)
-						g.drawImage(MazeGraphics.wall, x*MazeGraphics.TEXTURE_SIZE, y*MazeGraphics.TEXTURE_SIZE, null);
+						MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.wall, x, y);
 					break;
 				case 'E':
-					if(MazeGraphics.sword != null) 
-						g.drawImage(MazeGraphics.sword, x*MazeGraphics.TEXTURE_SIZE, y*MazeGraphics.TEXTURE_SIZE, null);						
+						MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.sword, x, y);						
 					break;
 				case 'H':
-					if(MazeGraphics.heroUnarmed != null)
-						g.drawImage(MazeGraphics.heroUnarmed, x*MazeGraphics.TEXTURE_SIZE, y*MazeGraphics.TEXTURE_SIZE, null);
+						MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.heroUnarmed, x, y);
 					break;
 				case 'A':
-					if(MazeGraphics.heroArmed != null)
-						g.drawImage(MazeGraphics.heroArmed, x*MazeGraphics.TEXTURE_SIZE, y*MazeGraphics.TEXTURE_SIZE, null);
+						MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.heroArmed, x, y);
 					break;
 				case 'D':
-					if(MazeGraphics.dragonAwaken != null)
-						g.drawImage(MazeGraphics.dragonAwaken, x*MazeGraphics.TEXTURE_SIZE, y*MazeGraphics.TEXTURE_SIZE, null);
+						MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.dragonAwaken, x, y);
 					break;
 				case 'd':
-					if(MazeGraphics.dragonSleeping != null)
-						g.drawImage(MazeGraphics.dragonSleeping, x*MazeGraphics.TEXTURE_SIZE, y*MazeGraphics.TEXTURE_SIZE, null);
+						MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.dragonSleeping, x, y);
 					break;
 				default:
 					break;
@@ -67,38 +56,31 @@ public class MazeDisplayPanel extends JPanel implements KeyListener {
 			}
 		}
 	}
-	
-	public void keyPressed(KeyEvent keyEvent) {
+
+	public void keyPressed(KeyEvent keyEvent) {	}
+
+	public void keyReleased(KeyEvent keyEvent) {	
 		switch (keyEvent.getKeyCode()){
 		case KeyEvent.VK_UP:
 		case KeyEvent.VK_W:
-			GameSettingsWindow.mazeWindow.getMaze().nextTurn(Direction.UP); 
+			parent.nextTurn(Direction.UP); 
 			break;
 		case KeyEvent.VK_DOWN:
 		case KeyEvent.VK_S:	
-			GameSettingsWindow.mazeWindow.getMaze().nextTurn(Direction.DOWN);
+			parent.nextTurn(Direction.DOWN);
 			break;
 		case KeyEvent.VK_RIGHT:
 		case KeyEvent.VK_D:
-			GameSettingsWindow.mazeWindow.getMaze().nextTurn(Direction.RIGHT);
+			parent.nextTurn(Direction.RIGHT);
 			break;
 		case KeyEvent.VK_LEFT:
 		case KeyEvent.VK_A:
-			GameSettingsWindow.mazeWindow.getMaze().nextTurn(Direction.LEFT);
+			parent.nextTurn(Direction.LEFT);
 			break;
+		case KeyEvent.VK_ESCAPE:
+			parent.close();
 		}
-
 	}
 
-
-	public void keyReleased(KeyEvent arg0) {
-
-
-	}
-
-
-	public void keyTyped(KeyEvent arg0) {
-
-
-	}
+	public void keyTyped(KeyEvent keyEvent) {	}
 }

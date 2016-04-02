@@ -20,7 +20,7 @@ public class MazeGraphics {
 	private static final String HERO_ARMED_PATH = "res/hero_armed.png";
 	private static final String HERO_UNARMED_PATH = "res/hero_unarmed.png";
 	private static final String SWORD_PATH = "res/sword.png";
-	private static final String WALL_PATH = "res/wall.jpg";
+	private static final String WALL_PATH = "res/wall.png";
 	
 	//Images 	
 	public static BufferedImage dragonAwaken = null;

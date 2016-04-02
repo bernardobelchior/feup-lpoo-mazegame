@@ -8,8 +8,8 @@ import maze.logic.Game.*;
 
 public class Maze {
 	private Hero hero;
-	private ArrayList<Dragon> dragons = new ArrayList<Dragon>();
-	private Sword sword;
+	private ArrayList<Dragon> dragons;
+	private ArrayList<Sword> swords;
 	private Exit exit;
 	private GameState gameState = GameState.RUNNING;
 	private GameMode gameMode;
@@ -17,14 +17,20 @@ public class Maze {
 
 	public Maze(char[][] maze, GameMode gameMode) {
 		this.gameMode = gameMode;
-		this.maze = maze.clone(); 
+		this.maze = maze.clone();
+		this.dragons = new ArrayList<Dragon>();
+		this.swords = new ArrayList<Sword>();
 		readMaze();
 
 		setChar(hero.getPosition(), hero.getChar());
 		for(int i=0;i<dragons.size();i++){
 			setChar(dragons.get(i).getPosition(), dragons.get(i).getChar());
 		}
-		setChar(sword.getPosition(), sword.getChar());
+		
+		for(int i = 0; i < swords.size(); i++) {
+			setChar(swords.get(i).getPosition(), swords.get(i).getChar());
+		}
+		
 		setChar(exit.getPosition(), exit.getChar());
 	}
 
@@ -36,12 +42,17 @@ public class Maze {
 					hero = new Hero(new Point(i, j));
 					setChar(new Point(i, j), ' ');
 					break;
+				case 'A':
+					hero = new Hero(new Point(i, j));
+					hero.equipSword();
+					setChar(new Point(i, j), ' ');
+					break;
 				case 'D':
 					dragons.add(new Dragon(new Point(i, j)));
 					setChar(new Point(i, j), ' ');
 					break;
 				case 'E':
-					sword = new Sword(new Point(i, j));
+					swords.add(new Sword(new Point(i, j)));
 					setChar(new Point(i, j), ' ');
 					break;
 				case 'S':
@@ -165,9 +176,13 @@ public class Maze {
 	public void update() {
 		//Checks if the hero is able to pick up the sword and picks it up
 		//If it does pick it up, update the hero character
-		if (!sword.getPickedUp() && sword.getPosition().equals(hero.getPosition())) {
-			pickUpSword();
-			setChar(hero.getPosition(), hero.getChar());
+		for(Sword sword : swords) {
+			if (!sword.getPickedUp() && sword.getPosition().equals(hero.getPosition())) {
+				pickUpSword(sword);
+				setChar(hero.getPosition(), hero.getChar());
+				swords.remove(sword);
+				break;
+			}
 		}
 		
 		//Returns an ArrayList of indexes of dragons adjacent to the hero
@@ -191,18 +206,20 @@ public class Maze {
 		}
 
 		//Update dragon and sword characters on maze
-		if(!sword.getPickedUp()){
-			if (getChar(sword.getPosition()) == 'D' || getChar(sword.getPosition()) == 'd')
-				setChar(sword.getPosition(), 'F');
-			else
-				setChar(sword.getPosition(), 'E');
+		for(Sword sword : swords) {
+			if(!sword.getPickedUp()){
+				if (getChar(sword.getPosition()) == 'D' || getChar(sword.getPosition()) == 'd')
+					setChar(sword.getPosition(), 'F');
+				else
+					setChar(sword.getPosition(), sword.getChar());
+			}
 		}
 	}
 
-	private void pickUpSword() {
+	private void pickUpSword(Sword sword) {
 		hero.equipSword();
-		sword.pickUp();
 		unsetChar(sword.getPosition());
+		swords.remove(sword);
 	}
 
 	private ArrayList<Integer> getAdjacentDragons(Point position) {
@@ -251,8 +268,15 @@ public class Maze {
 		return hero;
 	}
 
-	public Sword getSword() {
-		return sword;
+	public Sword getSword(int i) {
+		if(i >= swords.size())
+			return null;
+		
+		return swords.get(i);
+	}
+	
+	public ArrayList<Sword> getSwords() {
+		return swords;
 	}
 
 	public Dragon getDragon(int i) {

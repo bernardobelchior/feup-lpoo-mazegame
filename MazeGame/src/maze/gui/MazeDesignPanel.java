@@ -108,21 +108,24 @@ public class MazeDesignPanel extends JPanel implements MouseListener {
 	public void mouseReleased(MouseEvent e) {
 		if(maze == null || parent.getSelectedEntity() == null)
 			return;
+		
+		int x = e.getX()/MazeGraphics.TEXTURE_SIZE;
+		int y = e.getY()/MazeGraphics.TEXTURE_SIZE;
 
 		switch (parent.getSelectedEntity()) {
 		case BLANK:
-			if(isHeroOnPosition(e.getX()/MazeGraphics.TEXTURE_SIZE, e.getY()/MazeGraphics.TEXTURE_SIZE))
+			if(isHeroOnPosition(x, y))
 				heroPlaced = false;
-			maze[e.getY()/MazeGraphics.TEXTURE_SIZE][e.getX()/MazeGraphics.TEXTURE_SIZE] = ' ';
+			maze[y][x] = ' ';
 			break;
 		case WALL:
-			if(isHeroOnPosition(e.getX()/MazeGraphics.TEXTURE_SIZE, e.getY()/MazeGraphics.TEXTURE_SIZE))
+			if(isHeroOnPosition(x, y))
 				heroPlaced = false;
-			maze[e.getY()/MazeGraphics.TEXTURE_SIZE][e.getX()/MazeGraphics.TEXTURE_SIZE] = 'X';
+			maze[y][x] = 'X';
 			break;
 		case HERO_ARMED:
 			if(!heroPlaced) {
-				maze[e.getY()/MazeGraphics.TEXTURE_SIZE][e.getX()/MazeGraphics.TEXTURE_SIZE] = 'A';
+				maze[y][x] = 'A';
 				heroPlaced = true;
 			} else {
 				JOptionPane.showMessageDialog(parent, "An hero has already been placed.");
@@ -130,27 +133,31 @@ public class MazeDesignPanel extends JPanel implements MouseListener {
 			break;
 		case HERO_UNARMED:
 			if(!heroPlaced) {
-				maze[e.getY()/MazeGraphics.TEXTURE_SIZE][e.getX()/MazeGraphics.TEXTURE_SIZE] = 'H';
+				maze[y][x] = 'H';
 				heroPlaced = true;
 			} else {
 				JOptionPane.showMessageDialog(parent, "An hero has already been placed.");
 			}
 			break;
 		case DRAGON_AWAKEN:
-			if(isHeroOnPosition(e.getX()/MazeGraphics.TEXTURE_SIZE, e.getY()/MazeGraphics.TEXTURE_SIZE))
+			if(isHeroOnPosition(x, y))
 				heroPlaced = false;
-			maze[e.getY()/MazeGraphics.TEXTURE_SIZE][e.getX()/MazeGraphics.TEXTURE_SIZE] = 'D';
+			maze[y][x] = 'D';
 			break;
 		case DRAGON_SLEEPING:
-			if(isHeroOnPosition(e.getX()/MazeGraphics.TEXTURE_SIZE, e.getY()/MazeGraphics.TEXTURE_SIZE))
+			if(isHeroOnPosition(x, y))
 				heroPlaced = false;
-			maze[e.getY()/MazeGraphics.TEXTURE_SIZE][e.getX()/MazeGraphics.TEXTURE_SIZE] = 'd';
+			maze[y][x] = 'd';
 			break;
 		case SWORD: 
-			if(isHeroOnPosition(e.getX()/MazeGraphics.TEXTURE_SIZE, e.getY()/MazeGraphics.TEXTURE_SIZE))
+			if(isHeroOnPosition(x, y))
 				heroPlaced = false;
-			maze[e.getY()/MazeGraphics.TEXTURE_SIZE][e.getX()/MazeGraphics.TEXTURE_SIZE] = 'E';
+			maze[y][x] = 'E';
 			break;
+		case EXIT:
+			if(isHeroOnPosition(x, y))
+				heroPlaced = false;
+			maze[y][x] = 'S';
 		default:
 			break;
 		}

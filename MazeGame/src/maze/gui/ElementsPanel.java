@@ -13,6 +13,7 @@ import maze.logic.Game.EntityType;
 @SuppressWarnings("serial")
 public class ElementsPanel extends JPanel{
 	private ArrayList<JButton> elements;
+	private static final int BUTTON_SIZE = MazeGraphics.TEXTURE_SIZE/2;
 
 	public ElementsPanel(ManualMazeGeneratorWindow parent) {
 		super();
@@ -24,7 +25,7 @@ public class ElementsPanel extends JPanel{
 			JButton button = new JButton();
 			button.setEnabled(true);
 			button.setVisible(true);
-			button.setBounds(0, i*MazeGraphics.TEXTURE_SIZE, MazeGraphics.TEXTURE_SIZE, MazeGraphics.TEXTURE_SIZE);
+			button.setBounds(0, i*BUTTON_SIZE, BUTTON_SIZE, BUTTON_SIZE);
 			elements.add(button);
 			this.add(button);
 		}

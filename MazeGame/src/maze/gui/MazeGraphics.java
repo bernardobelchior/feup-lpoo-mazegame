@@ -1,12 +1,16 @@
 package maze.gui;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
 
 public class MazeGraphics {
+	public enum DisplayMode { CONSOLE, GRAPHICAL, TEXTUAL };
 	public static final int TEXTURE_SIZE = 64;
 
 	//Images path
@@ -21,7 +25,7 @@ public class MazeGraphics {
 	private static final String HERO_UNARMED_PATH = "res/hero_unarmed.png";
 	private static final String SWORD_PATH = "res/sword.png";
 	private static final String WALL_PATH = "res/wall.png";
-	
+
 	//Images 	
 	public static BufferedImage dragonAwaken = null;
 	public static BufferedImage dragonSleeping = null;
@@ -62,7 +66,7 @@ public class MazeGraphics {
 
 		return image;
 	}
-	
+
 	public static void deleteImages() {
 		dragonAwaken = null;
 		dragonSleeping = null;
@@ -81,5 +85,12 @@ public class MazeGraphics {
 
 		g.drawImage(image, x*MazeGraphics.TEXTURE_SIZE, y*MazeGraphics.TEXTURE_SIZE, null);
 		return true;
+	}
+
+	public static void centerFrame(JFrame frame) {
+		//Gets the screenSize to center the window
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		frame.setLocation((screenSize.width - frame.getWidth())/2,
+				(screenSize.height - frame.getHeight())/2);
 	}
 }

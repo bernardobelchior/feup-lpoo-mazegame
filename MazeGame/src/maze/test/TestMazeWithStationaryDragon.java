@@ -43,7 +43,7 @@ public class TestMazeWithStationaryDragon {
 		maze.moveHero(Direction.LEFT);
 		maze.moveHero(Direction.DOWN);
 		maze.moveHero(Direction.DOWN);
-		assertEquals(maze.getSword().getPosition(), maze.getHero().getPosition());
+		assertEquals(maze.getSword(0).getPosition(), maze.getHero().getPosition());
 		assertEquals(true, maze.getHero().getSwordEquipped());
 	}
 	

@@ -2,37 +2,38 @@ package maze.gui;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import maze.logic.Game.Direction;
 import maze.logic.Maze;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 
 public class TextualGameWindow {
 
-	private JFrame MazeGameTextModeWindow;
+	private JFrame textualGameFrame;
 	private JTextArea mazeTextArea;
-	private JLabel gameStateLabel;
+	private JLabel gameInfoLabel;
+	private JLabel gameStateImage;
 	private JButton upButton;
 	private JButton downButton;
 	private JButton rightButton;
 	private JButton leftButton;
 	private Maze maze;
 
-
-	//TODO fix game because the hero is not being killed by the dragon
-
-	public TextualGameWindow(Maze maze, JFrame mazeGameSettings) {
-		initialize();
-		// TODO por janela dos settings a fechar quando esta abre mazeGameSettings.dispatchEvent(new WindowEvent(mazeGameSettings, WindowEvent.WINDOW_CLOSING));
+	public TextualGameWindow(Maze maze) {
 		this.maze = maze;
-		//mazeTextArea.setText(maze.toString());
-		mazeTextArea.setText("ola");
+		initialize();
+		mazeTextArea.setText(maze.toString());
 
-		MazeGameTextModeWindow.setResizable(true);
+		textualGameFrame.setResizable(true);
 
 		//FIXME: Dynamic sizing not working properly.
 		int charWidth =	mazeTextArea.getFontMetrics(mazeTextArea.getFont()).stringWidth(" ");
@@ -40,10 +41,10 @@ public class TextualGameWindow {
 		int minY = Math.max(downButton.getY() + downButton.getHeight(), 
 				mazeTextArea.getX() + mazeTextArea.getLineCount()*charHeight+50);
 		mazeTextArea.setSize( mazeTextArea.getColumns()*charWidth, mazeTextArea.getLineCount()*charHeight);
-		MazeGameTextModeWindow.setSize(mazeTextArea.getX() + mazeTextArea.getWidth(), minY);
+		textualGameFrame.setSize(mazeTextArea.getX() + mazeTextArea.getWidth(), minY);
 
 
-		gameStateLabel.setText("Ready to play!\n");
+		gameInfoLabel.setText("Ready to play!\n");
 
 	}
 
@@ -51,39 +52,41 @@ public class TextualGameWindow {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		MazeGameTextModeWindow = new JFrame();
-		MazeGameTextModeWindow.setResizable(false);
-		MazeGameTextModeWindow.setTitle("Play Window");
-		MazeGameTextModeWindow.setBounds(100, 100, 435, 357);
-		MazeGameTextModeWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		MazeGameTextModeWindow.getContentPane().setLayout(null);
-		MazeGameTextModeWindow.setEnabled(true);
-		MazeGameTextModeWindow.setVisible(true);
+		textualGameFrame = new JFrame();
+		textualGameFrame.setTitle("Play Window");
+		textualGameFrame.setBounds(100, 100, 200, 200);
+		textualGameFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		textualGameFrame.getContentPane().setLayout(new BorderLayout());
+		textualGameFrame.setEnabled(true);
+		textualGameFrame.setVisible(true);
+		textualGameFrame.setResizable(false);
 
 		mazeTextArea = new JTextArea();
 		mazeTextArea.setBounds(211, 28, 55, 15);
-		mazeTextArea.setFont(new Font("Courier New", Font.PLAIN, 13));
+		mazeTextArea.setFont(new Font("Courier New", Font.PLAIN, 15));
 		mazeTextArea.setVisible(true);
 		mazeTextArea.setEnabled(true);
-		MazeGameTextModeWindow.getContentPane().add(mazeTextArea);
+		mazeTextArea.setEditable(false);
+		textualGameFrame.getContentPane().add(mazeTextArea, BorderLayout.CENTER);
 
-		gameStateLabel = new JLabel();
-		gameStateLabel.setBounds(213, 163, 148, 79);
-		MazeGameTextModeWindow.getContentPane().add(gameStateLabel);
+		gameInfoLabel = new JLabel();
+		gameInfoLabel.setBounds(213, 163, 148, 79);
+		textualGameFrame.getContentPane().add(gameInfoLabel, BorderLayout.PAGE_END);
 
-		JButton finishGameButton = new JButton("Finish Game");
-		finishGameButton.setBounds(22, 26, 89, 23);
-		finishGameButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);
-			}
-		});
-		finishGameButton.setVisible(true);
-		finishGameButton.setEnabled(true);
-		MazeGameTextModeWindow.getContentPane().add(finishGameButton);
-
+		JPanel gameInterfacePanel = new JPanel();
+		gameInterfacePanel.setLayout(new GridBagLayout());
+		textualGameFrame.getContentPane().add(gameInterfacePanel, BorderLayout.LINE_START);
+		
+		GridBagConstraints gbc = new GridBagConstraints();
+		
+		gbc.anchor = GridBagConstraints.CENTER;
+		gbc.weightx = 1;
+		gbc.weighty = 1;
+		gbc.gridheight = 1;
+		gbc.gridwidth = 1;
+		gbc.fill = GridBagConstraints.BOTH;
+		
 		upButton = new JButton("UP");
-		upButton.setBounds(50, 98, 89, 23);
 		upButton.setVisible(true);
 		upButton.setEnabled(true);
 		upButton.addActionListener(new ActionListener() {
@@ -91,10 +94,11 @@ public class TextualGameWindow {
 				nextTurn(Direction.UP);
 			}
 		});
-		MazeGameTextModeWindow.getContentPane().add(upButton);
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+		gameInterfacePanel.add(upButton, gbc);
 
 		downButton = new JButton("DOWN");
-		downButton.setBounds(50, 164, 89, 23);
 		downButton.setVisible(true);
 		downButton.setEnabled(true);
 		downButton.addActionListener(new ActionListener() {
@@ -102,10 +106,12 @@ public class TextualGameWindow {
 				nextTurn(Direction.DOWN);
 			}
 		});
-		MazeGameTextModeWindow.getContentPane().add(downButton);
+		gbc.gridx = 1;
+		gbc.gridy = 2;
+		gameInterfacePanel.add(downButton, gbc);
 
 		leftButton = new JButton("LEFT");
-		leftButton.setBounds(0, 130, 89, 23);
+		//leftButton.setBounds(0, 130, 89, 23);
 		leftButton.setVisible(true);
 		leftButton.setEnabled(true);
 		leftButton.addActionListener(new ActionListener() {
@@ -113,10 +119,12 @@ public class TextualGameWindow {
 				nextTurn(Direction.LEFT);
 			}
 		});
-		MazeGameTextModeWindow.getContentPane().add(leftButton);
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		gameInterfacePanel.add(leftButton, gbc);
 
 		rightButton = new JButton("RIGHT");
-		rightButton.setBounds(99, 130, 89, 23);
+		//rightButton.setBounds(99, 130, 89, 23);
 		rightButton.setVisible(true);
 		rightButton.setEnabled(true);
 		rightButton.addActionListener(new ActionListener() {
@@ -124,20 +132,28 @@ public class TextualGameWindow {
 				nextTurn(Direction.RIGHT);
 			}
 		});
-		MazeGameTextModeWindow.getContentPane().add(rightButton);
+		gbc.gridx = 2;
+		gbc.gridy = 1;
+		gameInterfacePanel.add(rightButton, gbc);
+		
+		gameStateImage = new JLabel();
+		gameStateImage.setIcon(new ImageIcon(MazeGraphics.wall));
+		gbc.gridx = 1;
+		gbc.gridy = 3;
+		gbc.gridwidth = 3;
+		gbc.gridheight = 3;
+		gbc.weighty = 2;
+		gbc.anchor = GridBagConstraints.CENTER;
+		gameInterfacePanel.add(gameStateImage, gbc);
 	}
 
 	public void nextTurn(Direction direction){
-
-		//TODO corrigir contador de moves, statetextarea e movimentaçoes estranhas do heroi
-
 		maze.nextTurn(direction);
 		mazeTextArea.setText(maze.toString());
-		//mazeGameStateTextArea.setText("Moves: " + maze.getNumMoves() + "\n");
 
 		switch (maze.getGameState()) {
 		case RUNNING:
-			gameStateLabel.setText("Next move?");
+			gameInfoLabel.setText("Next move?");
 			/*if (maze.getObstacle()=='X')
 			mazeGameStateTextArea.setText("You cannot move into a wall. Try another direction!");
 		else
@@ -145,11 +161,13 @@ public class TextualGameWindow {
 			break;
 		case DRAGON_WIN:
 			disableMovementButtons();
-			gameStateLabel.setText("Game over! Dragon won.");
+			gameStateImage.setIcon(new ImageIcon(MazeGraphics.dragonAwaken));
+			gameInfoLabel.setText("Game over! Dragon won.");
 			break;
 		case HERO_WIN:
 			disableMovementButtons();
-			gameStateLabel.setText("Game over! You won.");
+			gameStateImage.setIcon(new ImageIcon(MazeGraphics.heroArmed));
+			gameInfoLabel.setText("Game over! You won.");
 			break;
 		}
 

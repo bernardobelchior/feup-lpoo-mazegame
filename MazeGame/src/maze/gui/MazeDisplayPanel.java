@@ -34,22 +34,30 @@ public class MazeDisplayPanel extends JPanel implements KeyListener {
 				MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.floor, x, y);
 				switch (mazeArray[y][x]) {
 				case 'X':
-						MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.wall, x, y);
+					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.wall, x, y);
 					break;
 				case 'E':
-						MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.sword, x, y);						
+					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.sword, x, y);						
 					break;
 				case 'H':
-						MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.heroUnarmed, x, y);
+					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.heroUnarmed, x, y);
 					break;
 				case 'A':
-						MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.heroArmed, x, y);
+					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.heroArmed, x, y);
 					break;
 				case 'D':
-						MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.dragonAwaken, x, y);
+					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.dragonAwaken, x, y);
 					break;
 				case 'd':
-						MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.dragonSleeping, x, y);
+					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.dragonSleeping, x, y);
+					break;
+				case 'F':
+					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.dragonAwaken, x, y);
+					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.sword, x, y);
+					break;
+				case 'f':
+					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.dragonSleeping, x, y);
+					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.sword, x, y);
 					break;
 				default:
 					break;

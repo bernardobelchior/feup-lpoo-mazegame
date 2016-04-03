@@ -166,15 +166,15 @@ public class GameSettingsWindow {
 	}
 
 	private GameMode getGameMode(String gameMode) {
-		switch (gameMode){
-		case GameSettingsWindow.STATIONARY_DRAGON_TEXT :
+		if(gameMode == STATIONARY_DRAGON_TEXT)
 			return GameMode.STATIONARY;
-		case GameSettingsWindow.RANDOM_DRAGON_TEXT :
+		
+		if(gameMode == RANDOM_DRAGON_TEXT)
 			return GameMode.RANDOM_MOVEMENT;
-		case GameSettingsWindow.SLEEPING_DRAGON_TEXT :
+		
+		if(gameMode == SLEEPING_DRAGON_TEXT)
 			return GameMode.SLEEP_RANDOM_MOVEMENT;
-		default:
-			return GameMode.STATIONARY;
-		}
+		
+		return GameMode.STATIONARY;
 	}
 }

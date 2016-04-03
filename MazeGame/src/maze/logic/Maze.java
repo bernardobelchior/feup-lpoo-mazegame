@@ -26,11 +26,11 @@ public class Maze {
 		for(int i=0;i<dragons.size();i++){
 			setChar(dragons.get(i).getPosition(), dragons.get(i).getChar());
 		}
-		
+
 		for(int i = 0; i < swords.size(); i++) {
 			setChar(swords.get(i).getPosition(), swords.get(i).getChar());
 		}
-		
+
 		setChar(exit.getPosition(), exit.getChar());
 	}
 
@@ -76,6 +76,21 @@ public class Maze {
 		return maze[position.y][position.x];
 	}
 
+	private char getChar(Point position, Direction direction) {
+		switch(direction) {
+		case UP:
+			return getChar(new Point(position.x, position.y - 1));
+		case DOWN:
+			return getChar(new Point(position.x, position.y + 1));
+		case LEFT:
+			return getChar(new Point(position.x - 1, position.y));
+		case RIGHT:
+			return getChar(new Point(position.x + 1, position.y));
+		default:
+			return getChar(position);
+		}
+	}
+
 	public boolean moveHero(Direction direction) {
 		if (canMove(hero.getPosition(), direction)) {
 			unsetChar(hero.getPosition());
@@ -90,7 +105,7 @@ public class Maze {
 	public boolean nextTurn(Direction heroDirection) {
 		if(gameState != GameState.RUNNING)
 			return false;
-		
+
 		boolean heroHasMoved = moveHero(heroDirection);
 		updateDragons();
 		update();
@@ -117,7 +132,9 @@ public class Maze {
 				if(dragons.get(i).isSleeping()){
 					switch(random.nextInt(2)){
 					case 0:
+						unsetChar(dragons.get(i).getPosition());
 						dragons.get(i).setSleeping(false);
+						setChar(dragons.get(i).getPosition(), dragons.get(i).getChar());
 						break;
 					default:
 						break;
@@ -125,10 +142,15 @@ public class Maze {
 				} else {
 					switch(random.nextInt(3)){
 					case 0:
+						unsetChar(dragons.get(i).getPosition());
 						dragons.get(i).setSleeping(true);
+						setChar(dragons.get(i).getPosition(), dragons.get(i).getChar());
 						break;
 					case 1:
+						unsetChar(dragons.get(i).getPosition());
 						moveDragon(i, getValidDragonRandomDirection(dragons.get(i).getPosition()));
+						setChar(dragons.get(i).getPosition(), dragons.get(i).getChar());
+						break;
 					default:
 						break;
 					}
@@ -146,31 +168,9 @@ public class Maze {
 	}
 
 	private boolean canMove(Point position, Direction direction) {
-		switch (direction) {
-		case UP:
-			if (getChar(new Point(position.x, position.y -1)) == 'X' 
-			|| (getChar(new Point(position.x, position.y -1)) == 'S' && dragons.size() > 0))
-				return false;
-			break;
-		case DOWN:
-			if (getChar(new Point(position.x, position.y +1)) == 'X' 
-			|| (getChar(new Point(position.x, position.y +1)) == 'S' && dragons.size() > 0))
-				return false;
-			break;
-		case RIGHT:
-			if (getChar(new Point(position.x+1, position.y)) == 'X' 
-			|| (getChar(new Point(position.x+1, position.y)) == 'S' && dragons.size() > 0))
-				return false;
-			break;
-		case LEFT:
-			if (getChar(new Point(position.x-1, position.y)) == 'X' 
-			|| (getChar(new Point(position.x-1, position.y)) == 'S' && dragons.size() > 0))
-				return false;
-			break;
-		case STAY:
-			return true;
-		}
-		return true; 
+		return  (getChar(position, direction) == ' ' ||
+				(getChar(position, direction) == 'S' && dragons.size() == 0) ||
+				getChar(position, direction) == 'E');
 	}
 
 	public void update() {
@@ -184,14 +184,15 @@ public class Maze {
 				break;
 			}
 		}
-		
+
 		//Returns an ArrayList of indexes of dragons adjacent to the hero
 		ArrayList<Integer> adjacentDragons = getAdjacentDragons(hero.getPosition());
-		
+
 		if (adjacentDragons.size() > 0) {
 			//If the hero has a sword equipped, then kill the dragon adjacent to him
 			for(int i = adjacentDragons.size() -1 ; i >= 0; i--){
 				if(hero.getSwordEquipped()) {
+					unsetChar(dragons.get(adjacentDragons.get(i).intValue()).getPosition());
 					dragons.remove(adjacentDragons.get(i).intValue());
 				} else { //Otherwise, if the dragon is awake, it wins
 					if(!dragons.get(adjacentDragons.get(i)).isSleeping())
@@ -208,8 +209,10 @@ public class Maze {
 		//Update dragon and sword characters on maze
 		for(Sword sword : swords) {
 			if(!sword.getPickedUp()){
-				if (getChar(sword.getPosition()) == 'D' || getChar(sword.getPosition()) == 'd')
+				if (getChar(sword.getPosition()) == 'D')
 					setChar(sword.getPosition(), 'F');
+				else if (getChar(sword.getPosition()) == 'd')
+					setChar(sword.getPosition(), 'f');
 				else
 					setChar(sword.getPosition(), sword.getChar());
 			}
@@ -271,10 +274,10 @@ public class Maze {
 	public Sword getSword(int i) {
 		if(i >= swords.size())
 			return null;
-		
+
 		return swords.get(i);
 	}
-	
+
 	public ArrayList<Sword> getSwords() {
 		return swords;
 	}
@@ -286,7 +289,7 @@ public class Maze {
 	public ArrayList<Dragon> getDragons() {
 		return dragons;
 	}
-	
+
 	public char[][] getMazeArray() {
 		return maze;
 	}

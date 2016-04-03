@@ -48,7 +48,7 @@ public class ManualMazeGeneratorWindow extends JFrame {
 		ManualMazeGameWindow = new JFrame();
 		ManualMazeGameWindow.setTitle("Manual Maze Play Window");
 		ManualMazeGameWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		ManualMazeGameWindow.setBounds(100, 100, 412, 305);
+		ManualMazeGameWindow.setBounds(100, 100, 800, 600);
 		ManualMazeGameWindow.setLayout(new BorderLayout());
 		ManualMazeGameWindow.getContentPane().setLayout(new BorderLayout());
 		ManualMazeGameWindow.setEnabled(true);

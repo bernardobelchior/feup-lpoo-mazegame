@@ -31,6 +31,7 @@ public class MazeDisplayPanel extends JPanel implements KeyListener {
 
 		for(int x = 0; x < mazeArray.length; x++){
 			for(int y = 0; y < mazeArray[x].length; y++) {
+				MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.floor, x, y);
 				switch (mazeArray[y][x]) {
 				case 'X':
 						MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.wall, x, y);

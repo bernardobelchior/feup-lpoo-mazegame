@@ -65,6 +65,7 @@ public class MazeDesignPanel extends JPanel implements MouseListener {
 
 		for(int x = 0; x < maze.length; x++) {
 			for(int y = 0; y < maze[x].length; y++) {
+				MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.floor, x, y);
 				switch (maze[y][x]) {
 				case 'X':
 					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.wall, x, y);

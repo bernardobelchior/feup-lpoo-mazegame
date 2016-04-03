@@ -1,14 +1,19 @@
 package maze.cli;
 
 import maze.logic.Maze;
+
+import javax.swing.JFrame;
+
 import maze.logic.Game.*;
 
 public class GameInterface {
 	private Maze maze;
 	private CommandLineInterface cli = new CommandLineInterface();
+	private JFrame parent;
 
-	public GameInterface(Maze maze) {
+	public GameInterface(JFrame parent, Maze maze) {
 		this.maze = maze;
+		this.parent = parent;
 		
 		play();
 	}
@@ -34,6 +39,8 @@ public class GameInterface {
 
 			maze = new Maze(grid, cli.getGameMode());
 			play();
+			
+			parent.setVisible(true);
 	}
 
 	public void play(){	

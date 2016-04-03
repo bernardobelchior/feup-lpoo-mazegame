@@ -119,7 +119,8 @@ public class GameSettingsWindow {
 		JButton createManualMazeButton = new JButton("Create Maze Manually");
 		createManualMazeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new ManualMazeGeneratorWindow(getDisplayMode((String)mazeTypeComboBox.getSelectedItem()),
+				gameSettingsFrame.setVisible(false);
+				new ManualMazeGeneratorWindow(gameSettingsFrame, getDisplayMode((String)mazeTypeComboBox.getSelectedItem()),
 						getGameMode((String) gameModeComboBox.getSelectedItem()));
 			}
 		});
@@ -135,15 +136,16 @@ public class GameSettingsWindow {
 
 				Maze maze = new Maze(rmg.getMaze(), getGameMode((String) gameModeComboBox.getSelectedItem()));
 
+				gameSettingsFrame.setVisible(false);
 				switch(getDisplayMode((String)mazeTypeComboBox.getSelectedItem())) {
 				case GRAPHICAL:
-					new GraphicalGameWindow(maze);
+					new GraphicalGameWindow(gameSettingsFrame, maze);
 					break;
 				case TEXTUAL:
-					new TextualGameWindow(maze);
+					new TextualGameWindow(gameSettingsFrame, maze);
 					break;
 				case CONSOLE: 
-					new GameInterface(maze);
+					new GameInterface(gameSettingsFrame, maze);
 					break;
 				}
 			}

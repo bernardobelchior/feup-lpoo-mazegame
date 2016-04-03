@@ -10,6 +10,8 @@ import maze.logic.Maze;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -17,7 +19,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
-public class TextualGameWindow {
+public class TextualGameWindow implements WindowListener {
 
 	private JFrame textualGameFrame;
 	private JTextArea mazeTextArea;
@@ -28,9 +30,11 @@ public class TextualGameWindow {
 	private JButton rightButton;
 	private JButton leftButton;
 	private Maze maze;
+	private JFrame parent;
 
-	public TextualGameWindow(Maze maze) {
+	public TextualGameWindow(JFrame parent, Maze maze) {
 		this.maze = maze;
+		this.parent = parent;
 		initialize();
 		mazeTextArea.setText(maze.toString());
 
@@ -47,6 +51,7 @@ public class TextualGameWindow {
 
 		gameInfoLabel.setText("Ready to play!\n");
 		adjustWindowToScreen();
+		textualGameFrame.addWindowListener(this);
 	}
 
 	/**
@@ -195,4 +200,27 @@ public class TextualGameWindow {
 		MazeGraphics.centerFrame(textualGameFrame);
 		textualGameFrame.setLocation(textualGameFrame.getLocation().x, 0);
 	}
+	
+	@Override
+	public void windowClosing(WindowEvent arg0) {
+		parent.setVisible(true);
+	}
+
+	@Override
+	public void windowActivated(WindowEvent arg0) {}
+
+	@Override
+	public void windowClosed(WindowEvent arg0) {}
+	
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {}
+
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {}
+
+	@Override
+	public void windowIconified(WindowEvent arg0) {}
+
+	@Override
+	public void windowOpened(WindowEvent arg0) {}
 }

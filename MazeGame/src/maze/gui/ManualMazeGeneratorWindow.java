@@ -22,19 +22,20 @@ import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
 public class ManualMazeGeneratorWindow extends JFrame {
-
 	//TODO check if the maze created by the player is valid
 
 	private JFrame ManualMazeGameWindow;
 	private MazeDesignPanel mazePanel;
 	private ElementsPanel elementsPanel;
-
+	private JFrame parent;
+	
 	private EntityType selectedEntity;
 	private DisplayMode displayMode;
 	private GameMode gameMode;
 
-	public ManualMazeGeneratorWindow(DisplayMode displayMode, GameMode gameMode) {
+	public ManualMazeGeneratorWindow(JFrame parent, DisplayMode displayMode, GameMode gameMode) {
 		MazeGraphics.loadImages();
+		this.parent = parent;
 		this.displayMode = displayMode;
 		this.gameMode = gameMode;
 		this.selectedEntity = null;
@@ -110,15 +111,16 @@ public class ManualMazeGeneratorWindow extends JFrame {
 				Maze maze = new Maze(mazePanel.getMaze(), gameMode);
 				switch (displayMode) {
 				case CONSOLE:
-					new GameInterface(maze);
+					new GameInterface(parent, maze);
 					break;
 				case GRAPHICAL:
-					new GraphicalGameWindow(maze);
+					new GraphicalGameWindow(parent, maze);
 					break;
 				case TEXTUAL:
-					new TextualGameWindow(maze);
+					new TextualGameWindow(parent, maze);
 					break;
 				}
+				ManualMazeGameWindow.dispose();
 			}
 		});
 		gbc.gridy = 2;

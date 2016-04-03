@@ -12,8 +12,9 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
-public class GraphicalGameWindow {
+public class GraphicalGameWindow implements WindowListener {
 	private JFrame graphicalGameFrame;
 	private JLabel instructionsLabel;
 	private MazeDisplayPanel mazeDisplayPanel;
@@ -21,17 +22,20 @@ public class GraphicalGameWindow {
 	private GameStateDisplayPanel gameStatePanel = new GameStateDisplayPanel();
 
 	private Maze maze;
+	private JFrame parent;
 
 	/**
 	 * Create the application.
 	 */
-	public GraphicalGameWindow(Maze maze) {
+	public GraphicalGameWindow(JFrame parent, Maze maze) {
 		this.maze = maze;
+		this.parent = parent;
 		initialize();
 		adjustWindowToScreen();
 		
 		gameStatePanel.updateState(maze.getGameState());
 		mazeDisplayPanel.requestFocusInWindow();
+		graphicalGameFrame.addWindowListener(this);
 	}
 
 	/**
@@ -125,4 +129,27 @@ public class GraphicalGameWindow {
 		MazeGraphics.centerFrame(graphicalGameFrame);
 		graphicalGameFrame.setLocation(graphicalGameFrame.getLocation().x, 0);
 	}
+	
+	@Override
+	public void windowClosing(WindowEvent arg0) {
+		parent.setVisible(true);
+	}
+
+	@Override
+	public void windowActivated(WindowEvent arg0) {}
+
+	@Override
+	public void windowClosed(WindowEvent arg0) {}
+	
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {}
+
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {}
+
+	@Override
+	public void windowIconified(WindowEvent arg0) {}
+
+	@Override
+	public void windowOpened(WindowEvent arg0) {}
 }

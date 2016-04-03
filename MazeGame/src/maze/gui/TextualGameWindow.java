@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
@@ -45,7 +46,7 @@ public class TextualGameWindow {
 
 
 		gameInfoLabel.setText("Ready to play!\n");
-
+		adjustWindowToScreen();
 	}
 
 	/**
@@ -179,5 +180,19 @@ public class TextualGameWindow {
 		downButton.setEnabled(false);
 		rightButton.setEnabled(false);
 		leftButton.setEnabled(false);
+	}
+	
+	private void adjustWindowToScreen() {
+		int width = Math.min(
+				textualGameFrame.getInsets().left + textualGameFrame.getInsets().right + mazeTextArea.getX() + mazeTextArea.getPreferredSize().width,
+				GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width);
+		int height = Math.min(
+				textualGameFrame.getInsets().top + textualGameFrame.getInsets().bottom + gameInfoLabel.getHeight() +
+				Math.max(gameStateImage.getY() + gameStateImage.getHeight(),
+						 mazeTextArea.getY() + mazeTextArea.getPreferredSize().height),
+				GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height);
+		textualGameFrame.setSize(width, height);
+		MazeGraphics.centerFrame(textualGameFrame);
+		textualGameFrame.setLocation(textualGameFrame.getLocation().x, 0);
 	}
 }

@@ -10,6 +10,7 @@ import maze.logic.Game.GameState;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.WindowEvent;
 
 public class GraphicalGameWindow {
@@ -27,7 +28,8 @@ public class GraphicalGameWindow {
 	public GraphicalGameWindow(Maze maze) {
 		this.maze = maze;
 		initialize();
-
+		adjustWindowToScreen();
+		
 		gameStatePanel.updateState(maze.getGameState());
 		mazeDisplayPanel.requestFocusInWindow();
 	}
@@ -43,7 +45,7 @@ public class GraphicalGameWindow {
 		graphicalGameFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		graphicalGameFrame.getContentPane().setLayout(new BorderLayout());	
 		graphicalGameFrame.setEnabled(true);
-		graphicalGameFrame.setResizable(true);
+		graphicalGameFrame.setResizable(false);
 		graphicalGameFrame.setVisible(true);
 			
 		mazeDisplayPanel = new MazeDisplayPanel(this);
@@ -54,6 +56,8 @@ public class GraphicalGameWindow {
 		graphicalGameFrame.getContentPane().add(mazeDisplayScrollPane, BorderLayout.CENTER);
 
 		instructionsLabel = new JLabel("");
+		instructionsLabel.setSize(10, 16);
+		instructionsLabel.setText("Ready to play!");
 		graphicalGameFrame.getContentPane().add(instructionsLabel, BorderLayout.PAGE_END);		
 	}
 
@@ -108,5 +112,17 @@ public class GraphicalGameWindow {
 	public void close() {
 		graphicalGameFrame.setVisible(false);
 		graphicalGameFrame.dispatchEvent(new WindowEvent(graphicalGameFrame, WindowEvent.WINDOW_CLOSING));
+	}
+	
+	private void adjustWindowToScreen() {
+		int width = Math.min(
+				graphicalGameFrame.getInsets().left + graphicalGameFrame.getInsets().right + mazeDisplayScrollPane.getPreferredSize().width + mazeDisplayScrollPane.getVerticalScrollBar().getSize().width,
+				GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width);
+		int height = Math.min(
+				graphicalGameFrame.getInsets().top + graphicalGameFrame.getInsets().bottom + mazeDisplayScrollPane.getPreferredSize().height + mazeDisplayScrollPane.getHorizontalScrollBar().getSize().height + instructionsLabel.getSize().height,
+				GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height);
+		graphicalGameFrame.setSize(width, height);
+		MazeGraphics.centerFrame(graphicalGameFrame);
+		graphicalGameFrame.setLocation(graphicalGameFrame.getLocation().x, 0);
 	}
 }

@@ -48,7 +48,7 @@ public class RandomMazeGenerator {
 		do {
 			x = random.nextInt(size);
 			y = random.nextInt(size);
-		} while(!(((x == 0 || x == size - 1) && y % 2 == 1) || ((y == 0 || y == size - 1) && x % 2 == 1)));;
+		} while(!(((x == 0 || x == size - 1) && y % 2 == 1) || ((y == 0 || y == size - 1) && x % 2 == 1)));
 
 		exit = new Point(x, y);
 		maze[exit.y][exit.x] = 'S';

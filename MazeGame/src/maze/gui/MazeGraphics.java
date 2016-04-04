@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
@@ -133,14 +134,11 @@ public class MazeGraphics {
 				case 'S':
 					//AffineTransform old = ((Graphics2D) g).getTransform();
 
-					AffineTransform at = new AffineTransform();
-					
-					at.translate(TEXTURE_SIZE/2, TEXTURE_SIZE/2);
-					at.rotate(getExitRotation(maze.length, x, y));
-					at.translate(-(x*TEXTURE_SIZE + TEXTURE_SIZE/2), -(y*TEXTURE_SIZE + TEXTURE_SIZE/2));
+					AffineTransform at = AffineTransform.getRotateInstance(getExitRotation(maze.length, x, y), TEXTURE_SIZE/2, TEXTURE_SIZE/2);
+					AffineTransformOp op = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
 					
 					Graphics2D g2d = (Graphics2D) g;
-					g2d.drawImage(MazeGraphics.exit, at, null);
+					g2d.drawImage(op.filter(MazeGraphics.exit, null), x*TEXTURE_SIZE, y*TEXTURE_SIZE, null);
 					
 					//MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.exit, x, y);
 				default:

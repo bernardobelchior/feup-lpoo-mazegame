@@ -7,6 +7,8 @@ import java.awt.event.MouseListener;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import maze.logic.Game.EntityType;
+
 @SuppressWarnings("serial")
 public class MazeDesignPanel extends JPanel implements MouseListener {
 	private char[][] maze;
@@ -78,89 +80,19 @@ public class MazeDesignPanel extends JPanel implements MouseListener {
 	public void mouseReleased(MouseEvent e) {	
 		if(maze == null || parent.getSelectedEntity() == null)
 			return;
-		
+
 		int x = e.getX()/MazeGraphics.TEXTURE_SIZE;
 		int y = e.getY()/MazeGraphics.TEXTURE_SIZE;
-		
+
 		if(e.getButton() == MouseEvent.BUTTON3) {
-			if(x == 0 || x == size - 1 || y == 0 || y == size - 1)
-				JOptionPane.showMessageDialog(parent, "You cannot delete a bouding wall.");
-			else {
-				if(isHeroOnPosition(x, y))
-					heroPlaced = false;
-				if(isExitOnPosition(x, y))
-					exitPlaced = false;
-				maze[y][x] = ' ';
-			}
+			//Right mouse button
+			deleteEntityAt(x, y);
 		} else if (e.getButton() == MouseEvent.BUTTON1){
-			switch (parent.getSelectedEntity()) {
-			case WALL:
-				if(isHeroOnPosition(x, y))
-					heroPlaced = false;
-				if(isExitOnPosition(x, y))
-					exitPlaced = false;
-				maze[y][x] = 'X';
-				break;
-			case HERO_ARMED:
-				if(!heroPlaced) {
-					maze[y][x] = 'A';
-					heroPlaced = true;
-					if(isExitOnPosition(x, y))
-						exitPlaced = false;
-				} else {
-					JOptionPane.showMessageDialog(parent, "An hero has already been placed.");
-				}
-				break;
-			case HERO_UNARMED:
-				if(!heroPlaced) {
-					maze[y][x] = 'H';
-					heroPlaced = true;
-					if(isExitOnPosition(x, y))
-						exitPlaced = false;
-				} else {
-					JOptionPane.showMessageDialog(parent, "An hero has already been placed.");
-				}
-				break;
-			case DRAGON_AWAKEN:
-				if(isHeroOnPosition(x, y))
-					heroPlaced = false;
-				if(isExitOnPosition(x, y))
-					exitPlaced = false;
-				maze[y][x] = 'D';
-				break;
-			case DRAGON_SLEEPING:
-				if(isHeroOnPosition(x, y))
-					heroPlaced = false;
-				if(isExitOnPosition(x, y))
-					exitPlaced = false;
-				maze[y][x] = 'd';
-				break;
-			case SWORD: 
-				if(isHeroOnPosition(x, y))
-					heroPlaced = false;
-				if(isExitOnPosition(x, y))
-					exitPlaced = false;
-				maze[y][x] = 'E';
-				break;
-			case EXIT:
-				if(isValidPositionForExit(x, y)) {
-					if(exitPlaced) {
-						JOptionPane.showMessageDialog(parent, "There can only be on exit in the maze.");
-					} else {
-						if(isHeroOnPosition(x, y))
-							heroPlaced = false;
-						maze[y][x] = 'S';
-						exitPlaced = true;
-					}
-				} else {
-					JOptionPane.showMessageDialog(parent, "Invalid exit location.");
-				}
-				break;
-			default:
-				break;
-			}
+			//Left mouse button
+			if(parent.getSelectedEntity() == EntityType.EXIT || deleteEntityAt(x, y))
+				createEntityAt(x, y, parent.getSelectedEntity());
 		}
-		
+
 		repaint();
 	}
 
@@ -177,11 +109,68 @@ public class MazeDesignPanel extends JPanel implements MouseListener {
 		return maze;
 	}
 
-	private boolean isHeroOnPosition(int x, int y) {
-		return (maze[y][x] == 'A' || maze[y][x] == 'H');
+	private boolean deleteEntityAt(int x, int y) {
+		switch (maze[y][x]) {
+		case 'X':
+			if(x == 0 || x == size - 1 || y == 0 || y == size - 1) {
+				JOptionPane.showMessageDialog(parent, "You cannot delete a bounding wall.");
+				return false;
+			}
+			break;
+		case 'S':
+			exitPlaced = false;
+			maze[y][x] = 'X';
+			return true;
+		case 'H':
+		case 'A':
+			heroPlaced = false;
+			break;
+		}
+
+		maze[y][x] = ' ';
+		return true;
 	}
-	
-	private boolean isExitOnPosition(int x, int y) {
-		return maze[y][x] == 'S';
+
+	private void createEntityAt(int x, int y, EntityType entity) {
+		switch (entity) {
+		case HERO_ARMED:
+			if(heroPlaced) {
+				JOptionPane.showMessageDialog(parent, "An hero has already been placed.");
+				return;
+			}
+			heroPlaced = true;
+			maze[y][x] = 'A';
+			break;
+		case HERO_UNARMED:
+			if(heroPlaced) {
+				JOptionPane.showMessageDialog(parent, "An hero has already been placed.");
+				return;
+			}
+			heroPlaced = true;
+			maze[y][x] = 'H';
+			break;
+		case EXIT:
+			if(exitPlaced) {
+				JOptionPane.showMessageDialog(parent, "There can only be on exit in the maze.");
+				return;
+			}
+			if(isValidPositionForExit(x, y)) {
+				exitPlaced = true;
+				maze[y][x] = 'S';	
+			} else
+				JOptionPane.showMessageDialog(parent, "Invalid exit location.");
+			break;
+		case DRAGON_AWAKEN:
+			maze[y][x] = 'D';
+			break;
+		case DRAGON_SLEEPING:
+			maze[y][x] = 'd';
+			break;
+		case SWORD:
+			maze[y][x] = 'E';
+			break;
+		default: 
+			break;
+		}
 	}
 }

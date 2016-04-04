@@ -15,6 +15,11 @@ public class Maze {
 	private GameMode gameMode;
 	private char[][] maze;
 
+	/**
+	 * Maze constructor with a specific maze and provided game mode.
+	 * @param maze Maze array
+	 * @param gameMode {@link GameMode} 
+	 */
 	public Maze(char[][] maze, GameMode gameMode) {
 		this.gameMode = gameMode;
 		this.maze = maze.clone();
@@ -23,7 +28,7 @@ public class Maze {
 		readMaze();
 
 		setChar(hero.getPosition(), hero.getChar());
-		for(int i=0;i<dragons.size();i++){
+		for(int i = 0; i < dragons.size(); i++){
 			setChar(dragons.get(i).getPosition(), dragons.get(i).getChar());
 		}
 
@@ -91,6 +96,12 @@ public class Maze {
 		}
 	}
 
+	/**
+	 * Checks if the hero can move in the specified {@link Direction}.
+	 * If is possible, it will move the {@link Maze#hero}. 
+	 * @param direction {@link Direction} in which to move the hero.
+	 * @return <code>true</code> if the hero has moved, <code>false</code> otherwise.
+	 */
 	public boolean moveHero(Direction direction) {
 		if (canMove(hero.getPosition(), direction)) {
 			unsetChar(hero.getPosition());
@@ -102,8 +113,16 @@ public class Maze {
 		return false;
 	}
 
+	/**
+	 * Checks if the game is running, using the {@link Maze#isGameRunning()} method.
+	 * If it is, it will try to move the hero in the specified {@link Direction}.
+	 * It will then update the dragons in the maze, using {@link Maze#updateDragons()},
+	 * and then update the general game state using {@link Maze#update()}.
+	 * @param heroDirection {@link Direction} in which the hero will try to move.
+	 * @return {@link Maze#moveHero(Direction)}
+	 */
 	public boolean nextTurn(Direction heroDirection) {
-		if(gameState != GameState.RUNNING)
+		if(!isGameRunning())
 			return false;
 
 		boolean heroHasMoved = moveHero(heroDirection);
@@ -112,6 +131,9 @@ public class Maze {
 		return heroHasMoved;
 	}
 
+	/**
+	 * Updates the dragons in the maze depending on the {@link Maze#gameMode}.
+	 */
 	public void updateDragons(){
 		switch (gameMode){
 		case STATIONARY:
@@ -160,6 +182,12 @@ public class Maze {
 		}
 	}
 
+	/**
+	 * Moves the {@link Dragon} in the {@link Maze#dragons} array 
+	 * with the index specified in the direction given.
+	 * @param i Index of the dragon
+	 * @param direction {@link Direction} in which to move the dragon.
+	 */
 	public void moveDragon(int i, Direction direction) {
 		if(i < dragons.size() && canMove(dragons.get(i).getPosition(), direction)){
 			dragons.get(i).move(direction);
@@ -173,11 +201,17 @@ public class Maze {
 				getChar(position, direction) == 'E');
 	}
 
+	/**
+	 * Updated the general {@link Maze#gameState}.
+	 * Checks if the {@link Maze#hero} can pick up a
+	 * {@link Maze#swords} and picks it up if he can.
+	 * Checks if there is any {@link Dragon} adjacent
+	 * to the {@link Maze#hero} and, if it is, changes
+	 * the {@link Maze#gameState} accordingly.
+	 */
 	public void update() {
-		//Checks if the hero is able to pick up the sword and picks it up
-		//If it does pick it up, update the hero character
 		for(Sword sword : swords) {
-			if (!sword.getPickedUp() && sword.getPosition().equals(hero.getPosition())) {
+			if (sword.getPosition().equals(hero.getPosition())) {
 				pickUpSword(sword);
 				setChar(hero.getPosition(), hero.getChar());
 				swords.remove(sword);
@@ -208,14 +242,12 @@ public class Maze {
 
 		//Update dragon and sword characters on maze
 		for(Sword sword : swords) {
-			if(!sword.getPickedUp()){
 				if (getChar(sword.getPosition()) == 'D')
 					setChar(sword.getPosition(), 'F');
 				else if (getChar(sword.getPosition()) == 'd')
 					setChar(sword.getPosition(), 'f');
 				else
 					setChar(sword.getPosition(), sword.getChar());
-			}
 		}
 	}
 
@@ -243,6 +275,10 @@ public class Maze {
 		return false;
 	}
 
+	/**
+	 * Gets the current {@link Maze#gameState}
+	 * @return {@link Maze#gameState}
+	 */
 	public GameState getGameState() {
 		return gameState;
 	}
@@ -254,7 +290,11 @@ public class Maze {
 		} while (!canMove(position, direction));
 		return direction;
 	}
-
+	
+	/**
+	 * Returns the maze array as a formatted string.
+	 * @return {@link Maze#maze} as a formated string.
+	 */
 	public String toString() {
 		String result = "";
 		for (int i = 0; i < maze.length; i++) {
@@ -267,10 +307,21 @@ public class Maze {
 		return result;
 	}
 
+	/**
+	 * Gets the hero
+	 * @return {@link Maze#hero}
+	 */
 	public Hero getHero() {
 		return hero;
 	}
 
+	/**
+	 * Gets the {@link Sword} in the {@link Maze#swords} array.
+	 * Returns <code>null</code> if the index is invalid.
+	 * @param i Index of the sword.
+	 * @return {@link Sword} in {@link Maze#swords}, or <code>null</code> 
+	 * if the index is invalid.
+	 */
 	public Sword getSword(int i) {
 		if(i >= swords.size())
 			return null;
@@ -278,23 +329,59 @@ public class Maze {
 		return swords.get(i);
 	}
 
+	/**
+	 * Gets {@link Maze#swords}
+	 * @return {@link Maze#swords}
+	 */
 	public ArrayList<Sword> getSwords() {
 		return swords;
 	}
 
+	/**
+	 * Gets the {@link Dragon} in the {@link Maze#dragons} array
+	 * with the index given in the arguments. 
+	 * Returns <code>null</code> if the index is invalid.
+	 * @param i Index
+	 * @return {@link Dragon} in {@link Maze#dragons}, or <code>null</code> 
+	 * if the index is invalid.
+	 */
 	public Dragon getDragon(int i) {
+		if(i > dragons.size())
+			return null;
+		
 		return dragons.get(i);
 	}
 
+	/**
+	 * Gets {@link Maze#dragons}
+	 * @return {@link Maze#dragons}
+	 */
 	public ArrayList<Dragon> getDragons() {
 		return dragons;
 	}
 
+	/**
+	 * Gets {@link Maze#maze}
+	 * @return {@link Maze#maze}
+	 */
 	public char[][] getMazeArray() {
 		return maze;
 	}
 
+	/**
+	 * Gets {@link Maze#maze} length.
+	 * @return {@link Maze#maze} length
+	 */
 	public int getMazeDimension() {
 		return maze.length;
+	}
+	
+	/**
+	 * Returns whether the game is running or not.
+	 * @return <code>true</code> if the {@link Maze#gameState} is {@value GameState#RUNNING},
+	 * returning <code>false</code> otherwise.
+	 */
+	public boolean isGameRunning() {
+		return gameState == GameState.RUNNING;
 	}
 }

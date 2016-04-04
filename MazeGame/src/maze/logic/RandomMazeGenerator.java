@@ -15,6 +15,11 @@ public class RandomMazeGenerator {
 	int size;
 	int dragonNumber;
 
+	/**
+	 * {@link RandomMazeGenerator} constructor.
+	 * @param size Size of the maze to be generated.
+	 * @param dragonNumber Number of dragons that the maze will contain.
+	 */
 	public RandomMazeGenerator(int size, int dragonNumber){
 		this.size = size;
 		this.dragonNumber = dragonNumber;
@@ -22,6 +27,9 @@ public class RandomMazeGenerator {
 			this.size++;
 	}
 
+	/**
+	 * Initializes the maze, constructing its walls.
+	 */
 	public void initializeVariables(){
 		visitedCells = new boolean[size][size];
 		maze = new char[size][size];
@@ -41,6 +49,9 @@ public class RandomMazeGenerator {
 		}
 	}
 
+	/**
+	 * Generates a valid exit.
+	 */
 	public void generateExit(){
 		Random random = new Random();
 		int x,y;
@@ -54,6 +65,10 @@ public class RandomMazeGenerator {
 		maze[exit.y][exit.x] = 'S';
 	}
 
+	/**
+	 * Gets a valid starting position for the maze generation to begin.
+	 * @return A valid position.
+	 */
 	public Point getValidStartingPosition() {
 		if(exit.x + 1 < size && maze[exit.y][exit.x + 1] == ' ')
 			return new Point(exit.x + 1, exit. y);
@@ -89,6 +104,10 @@ public class RandomMazeGenerator {
 		return validDirections.get(random.nextInt(validDirections.size()));
 	}
 
+	/**
+	 * Generates and returns a randomly generated maze.
+	 * @return Returns a new randomly generated maze.
+	 */
 	public char[][] getMaze() {
 		initializeVariables();
 		generateExit();
@@ -216,6 +235,10 @@ public class RandomMazeGenerator {
 		}
 	}
 	
+	/**
+	 * Gets the exit
+	 * @return {@link RandomMazeGenerator#exit}
+	 */
 	public Point getExit(){
 		return exit;
 	}

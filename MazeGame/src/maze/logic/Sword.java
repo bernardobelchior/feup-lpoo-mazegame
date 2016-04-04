@@ -3,23 +3,19 @@ package maze.logic;
 import java.awt.Point;
 
 public class Sword extends Entity {	
-	private boolean pickedUp;
-
+	/**
+	 * Sword constructor.
+	 * @param position Sword position on the maze array.
+	 */
 	public Sword(Point position){
 		super(position);
-		this.pickedUp = false;
 	}
 	
+	/**
+	 * Gets the char that represents the {@link Sword} on the maze array.
+	 * @return {@link Sword} character.
+	 */
 	public char getChar(){
 		return 'E';
 	}
-	
-	public void pickUp(){
-		pickedUp = true;
-	}
-	
-	public boolean getPickedUp(){
-		return pickedUp;
-	}
-
 }

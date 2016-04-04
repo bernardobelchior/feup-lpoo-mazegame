@@ -8,7 +8,10 @@ public class Game {
 	public enum GameMode { STATIONARY, RANDOM_MOVEMENT, SLEEP_RANDOM_MOVEMENT };
 	public enum EntityType { WALL, BLANK, DRAGON_AWAKEN, DRAGON_SLEEPING, HERO_UNARMED, HERO_ARMED, SWORD, EXIT };
 	
-	
+	/**
+	 * Generates and returns a random direction, including {@link Direction#STAY}.
+	 * @return A random {@link Direction}.
+	 */
 	public static Direction getRandomDirection(){
 		Random random = new Random();
 		int direction = random.nextInt(5);

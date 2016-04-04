@@ -38,8 +38,6 @@ public class TextualGameWindow implements WindowListener {
 		initialize();
 		mazeTextArea.setText(maze.toString());
 
-		textualGameFrame.setResizable(true);
-
 		//FIXME: Dynamic sizing not working properly.
 		int charWidth =	mazeTextArea.getFontMetrics(mazeTextArea.getFont()).stringWidth(" ");
 		int charHeight = mazeTextArea.getFontMetrics(mazeTextArea.getFont()).getHeight();

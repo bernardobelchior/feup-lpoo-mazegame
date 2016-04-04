@@ -132,15 +132,12 @@ public class MazeGraphics {
 					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.sword, x, y);
 					break;
 				case 'S':
-					//AffineTransform old = ((Graphics2D) g).getTransform();
-
+					//Rotates the exit image according to the orientation.
 					AffineTransform at = AffineTransform.getRotateInstance(getExitRotation(maze.length, x, y), TEXTURE_SIZE/2, TEXTURE_SIZE/2);
 					AffineTransformOp op = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
 					
 					Graphics2D g2d = (Graphics2D) g;
 					g2d.drawImage(op.filter(MazeGraphics.exit, null), x*TEXTURE_SIZE, y*TEXTURE_SIZE, null);
-					
-					//MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.exit, x, y);
 				default:
 					break;
 				}		
@@ -154,11 +151,11 @@ public class MazeGraphics {
 		if(y == 0)
 			return 0.0;
 		if(x == 0)
-			return Math.PI/2;
+			return 3*Math.PI/2;
 		if(y == length - 1)
 			return Math.PI;
 		if(x == length - 1)
-			return 3*Math.PI;
+			return Math.PI/2;
 		
 		return 0.0;
 	}

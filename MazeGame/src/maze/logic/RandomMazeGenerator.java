@@ -188,25 +188,17 @@ public class RandomMazeGenerator {
 		Random random = new Random();
 		int i, x, y;
 		i = 0;
-		//TODO Make a better check to see if the dragons dont end up adjacent to a hero
-		//or the path to the sword is inaccessible
+		//TODO Make a better check to see if the path to the sword is inaccessible
 		while(i < dragonNumber) {
 			x = random.nextInt(size);
 			y = random.nextInt(size);
-			if(!(maze[y][x] == 'X' || maze[y][x] == 'S' || maze[y][x] == 'H')) {
+			if(!(maze[y][x] == 'X' || maze[y][x] == 'S' || maze[y][x] == 'H' ||
+					maze[y-1][x] == 'H' || maze[y+1][x] == 'H' ||
+					maze[y-1][x-1] == 'H'	|| maze[y][x+1] == 'H')) {
 				i++;
 				maze[y][x] = 'D';
 			}
 		}
-		
-		//May be useful in the future to ensure dragon don't leave
-		//the hero in an accessible path to the sword
-		/*for(int i = 0; i < maze.length; i++){
-			for(int j = 0; j < maze[i].length; j++){
-				if(maze[j][i] == '+')
-					maze[j][i] = 'D';
-			}
-		}*/
 	}
 
 	private void placeHero() {

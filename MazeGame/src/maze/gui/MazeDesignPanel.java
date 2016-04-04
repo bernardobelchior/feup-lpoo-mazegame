@@ -172,9 +172,9 @@ public class MazeDesignPanel extends JPanel implements MouseListener {
 		repaint();
 	}
 
-	//FIXME: There is a bug in here.
 	private boolean isValidPositionForExit(int x, int y) {
-		return (((x == 0 || x == size - 1) && y % 2 == 1) || ((y == 0 || y == size - 1) && x % 2 == 1));
+		return !((x == 0 && y == 0) || (x == 0 && y == size - 1) ||
+				(x == size - 1 && y == 0) || (x == size - 1 && y == size - 1));
 	}
 
 	public int getMazeSize() {

@@ -20,50 +20,7 @@ public class MazeDisplayPanel extends JPanel implements KeyListener {
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		drawMaze(g);
-	}
-
-	private void drawMaze(Graphics g) {		
-		if(parent.getMaze() == null)
-			return;
-
-		char[][] mazeArray = parent.getMaze().getMazeArray();
-
-		for(int x = 0; x < mazeArray.length; x++){
-			for(int y = 0; y < mazeArray[x].length; y++) {
-				MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.floor, x, y);
-				switch (mazeArray[y][x]) {
-				case 'X':
-					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.wall, x, y);
-					break;
-				case 'E':
-					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.sword, x, y);						
-					break;
-				case 'H':
-					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.heroUnarmed, x, y);
-					break;
-				case 'A':
-					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.heroArmed, x, y);
-					break;
-				case 'D':
-					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.dragonAwaken, x, y);
-					break;
-				case 'd':
-					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.dragonSleeping, x, y);
-					break;
-				case 'F':
-					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.dragonAwaken, x, y);
-					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.sword, x, y);
-					break;
-				case 'f':
-					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.dragonSleeping, x, y);
-					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.sword, x, y);
-					break;
-				default:
-					break;
-				}	
-			}
-		}
+		MazeGraphics.drawMaze(g, parent.getMaze().getMazeArray(), null);
 	}
 
 	public void keyPressed(KeyEvent keyEvent) {	}

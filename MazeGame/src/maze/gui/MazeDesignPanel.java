@@ -11,14 +11,15 @@ import javax.swing.JPanel;
 public class MazeDesignPanel extends JPanel implements MouseListener {
 	private char[][] maze;
 	private int size;
-	private boolean heroPlaced = false;
-	private boolean exitPlaced = false;
+	private boolean heroPlaced;
+	private boolean exitPlaced;
 	private ManualMazeGeneratorWindow parent;
 
 	public MazeDesignPanel(ManualMazeGeneratorWindow parent) {
 		this.maze = null;
 		this.parent = parent;
 		this.size = 11;
+		generateMaze();
 		addMouseListener(this);
 	}
 
@@ -28,13 +29,14 @@ public class MazeDesignPanel extends JPanel implements MouseListener {
 	}
 
 	public void generateMaze() {
-		generateMaze(size);
+		generateMaze(size);		
 	}
 
 	public void generateMaze(int size) {
 		setSize(size);
 		maze = new char[size][size];
 		heroPlaced = false;
+		exitPlaced = false;
 
 		//Sets walls all around the maze.
 		for(int y = 0; y < size; y++){
@@ -57,41 +59,7 @@ public class MazeDesignPanel extends JPanel implements MouseListener {
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		drawMaze(g);
-	}
-
-	private void drawMaze(Graphics g) {
-		if(maze == null)
-			return;
-
-		for(int x = 0; x < maze.length; x++) {
-			for(int y = 0; y < maze[x].length; y++) {
-				MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.floor, x, y);
-				switch (maze[y][x]) {
-				case 'X':
-					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.wall, x, y);
-					break;
-				case 'A':
-					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.heroArmed, x, y);
-					break;
-				case 'H':
-					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.heroUnarmed, x, y);
-					break;
-				case 'D':
-					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.dragonAwaken, x, y);
-					break;
-				case 'd':
-					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.dragonSleeping, x, y);
-					break;
-				case 'E':
-					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.sword, x, y);
-					break;
-				default:
-					break;
-				}
-				MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.frame, x, y);
-			}
-		}
+		MazeGraphics.drawMaze(g, maze, MazeGraphics.frame);
 	}
 
 	@Override
@@ -115,11 +83,15 @@ public class MazeDesignPanel extends JPanel implements MouseListener {
 		int y = e.getY()/MazeGraphics.TEXTURE_SIZE;
 		
 		if(e.getButton() == MouseEvent.BUTTON3) {
-			if(isHeroOnPosition(x, y))
-				heroPlaced = false;
-			if(isExitOnPosition(x, y))
-				exitPlaced = false;
-			maze[y][x] = ' ';
+			if(x == 0 || x == size - 1 || y == 0 || y == size - 1)
+				JOptionPane.showMessageDialog(parent, "You cannot delete a bouding wall.");
+			else {
+				if(isHeroOnPosition(x, y))
+					heroPlaced = false;
+				if(isExitOnPosition(x, y))
+					exitPlaced = false;
+				maze[y][x] = ' ';
+			}
 		} else if (e.getButton() == MouseEvent.BUTTON1){
 			switch (parent.getSelectedEntity()) {
 			case WALL:

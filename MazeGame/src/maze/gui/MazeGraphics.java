@@ -2,7 +2,9 @@ package maze.gui;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Toolkit;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
@@ -16,7 +18,7 @@ public class MazeGraphics {
 	//Images path
 	private static final String DRAGON_AWAKEN_PATH = "res/dragon_awaken.png";
 	private static final String DRAGON_SLEEPING_PATH = "res/dragon_asleep.png";
-	private static final String EXIT_PATH = "res/exit.jpg";
+	private static final String EXIT_PATH = "res/exit.png";
 	private static final String NO_EXIT = "res/no_exit.jpg";
 	private static final String FRAME_PATH = "res/frame.png";
 	private static final String FLOOR_PATH = "res/floor.png";
@@ -92,5 +94,74 @@ public class MazeGraphics {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		frame.setLocation((screenSize.width - frame.getWidth())/2,
 				(screenSize.height - frame.getHeight())/2);
+	}
+
+	public static void drawMaze(Graphics g, char[][] maze, BufferedImage frame) {
+		if(maze == null)
+			return;
+
+		for(int x = 0; x < maze.length; x++) {
+			for(int y = 0; y < maze[x].length; y++) {
+				MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.floor, x, y);
+				switch (maze[y][x]) {
+				case 'X':
+					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.wall, x, y);
+					break;
+				case 'A':
+					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.heroArmed, x, y);
+					break;
+				case 'H':
+					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.heroUnarmed, x, y);
+					break;
+				case 'D':
+					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.dragonAwaken, x, y);
+					break;
+				case 'd':
+					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.dragonSleeping, x, y);
+					break;
+				case 'E':
+					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.sword, x, y);
+					break;
+				case 'F':
+					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.dragonAwaken, x, y);
+					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.sword, x, y);
+					break;
+				case 'f':
+					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.dragonSleeping, x, y);
+					MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.sword, x, y);
+					break;
+				case 'S':
+					//AffineTransform old = ((Graphics2D) g).getTransform();
+
+					AffineTransform at = new AffineTransform();
+					
+					at.translate(TEXTURE_SIZE/2, TEXTURE_SIZE/2);
+					at.rotate(getExitRotation(maze.length, x, y));
+					at.translate(-(x*TEXTURE_SIZE + TEXTURE_SIZE/2), -(y*TEXTURE_SIZE + TEXTURE_SIZE/2));
+					
+					Graphics2D g2d = (Graphics2D) g;
+					g2d.drawImage(MazeGraphics.exit, at, null);
+					
+					//MazeGraphics.drawImageOnGridPosition(g, MazeGraphics.exit, x, y);
+				default:
+					break;
+				}		
+				MazeGraphics.drawImageOnGridPosition(g, frame, x, y);
+			}
+		}
+	}
+
+
+	private static double getExitRotation(int length, int x, int y) {
+		if(y == 0)
+			return 0.0;
+		if(x == 0)
+			return Math.PI/2;
+		if(y == length - 1)
+			return Math.PI;
+		if(x == length - 1)
+			return 3*Math.PI;
+		
+		return 0.0;
 	}
 }

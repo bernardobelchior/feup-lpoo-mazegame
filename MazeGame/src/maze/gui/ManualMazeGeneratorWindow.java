@@ -153,8 +153,44 @@ public class ManualMazeGeneratorWindow extends JFrame implements WindowListener 
 		int aliveDragonNumber = 0;
 		int swordNumber = 0;
 
-		for(int x = 0; x < maze.length; x++) {
-			for (int y = 0; y < maze[x].length; y++) {
+		for(int y = 1; y < maze.length; y++) {
+			if(maze[y][0] == 'S') {
+				if(hasExit)
+					return false;
+				else
+					hasExit = true;
+			} else if(maze[y][0] != 'X')
+				return false;
+			
+			if(maze[y][maze.length - 1] == 'S') {
+				if(hasExit)
+					return false;
+				else
+					hasExit = true;
+			} else if(maze[y][maze.length - 1] != 'X')
+				return false;
+		}
+		
+		for(int x = 1; x < maze.length; x++) {
+			if(maze[0][x] == 'S') {
+				if(hasExit)
+					return false;
+				else
+					hasExit = true;
+			} else if(maze[0][x] != 'X')
+				return false;
+			
+			if(maze[maze.length - 1][x] == 'S') {
+				if(hasExit)
+					return false;
+				else
+					hasExit = true;
+			} else if(maze[maze.length - 1][x] != 'X')
+				return false;
+		}
+		
+		for(int x = 1; x < maze.length - 1; x++) {
+			for (int y = 1; y < maze[x].length - 1; y++) {
 				switch(maze[y][x]) {
 				case 'D':
 				case 'd':

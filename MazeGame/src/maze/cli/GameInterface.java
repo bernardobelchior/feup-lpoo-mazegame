@@ -9,40 +9,15 @@ import maze.logic.Game.*;
 public class GameInterface {
 	private Maze maze;
 	private CommandLineInterface cli = new CommandLineInterface();
-	private JFrame parent;
 
 	public GameInterface(JFrame parent, Maze maze) {
 		this.maze = maze;
-		this.parent = parent;
 		
+		cli.print("Use the WASD keys to move the hero\n.");
 		play();
+		parent.setVisible(true);
 	}
 	
-	public GameInterface(){
-			char[][] grid = new char[][] { { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
-				{ 'X', 'H', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, 
-				{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
-				{ 'X', 'D', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' }, 
-				{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
-				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'S' }, 
-				{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
-				{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' }, 
-				{ 'X', 'E', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X' },
-				{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' } };
-		
-			cli.print("How long do you want the maze to be? (Odd numbers only)");
-						
-			cli.print("What mode would you like to play in?");
-			cli.print("S for Stationary Dragons.");
-			cli.print("R for Random Movement");
-			cli.print("Everything else for Sleeping and Random Movement");
-
-			maze = new Maze(grid, cli.getGameMode());
-			play();
-			
-			parent.setVisible(true);
-	}
-
 	public void play(){	
 		while(maze.getGameState() == GameState.RUNNING){
 			cli.print(maze.toString());

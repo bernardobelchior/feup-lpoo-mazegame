@@ -15,16 +15,18 @@ import maze.logic.Maze;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
-public class ManualMazeGeneratorWindow extends JFrame {
+public class ManualMazeGeneratorWindow extends JFrame implements WindowListener {
 	//TODO check if the maze created by the player is valid
 
-	private JFrame ManualMazeGameWindow;
+	private JFrame manualMazeGeneratorFrame;
 	private MazeDesignPanel mazePanel;
 	private ElementsPanel elementsPanel;
 	private JFrame parent;
@@ -32,6 +34,7 @@ public class ManualMazeGeneratorWindow extends JFrame {
 	private EntityType selectedEntity;
 	private DisplayMode displayMode;
 	private GameMode gameMode;
+	private boolean launchedWindow;
 
 	public ManualMazeGeneratorWindow(JFrame parent, DisplayMode displayMode, GameMode gameMode) {
 		MazeGraphics.loadImages();
@@ -39,29 +42,31 @@ public class ManualMazeGeneratorWindow extends JFrame {
 		this.displayMode = displayMode;
 		this.gameMode = gameMode;
 		this.selectedEntity = null;
+		this.launchedWindow = false;
 		initialize();
+		manualMazeGeneratorFrame.addWindowListener(this);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		ManualMazeGameWindow = new JFrame();
-		ManualMazeGameWindow.setTitle("Manual Maze Play Window");
-		ManualMazeGameWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		ManualMazeGameWindow.setBounds(100, 100, 800, 600);
-		ManualMazeGameWindow.setLayout(new BorderLayout());
-		ManualMazeGameWindow.getContentPane().setLayout(new BorderLayout());
-		ManualMazeGameWindow.setEnabled(true);
-		ManualMazeGameWindow.setVisible(true);
+		manualMazeGeneratorFrame = new JFrame();
+		manualMazeGeneratorFrame.setTitle("Manual Maze Play Window");
+		manualMazeGeneratorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		manualMazeGeneratorFrame.setBounds(100, 100, 800, 600);
+		manualMazeGeneratorFrame.setLayout(new BorderLayout());
+		manualMazeGeneratorFrame.getContentPane().setLayout(new BorderLayout());
+		manualMazeGeneratorFrame.setEnabled(true);
+		manualMazeGeneratorFrame.setVisible(true);
 
 		mazePanel = new MazeDesignPanel(this);
 		mazePanel.setBounds(100, 11, 343, 285);
-		ManualMazeGameWindow.getContentPane().add(mazePanel, BorderLayout.CENTER);
+		manualMazeGeneratorFrame.getContentPane().add(mazePanel, BorderLayout.CENTER);
 
 		JPanel mazeInfoPanel = new JPanel();
 		mazeInfoPanel.setLayout(new GridBagLayout());
-		ManualMazeGameWindow.getContentPane().add(mazeInfoPanel, BorderLayout.PAGE_START);
+		manualMazeGeneratorFrame.getContentPane().add(mazeInfoPanel, BorderLayout.PAGE_START);
 
 		GridBagConstraints gbc = new GridBagConstraints();
 
@@ -104,11 +109,12 @@ public class ManualMazeGeneratorWindow extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(!isMazeValid(mazePanel.getMaze())) {
-					JOptionPane.showMessageDialog(ManualMazeGameWindow, "Your maze is invalid.\nPlease make sure you generate a valid one.");
+					JOptionPane.showMessageDialog(manualMazeGeneratorFrame, "Your maze is invalid.\nPlease make sure you generate a valid one.");
 					return;
 				}
 
 				Maze maze = new Maze(mazePanel.getMaze(), gameMode);
+				launchedWindow = true;
 				switch (displayMode) {
 				case CONSOLE:
 					new GameInterface(parent, maze);
@@ -120,7 +126,7 @@ public class ManualMazeGeneratorWindow extends JFrame {
 					new TextualGameWindow(parent, maze);
 					break;
 				}
-				ManualMazeGameWindow.dispose();
+				manualMazeGeneratorFrame.dispose();
 			}
 		});
 		gbc.gridy = 2;
@@ -179,4 +185,28 @@ public class ManualMazeGeneratorWindow extends JFrame {
 	private boolean isExitValid(int x, int y) {
 		return true;
 	}
+
+	@Override
+	public void windowActivated(WindowEvent arg0) {}
+
+	@Override
+	public void windowClosed(WindowEvent arg0) {
+		if(!launchedWindow)
+			parent.setVisible(true);
+	}
+
+	@Override
+	public void windowClosing(WindowEvent arg0) {}
+
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {}
+
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {}
+
+	@Override
+	public void windowIconified(WindowEvent arg0) {}
+
+	@Override
+	public void windowOpened(WindowEvent arg0) {}
 }

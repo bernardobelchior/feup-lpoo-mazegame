@@ -6,7 +6,6 @@ import javax.swing.JScrollPane;
 
 import maze.logic.Maze;
 import maze.logic.Game.Direction;
-import maze.logic.Game.GameState;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -71,41 +70,17 @@ public class GraphicalGameWindow implements WindowListener {
 
 		gameStatePanel.updateState(maze.getGameState());
 
-		if(maze.getGameState() == GameState.RUNNING) {
-			instructionsLabel.setText("Ready to play!");
-		} else {
-			disableMovementButtons();
-			instructionsLabel.setText("Game over.");
+		switch (maze.getGameState()) {
+		case RUNNING:
+			instructionsLabel.setText("You can move! Use WASD or the Arrow keys to do it.");
+			break;
+		case DRAGON_WIN:
+			instructionsLabel.setText("Game over! Sorry, you died to a dragon..");
+			break;
+		case HERO_WIN:
+			instructionsLabel.setText("Congratulations! You won!!");
+			break;
 		}
-
-		/*if (maze.nextTurn(direction)==false){
-			if (maze.getObstacle()=='X')
-				if(MazeGraphics.wall != null)
-					g.drawImage(MazeGraphics.wall, 0, 0, null);
-
-
-				break;
-
-			else
-				instructionsLabel.setText("You cannot pass the exit until you kil all the dragons");
-		}
-		else
-			if(maze.getGameState() == GameState.RUNNING) {
-				instructionsLabel.setText("Next move?\n");
-			} else if (maze.getGameState() == GameState.DRAGON_WIN) {
-				disableMovementButtons();
-				instructionsLabel.setText("Game over! Dragon won.\n");
-			}else {
-				disableMovementButtons();
-				instructionsLabel.setText("Game over! You won.\n");
-			}*/
-	}
-
-	private void disableMovementButtons() {
-		/*upButton.setEnabled(false);
-		downButton.setEnabled(false);
-		rightButton.setEnabled(false);
-		leftButton.setEnabled(false);*/
 	}
 
 	public Maze getMaze() {

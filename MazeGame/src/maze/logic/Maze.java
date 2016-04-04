@@ -242,9 +242,9 @@ public class Maze {
 
 		//Update dragon and sword characters on maze
 		for(Sword sword : swords) {
-				if (getChar(sword.getPosition()) == 'D')
+				if (getChar(sword.getPosition()) == 'D' || getChar(sword.getPosition()) == 'F')
 					setChar(sword.getPosition(), 'F');
-				else if (getChar(sword.getPosition()) == 'd')
+				else if (getChar(sword.getPosition()) == 'd' || getChar(sword.getPosition()) == 'f')
 					setChar(sword.getPosition(), 'f');
 				else
 					setChar(sword.getPosition(), sword.getChar());

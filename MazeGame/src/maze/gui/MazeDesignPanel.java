@@ -12,6 +12,7 @@ public class MazeDesignPanel extends JPanel implements MouseListener {
 	private char[][] maze;
 	private int size;
 	private boolean heroPlaced = false;
+	private boolean exitPlaced = false;
 	private ManualMazeGeneratorWindow parent;
 
 	public MazeDesignPanel(ManualMazeGeneratorWindow parent) {
@@ -116,18 +117,24 @@ public class MazeDesignPanel extends JPanel implements MouseListener {
 		if(e.getButton() == MouseEvent.BUTTON3) {
 			if(isHeroOnPosition(x, y))
 				heroPlaced = false;
+			if(isExitOnPosition(x, y))
+				exitPlaced = false;
 			maze[y][x] = ' ';
 		} else if (e.getButton() == MouseEvent.BUTTON1){
 			switch (parent.getSelectedEntity()) {
 			case WALL:
 				if(isHeroOnPosition(x, y))
 					heroPlaced = false;
+				if(isExitOnPosition(x, y))
+					exitPlaced = false;
 				maze[y][x] = 'X';
 				break;
 			case HERO_ARMED:
 				if(!heroPlaced) {
 					maze[y][x] = 'A';
 					heroPlaced = true;
+					if(isExitOnPosition(x, y))
+						exitPlaced = false;
 				} else {
 					JOptionPane.showMessageDialog(parent, "An hero has already been placed.");
 				}
@@ -136,6 +143,8 @@ public class MazeDesignPanel extends JPanel implements MouseListener {
 				if(!heroPlaced) {
 					maze[y][x] = 'H';
 					heroPlaced = true;
+					if(isExitOnPosition(x, y))
+						exitPlaced = false;
 				} else {
 					JOptionPane.showMessageDialog(parent, "An hero has already been placed.");
 				}
@@ -143,23 +152,34 @@ public class MazeDesignPanel extends JPanel implements MouseListener {
 			case DRAGON_AWAKEN:
 				if(isHeroOnPosition(x, y))
 					heroPlaced = false;
+				if(isExitOnPosition(x, y))
+					exitPlaced = false;
 				maze[y][x] = 'D';
 				break;
 			case DRAGON_SLEEPING:
 				if(isHeroOnPosition(x, y))
 					heroPlaced = false;
+				if(isExitOnPosition(x, y))
+					exitPlaced = false;
 				maze[y][x] = 'd';
 				break;
 			case SWORD: 
 				if(isHeroOnPosition(x, y))
 					heroPlaced = false;
+				if(isExitOnPosition(x, y))
+					exitPlaced = false;
 				maze[y][x] = 'E';
 				break;
 			case EXIT:
 				if(isValidPositionForExit(x, y)) {
-					if(isHeroOnPosition(x, y))
-						heroPlaced = false;
-					maze[y][x] = 'S';
+					if(exitPlaced) {
+						JOptionPane.showMessageDialog(parent, "There can only be on exit in the maze.");
+					} else {
+						if(isHeroOnPosition(x, y))
+							heroPlaced = false;
+						maze[y][x] = 'S';
+						exitPlaced = true;
+					}
 				} else {
 					JOptionPane.showMessageDialog(parent, "Invalid exit location.");
 				}
@@ -187,5 +207,9 @@ public class MazeDesignPanel extends JPanel implements MouseListener {
 
 	private boolean isHeroOnPosition(int x, int y) {
 		return (maze[y][x] == 'A' || maze[y][x] == 'H');
+	}
+	
+	private boolean isExitOnPosition(int x, int y) {
+		return maze[y][x] == 'S';
 	}
 }

@@ -97,8 +97,8 @@ public class MazeDesignPanel extends JPanel implements MouseListener {
 	}
 
 	private boolean isValidPositionForExit(int x, int y) {
-		return !((x == 0 && y == 0) || (x == 0 && y == size - 1) ||
-				(x == size - 1 && y == 0) || (x == size - 1 && y == size - 1));
+		return ((x == 0 && (y != 0 && y != size -1) || (x == size - 1 && (y != 0 && y != size -1)) ||
+				(y == 0 && (x != 0 && x != size -1) || (y == size - 1 && (y != 0 && y != size - 1)))));
 	}
 
 	public int getMazeSize() {
@@ -133,6 +133,9 @@ public class MazeDesignPanel extends JPanel implements MouseListener {
 
 	private void createEntityAt(int x, int y, EntityType entity) {
 		switch (entity) {
+		case WALL:
+			maze[y][x] = 'X';
+			break;
 		case HERO_ARMED:
 			if(heroPlaced) {
 				JOptionPane.showMessageDialog(parent, "An hero has already been placed.");

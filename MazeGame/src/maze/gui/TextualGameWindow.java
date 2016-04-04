@@ -38,7 +38,6 @@ public class TextualGameWindow implements WindowListener {
 		initialize();
 		mazeTextArea.setText(maze.toString());
 
-		//FIXME: Dynamic sizing not working properly.
 		int charWidth =	mazeTextArea.getFontMetrics(mazeTextArea.getFont()).stringWidth(" ");
 		int charHeight = mazeTextArea.getFontMetrics(mazeTextArea.getFont()).getHeight();
 		int minY = Math.max(downButton.getY() + downButton.getHeight(), 
@@ -141,7 +140,7 @@ public class TextualGameWindow implements WindowListener {
 		gameInterfacePanel.add(rightButton, gbc);
 		
 		gameStateImage = new JLabel();
-		gameStateImage.setIcon(new ImageIcon(MazeGraphics.wall));
+		gameStateImage.setIcon(new ImageIcon(MazeGraphics.gameRunning));
 		gbc.gridx = 1;
 		gbc.gridy = 3;
 		gbc.gridwidth = 3;
@@ -157,11 +156,8 @@ public class TextualGameWindow implements WindowListener {
 
 		switch (maze.getGameState()) {
 		case RUNNING:
+			gameStateImage.setIcon(new ImageIcon(MazeGraphics.gameRunning));
 			gameInfoLabel.setText("Next move?");
-			/*if (maze.getObstacle()=='X')
-			mazeGameStateTextArea.setText("You cannot move into a wall. Try another direction!");
-		else
-			mazeGameStateTextArea.setText("You cannot pass the exit until you kil all the dragons");*/
 			break;
 		case DRAGON_WIN:
 			disableMovementButtons();

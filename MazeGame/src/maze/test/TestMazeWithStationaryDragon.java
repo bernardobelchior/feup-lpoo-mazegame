@@ -39,11 +39,11 @@ public class TestMazeWithStationaryDragon {
 	public void testMoveHeroToSwordAndEquipsIt() {
 		Maze maze = new Maze(m1, GameMode.STATIONARY);
 		assertEquals(false, maze.getHero().getSwordEquipped());
-		maze.moveHero(Direction.LEFT);
-		maze.moveHero(Direction.LEFT);
-		maze.moveHero(Direction.DOWN);
-		maze.moveHero(Direction.DOWN);
-		assertEquals(maze.getSword(0).getPosition(), maze.getHero().getPosition());
+		maze.nextTurn(Direction.LEFT);
+		maze.nextTurn(Direction.LEFT);
+		maze.nextTurn(Direction.DOWN);
+		maze.nextTurn(Direction.DOWN);
+		assertEquals(0, maze.getSwords().size());
 		assertEquals(true, maze.getHero().getSwordEquipped());
 	}
 	
@@ -51,7 +51,7 @@ public class TestMazeWithStationaryDragon {
 	public void testMoveUnarmedHeroNextToDragon() {
 		Maze maze = new Maze(m1, GameMode.STATIONARY);
 		assertEquals(GameState.RUNNING, maze.getGameState());
-		maze.moveHero(Direction.DOWN);
+		maze.nextTurn(Direction.DOWN);
 		assertEquals(GameState.DRAGON_WIN, maze.getGameState());
 	}
 	
@@ -59,11 +59,11 @@ public class TestMazeWithStationaryDragon {
 	public void testMoveArmedHeroNextToDragon() {
 		Maze maze = new Maze(m1, GameMode.STATIONARY);
 		assertEquals(1, maze.getDragons().size());
-		maze.moveHero(Direction.LEFT);
-		maze.moveHero(Direction.LEFT);
-		maze.moveHero(Direction.DOWN);
-		maze.moveHero(Direction.DOWN);
-		maze.moveHero(Direction.RIGHT);
+		maze.nextTurn(Direction.LEFT);
+		maze.nextTurn(Direction.LEFT);
+		maze.nextTurn(Direction.DOWN);
+		maze.nextTurn(Direction.DOWN);
+		maze.nextTurn(Direction.RIGHT);
 		assertEquals(0, maze.getDragons().size());
 	}
 	
@@ -71,16 +71,16 @@ public class TestMazeWithStationaryDragon {
 	public void testHeroKillsDragonAndExits() {
 		Maze maze = new Maze(m1, GameMode.STATIONARY);
 		assertEquals(GameState.RUNNING, maze.getGameState());
-		maze.moveHero(Direction.LEFT);
-		maze.moveHero(Direction.LEFT);
-		maze.moveHero(Direction.LEFT);
-		maze.moveHero(Direction.DOWN);
-		maze.moveHero(Direction.DOWN);
-		maze.moveHero(Direction.RIGHT);
-		maze.moveHero(Direction.RIGHT);
-		maze.moveHero(Direction.UP);
-		maze.moveHero(Direction.UP);
-		maze.moveHero(Direction.RIGHT);
+		maze.nextTurn(Direction.LEFT);
+		maze.nextTurn(Direction.LEFT);
+		maze.nextTurn(Direction.LEFT);
+		maze.nextTurn(Direction.DOWN);
+		maze.nextTurn(Direction.DOWN);
+		maze.nextTurn(Direction.RIGHT);
+		maze.nextTurn(Direction.RIGHT);
+		maze.nextTurn(Direction.UP);
+		maze.nextTurn(Direction.UP);
+		maze.nextTurn(Direction.RIGHT);
 		assertEquals(GameState.HERO_WIN, maze.getGameState());
 	}
 	

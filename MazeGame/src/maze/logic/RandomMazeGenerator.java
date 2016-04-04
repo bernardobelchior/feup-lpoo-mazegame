@@ -188,7 +188,7 @@ public class RandomMazeGenerator {
 		Random random = new Random();
 		int i, x, y;
 		i = 0;
-		//TODO Make a better check to see if the path to the sword is inaccessible
+
 		while(i < dragonNumber) {
 			x = random.nextInt(size);
 			y = random.nextInt(size);

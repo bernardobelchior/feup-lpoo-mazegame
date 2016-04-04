@@ -23,11 +23,11 @@ import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
 public class ManualMazeGeneratorWindow extends JFrame implements WindowListener {
-	//TODO check if the maze created by the player is valid
 
 	private JFrame manualMazeGeneratorFrame;
 	private MazeDesignPanel mazeDesignPanel;
@@ -49,7 +49,7 @@ public class ManualMazeGeneratorWindow extends JFrame implements WindowListener 
 		this.launchedWindow = false;
 		initialize();
 		manualMazeGeneratorFrame.addWindowListener(this);
-		//adjustWindowToScreen();
+		adjustWindowToScreen();
 	}
 
 	/**
@@ -62,6 +62,7 @@ public class ManualMazeGeneratorWindow extends JFrame implements WindowListener 
 		manualMazeGeneratorFrame.setBounds(100, 100, 800, 600);
 		manualMazeGeneratorFrame.setLayout(new BorderLayout());
 		manualMazeGeneratorFrame.getContentPane().setLayout(new BorderLayout());
+		manualMazeGeneratorFrame.setResizable(false);
 		manualMazeGeneratorFrame.setEnabled(true);
 		manualMazeGeneratorFrame.setVisible(true);
 
@@ -71,7 +72,7 @@ public class ManualMazeGeneratorWindow extends JFrame implements WindowListener 
 		mazeDesignScrollPane = new JScrollPane(mazeDesignPanel);
 		mazeDesignScrollPane.setBounds(0, 0, 300, 300);
 		manualMazeGeneratorFrame.getContentPane().add(mazeDesignScrollPane, BorderLayout.CENTER);
-
+		
 		JPanel mazeInfoPanel = new JPanel();
 		mazeInfoPanel.setLayout(new GridBagLayout());
 		manualMazeGeneratorFrame.getContentPane().add(mazeInfoPanel, BorderLayout.PAGE_START);
@@ -82,16 +83,18 @@ public class ManualMazeGeneratorWindow extends JFrame implements WindowListener 
 		gbc.weightx = 1;
 		gbc.weighty = 1;
 
-		JLabel mazeDimensionLabel = new JLabel("Dimension:");
+		JPanel mazeDimensionPanel = new JPanel();
+		mazeDimensionPanel.setLayout(new GridLayout(1, 2, 10, 0));
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		mazeInfoPanel.add(mazeDimensionLabel, gbc);
+		mazeInfoPanel.add(mazeDimensionPanel, gbc);
+		
+		JLabel mazeDimensionLabel = new JLabel("Dimension:");
+		mazeDimensionPanel.add(mazeDimensionLabel, gbc);
 
 		SpinnerNumberModel model = new SpinnerNumberModel(11, 5, 50, 1);
 		JSpinner mazeDimensionSpinner = new JSpinner(model);
-		gbc.gridx = 1;
-		gbc.gridy = 0;
-		mazeInfoPanel.add(mazeDimensionSpinner, gbc);
+		mazeDimensionPanel.add(mazeDimensionSpinner, gbc);
 
 		JButton createMazeButton = new JButton("Generate New Maze");
 		createMazeButton.addActionListener(new ActionListener() {
@@ -99,17 +102,10 @@ public class ManualMazeGeneratorWindow extends JFrame implements WindowListener 
 				mazeDesignPanel.generateMaze(((Integer) mazeDimensionSpinner.getValue()).intValue());
 				mazeDesignPanel.repaint();
 
-				mazeDesignPanel.setBounds(mazeDesignPanel.getX(), mazeDesignPanel.getY(),
-						((MazeDesignPanel) mazeDesignPanel).getMazeSize()*MazeGraphics.TEXTURE_SIZE,
-						((MazeDesignPanel) mazeDesignPanel).getMazeSize()*MazeGraphics.TEXTURE_SIZE);
-				setBounds(0, 0, 
-						mazeDesignPanel.getX() + mazeDesignPanel.getWidth() + 30,
-						Math.max(mazeDesignPanel.getY() + mazeDesignPanel.getHeight() + 50, elementsPanel.getHeight()));
+				adjustWindowToScreen();
 			}
 		});
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		gbc.gridwidth = 2;
+		gbc.gridx = 1;
 		mazeInfoPanel.add(createMazeButton, gbc);
 
 		JButton launchGameButton = new JButton("Launch Game");
@@ -137,10 +133,11 @@ public class ManualMazeGeneratorWindow extends JFrame implements WindowListener 
 				manualMazeGeneratorFrame.dispose();
 			}
 		});
-		gbc.gridy = 2;
+		gbc.gridx = 2;
 		mazeInfoPanel.add(launchGameButton, gbc);
 
-		gbc.gridy = 3;
+		gbc.gridx = 0;
+		gbc.gridy = 1;
 		gbc.gridwidth = 5;
 		elementsPanel = new ElementsPanel(this);
 		mazeInfoPanel.add(elementsPanel, gbc);
@@ -205,8 +202,7 @@ public class ManualMazeGeneratorWindow extends JFrame implements WindowListener 
 					aliveDragonNumber++;
 					break;
 				case 'S':
-					if(isExitValid(x, y))
-						hasExit = true;
+					hasExit = true;
 					break;
 				case 'E':
 					swordNumber++;
@@ -224,16 +220,13 @@ public class ManualMazeGeneratorWindow extends JFrame implements WindowListener 
 		
 		return (hasHero && hasExit && ((aliveDragonNumber > 0 && (swordNumber > 0 || isHeroArmed)) || aliveDragonNumber == 0));
 	}
-	
-	//TODO check if the exit is valid
-	private boolean isExitValid(int x, int y) {
-		return true;
-	}
 
 	private void adjustWindowToScreen() {
-		int width = Math.min(
+		mazeDesignPanel.setPreferredSize(new Dimension(mazeDesignPanel.getMazeSize()*MazeGraphics.TEXTURE_SIZE, mazeDesignPanel.getMazeSize()*MazeGraphics.TEXTURE_SIZE));
+		int width = Math.max(elementsPanel.getX() + elementsPanel.getPreferredSize().width + manualMazeGeneratorFrame.getInsets().left + manualMazeGeneratorFrame.getInsets().right,
+				Math.min(
 				manualMazeGeneratorFrame.getInsets().left + manualMazeGeneratorFrame.getInsets().right + mazeDesignScrollPane.getPreferredSize().width + mazeDesignScrollPane.getVerticalScrollBar().getSize().width,
-				GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width);
+				GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width));
 		int height = Math.min(
 				manualMazeGeneratorFrame.getInsets().top + manualMazeGeneratorFrame.getInsets().bottom + mazeDesignScrollPane.getPreferredSize().height + mazeDesignScrollPane.getHorizontalScrollBar().getSize().height,
 				GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height);
